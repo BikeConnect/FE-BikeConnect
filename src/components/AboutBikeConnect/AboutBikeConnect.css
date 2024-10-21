@@ -1,0 +1,38 @@
+.about-bike-connect {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 32px;
+    background-color: #f0f9ff;
+    border: 2px solid #d0e7ff;
+    border-radius: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 15%;
+}
+
+.text-content {
+    max-width: 60%;
+    color: #1a202c;
+}
+
+.text-content h2 {
+    font-size: 1.875rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: #111827;
+}
+
+.text-content p {
+    font-size: 1.125rem;
+    color: #4b5563;
+}
+
+.image-container {
+    max-width: 40%;
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+}

@@ -1,0 +1,119 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.hero-section {
+    background: url('../../assets/images/images_homePage/v994_9045.png') no-repeat center center;
+    background-size: cover;
+    color: white;
+    text-align: center;
+    position: relative;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.hero-content {
+    max-width: 700px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    margin-bottom: auto;
+}
+
+.hero-content h2 {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+.hero-content p {
+    font-size: 18px;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.py-24 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+}
+
+.bg-gray-50 {
+    background-color: #f9fafb;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.step-number {
+    width: 50px;
+    height: 50px;
+    background-color: #2a63a8;
+    color: white;
+    font-size: 24px;
+    line-height: 50px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-bottom: 16px;
+}
+
+.card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card img {
+    width: 100%;
+    height: auto;
+}
+
+.card-body {
+    padding: 16px;
+}
+
+.card-body h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.card-body p {
+    color: #666;
+}
+
+@media (min-width: 768px) {
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        height: auto;
+        padding-top: 100px;
+    }
+}
