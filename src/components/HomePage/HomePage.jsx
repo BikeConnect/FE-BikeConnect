@@ -1,5 +1,6 @@
 import React from 'react';
-import Header from '../Header/HeaderNoLogin';
+import HeaderNoLogin from '../Header/HeaderNoLogin';
+import HeaderAfterLogin from '../Header/HeaderAfterLogin';
 import Footer from '../Footer/Footer';
 import SearchBar from '../SearchBar/SearchBar';
 import AboutBikeConnect from '../AboutBikeConnect/AboutBikeConnect';
@@ -47,7 +48,8 @@ const HomePage = () => {
 
     return (
         <div className="min-h-screen bg-white">
-            <Header />
+            {/* <HeaderNoLogin /> */}
+            <HeaderAfterLogin />
             <div className="hero-section pt-24" style={{ backgroundImage: `url(${theme})` }}>
                 <div className="container py-16">
                     <SearchBar />

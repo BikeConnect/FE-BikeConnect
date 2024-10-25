@@ -4,7 +4,7 @@ import './HeaderNoLogin.css';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
 
-const Header = () => {
+const HeaderNoLogin = () => {
     const [showLogin, setShowLogin] = useState(false);
     const [showRegister, setShowRegister] = useState(false);
 
@@ -58,4 +58,4 @@ const Header = () => {
     );
 };
 
-export default Header;
+export default HeaderNoLogin;
