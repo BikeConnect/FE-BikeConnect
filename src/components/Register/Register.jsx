@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Register.css';
-import { FaGoogle, FaFacebook } from 'react-icons/fa';
+import { FaGoogle, FaFacebook, FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const Register = ({ show, onClose }) => {
     const [formData, setFormData] = useState({
@@ -8,27 +8,42 @@ const Register = ({ show, onClose }) => {
         displayName: '',
         password: '',
         confirmPassword: '',
-        userType: 'Người cho thuê', // Giá trị mặc định
+        agreeTerms: false,
     });
 
-    if (!show) return null;
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        const { name, value, type, checked } = e.target;
+        setFormData({
+            ...formData,
+            [name]: type === 'checkbox' ? checked : value,
+        });
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Logic xử lý khi submit form
         console.log(formData);
     };
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
+    const toggleConfirmPasswordVisibility = () => {
+        setShowConfirmPassword(!showConfirmPassword);
+    };
+
+    if (!show) {
+        return null;
+    }
 
     return (
         <div className="register-overlay" onClick={onClose}>
             <div className="register-container" onClick={(e) => e.stopPropagation()}>
+                <h2 className="register-title">Đăng kí</h2>
                 <button className="close-btn" onClick={onClose}>×</button>
-                <h2>Đăng ký</h2>
                 <form onSubmit={handleSubmit}>
                     <input
                         type="text"
@@ -37,6 +52,7 @@ const Register = ({ show, onClose }) => {
                         value={formData.phoneNumber}
                         onChange={handleChange}
                         required
+                        className="input-field"
                     />
                     <input
                         type="text"
@@ -45,46 +61,54 @@ const Register = ({ show, onClose }) => {
                         value={formData.displayName}
                         onChange={handleChange}
                         required
+                        className="input-field"
                     />
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="Mật khẩu"
-                        value={formData.password}
-                        onChange={handleChange}
-                        required
-                    />
-                    <input
-                        type="password"
-                        name="confirmPassword"
-                        placeholder="Xác nhận mật khẩu"
-                        value={formData.confirmPassword}
-                        onChange={handleChange}
-                        required
-                    />
-                    <select
-                        name="userType"
-                        value={formData.userType}
-                        onChange={handleChange}
-                        required
-                    >
-                        <option value="Người cho thuê">Người cho thuê</option>
-                        <option value="Người thuê">Người thuê</option>
-                    </select>
-                    <div className="checkbox-container">
-                        <input type="checkbox" id="agree" required />
-                        <label htmlFor="agree">
-                            Tôi đã đọc và chấp thuận với <a href="#">Chính sách và Quy định</a> của Bike Connect
-                        </label>
+                    <div className="password-container">
+                        <input
+                            type={showPassword ? 'text' : 'password'}
+                            name="password"
+                            placeholder="Mật khẩu"
+                            value={formData.password}
+                            onChange={handleChange}
+                            required
+                            className="input-field"
+                        />
+                        <span className="password-toggle" onClick={togglePasswordVisibility}>
+                            {showPassword ? <FaEyeSlash /> : <FaEye />}
+                        </span>
                     </div>
-                    <button type="submit" className="register-btn">Đăng ký</button>
+                    <div className="password-container">
+                        <input
+                            type={showConfirmPassword ? 'text' : 'password'}
+                            name="confirmPassword"
+                            placeholder="Xác nhận mật khẩu"
+                            value={formData.confirmPassword}
+                            onChange={handleChange}
+                            required
+                            className="input-field"
+                        />
+                        <span className="password-toggle" onClick={toggleConfirmPasswordVisibility}>
+                            {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                        </span>
+                    </div>
+                    <div className="checkbox-container">
+                        <input
+                            type="checkbox"
+                            name="agreeTerms"
+                            checked={formData.agreeTerms}
+                            onChange={handleChange}
+                            required
+                        />
+                        <label htmlFor="agreeTerms">Tôi đã đọc và chấp thuận với <a href="#">Chính sách và Quy định</a> của Bike Connect</label>
+                    </div>
+                    <button type="submit" className="register-btn">Đăng kí</button>
                 </form>
                 <div className="social-login">
                     <button className="google-btn">
-                        <FaGoogle />Google
+                        <FaGoogle /> Google
                     </button>
                     <button className="facebook-btn">
-                        <FaFacebook />Facebook
+                        <FaFacebook /> Facebook
                     </button>
                 </div>
             </div>

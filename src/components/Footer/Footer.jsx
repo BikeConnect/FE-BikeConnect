@@ -7,7 +7,7 @@ const Footer = () => {
     return (
         <footer className="footer">
             <div className="container">
-
+        
                 <div className="footer-section">
                     <img src={logo} alt="Bike Connect Logo" className="logo" />
                     <p className="mt-4">Đăng kí email để có thể nhận thông tin về thuê xe từ chúng tôi</p>

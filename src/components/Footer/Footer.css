@@ -1,6 +1,15 @@
+:root {
+    --main-color: #472CB2; /* Đặt màu chính ở đây */
+    --secondary-color: #2b6cb0;
+    --text-color: #4a5568;
+}
+
 .footer {
     background-color: #e6f0f8;
-    padding: 20px 0;
+    padding: 40px 20px;
+    border-top: 1px solid #e7e7e7;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .footer-section {
@@ -15,7 +24,7 @@
     gap: 20px;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0px;
     align-items: center;
 }
 
@@ -27,14 +36,14 @@
 .footer-section h3 {
     font-size: 18px;
     font-weight: bold;
-    color: #3182ce;
+    color: var(--main-color); /* Sử dụng màu chính */
     text-align: center;
 }
 
 .footer-section p {
     margin-top: 10px;
     font-size: 14px;
-    color: #4a5568;
+    color: var(--text-color); /* Màu văn bản phụ */
     text-align: center;
 }
 
@@ -54,7 +63,7 @@
 
 .btn-submit {
     padding: 8px 16px;
-    background-color: #3182ce;
+    background-color: var(--main-color); /* Sử dụng màu chính */
     color: white;
     border: none;
     border-radius: 5px;
@@ -62,11 +71,11 @@
 }
 
 .btn-submit:hover {
-    background-color: #2b6cb0;
+    background-color: var(--secondary-color); /* Màu phụ khi hover */
 }
 
 .footer-section a {
-    color: #3182ce;
+    color: var(--main-color); /* Sử dụng màu chính */
     text-decoration: none;
     margin-bottom: 5px;
 }
@@ -93,13 +102,13 @@
 }
 
 .footer-section .icon {
-    color: #3182ce;
+    color: var(--main-color); /* Màu chính cho icon */
 }
 
 .footer .text-center {
     margin-top: 20px;
     font-size: 12px;
-    color: #4a5568;
+    color: var(--text-color); /* Màu văn bản */
 }
 
 @media (max-width: 768px) {

@@ -1,0 +1,54 @@
+.service-benefits {
+    padding: 20px;
+  }
+  
+  .benefits-title {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 30px;
+  }
+  
+  .benefits-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  
+  .benefit-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px; /* Khoảng cách giữa các mục */
+  }
+  
+  .benefit-icon {
+    font-size: 35px;
+    color: #472CB2; /* Màu chính cho các biểu tượng */
+    margin-right: 15px; /* Khoảng cách hợp lý giữa biểu tượng và văn bản */
+  }
+  
+  .benefit-text h5 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .benefit-text p {
+    font-size: 16px;
+    color: #555;
+    margin: 0;
+    line-height: 1.5; /* Khoảng cách dòng phù hợp */
+  }
+  
+  .service-image {
+    width: 100%; /* Đảm bảo chiều rộng 100% */
+    height: auto; /* Tự động điều chỉnh chiều cao */
+    max-height: 600px; /* Đặt chiều cao tối đa cho hình ảnh */
+    border-radius: 15px;
+  }
+  
+  .image-column {
+    display: flex;
+    align-items: center;
+    height: 100%; /* Đảm bảo cột chứa hình ảnh có chiều cao bằng với phần văn bản */
+  }
+  

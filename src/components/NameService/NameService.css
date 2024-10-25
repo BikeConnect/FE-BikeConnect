@@ -1,0 +1,31 @@
+/* App.css */
+/* body, html {
+  margin: 0;
+  padding: 0;
+  
+} */
+
+.service-name {
+  background-image: url('../../assets/images/images_homePage/pexels-green-1049872.jpg');
+  background-size: cover;
+  background-position: center;
+  color: white;
+  text-align: center;
+  padding: 200px 20px;
+  
+}
+
+.title-container {
+  max-width: 1440px; /* Giới hạn chiều rộng tối đa */
+  margin: 0 auto;    /* Căn giữa container */
+  padding: 20px;
+}
+
+.title {
+  font-size: 86px;
+  
+  margin: 20px 0;
+  color: #472CB2;
+  width: 1200px;
+  margin: 0 auto; 
+}

@@ -1,0 +1,79 @@
+.outer-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.inner-container {
+  width: 100%;
+  max-width: 1200px;
+  /* padding: 0 20px; Thêm padding để tránh nội dung sát cạnh màn hình */
+  margin: 0 auto;
+}
+
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 20px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .service-grid {
+      grid-template-columns: 1fr; /* 1 cột khi màn hình nhỏ */
+  }
+  
+  .service-card.large-rect {
+      grid-column: span 1; /* Không còn span 2 cột trên mobile */
+  }
+}
+
+.service-card {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.service-card.large-rect {
+  grid-column: span 2;
+  height: 300px;
+}
+
+.service-card.small-square {
+  height: 300px;
+}
+
+.service-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.service-card .overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  padding: 20px;
+}
+
+.service-card .overlay h3 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.service-card .overlay p {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.text-center {
+  margin-bottom: 30px;
+  text-align: center;
+}
