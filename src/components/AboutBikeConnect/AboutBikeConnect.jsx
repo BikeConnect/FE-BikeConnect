@@ -1,5 +1,5 @@
 import React from 'react';
-import diadiem from '../../assets/images/images_homePage/v994_9046.png';
+import diadiem from '../../assets/images/images_homePage/v994_9054.png';
 import './AboutBikeConnect.css';
 
 const AboutBikeConnect = () => {

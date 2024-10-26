@@ -8,9 +8,10 @@ import ServiceGrid from '../ServiceGrid/ServiceGrid';
 import ServiceBenefits from '../ServiceBenefits/ServiceBenefits';
 import CycleTips from '../CycleTips/CycleTips';
 import RentalSignup from '../RentalSignup/RentalSignup';
-import CycleRentalSteps from '../CarRentalSteps/CycleRentalSteps';
+import CycleRentalSteps from '../CyCleRentalSteps/CycleRentalSteps';
 import CyclerentalGrid from '../MotorcycleGrid/CyclerentalGrid';
 import Header from '../Header/HeaderNoLogin';
+
 
 const HomePage = () => {
     return (
@@ -26,6 +27,7 @@ const HomePage = () => {
                     <ServiceBenefits />
                     <CycleTips />
                     <RentalSignup />
+                    
                     
                    
                 </div>
