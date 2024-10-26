@@ -1,29 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-.body {
+body {
     font-family: 'Roboto', sans-serif;
 }
 
-.header {
+.header-after-login {
     background-color: transparent;
-    border-bottom: 1px solid rgba(229, 229, 229, 0.5);
-    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
-    padding: 15px 0;
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 1000;
-    max-height: 15%;
+    display: flex;
+    justify-content: center;
 }
 
-.container {
-    max-width: auto;
-    margin: 0 auto;
-    padding: 0 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.header-container {
+    width: 1200px;
+    height: 80px;
+    padding: 0;
+    margin: 0;
 }
 
 .nav {
@@ -33,14 +29,21 @@
     width: 100%;
 }
 
+.logo {
+    flex: 0 0 auto;
+    width: 150px;
+}
+
 .logo-img {
     width: 100%;
     height: auto;
+    object-fit: contain;
 }
 
 .menu-items {
     display: flex;
     gap: 30px;
+    align-items: center;
 }
 
 .menu-link {
@@ -49,6 +52,7 @@
     font-size: 16px;
     transition: color 0.3s ease-in-out;
     font-weight: bold;
+    white-space: nowrap;
 }
 
 .menu-link:hover {
@@ -85,8 +89,73 @@
     cursor: pointer;
 }
 
+.profile-dropdown {
+    position: absolute;
+    right: 250px;
+    top: 110px;
+    background-color: white;
+    border: 1px solid rgba(229, 229, 229, 0.5);
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    z-index: 1000;
+    padding: 25px;
+    animation: fadeIn 0.2s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dropdown-button {
+    background: none;
+    border: 1px solid #472CB2;
+    color: #472CB2;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.dropdown-button:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
+}
+
+.dropdown-header {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.close-button {
+    background-color: transparent;
+    border: none;
+    color: #472CB2;
+    font-size: 15px;
+    cursor: pointer;
+    border-radius: 50%;
+    padding: 5px;
+    position: relative;
+    transition: background-color 0.3s ease;
+}
+
+.close-button:hover {
+    background-color: rgba(229, 229, 229, 0.5);
+    /* Nền khi hover */
+}
+
 @media (max-width: 768px) {
-    .container {
+    .header-container {
         flex-direction: column;
         align-items: center;
     }

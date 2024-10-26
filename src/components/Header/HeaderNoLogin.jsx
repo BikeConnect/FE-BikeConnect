@@ -26,7 +26,7 @@ const HeaderNoLogin = () => {
     return (
         <>
             <header className="header">
-                <div className="container">
+                <div className="header-container">
                     <nav className="nav">
                         <div className="logo">
                             <img src={logo} alt="Bike Connect Logo" className="logo-img" />

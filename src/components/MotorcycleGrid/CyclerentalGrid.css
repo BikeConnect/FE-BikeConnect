@@ -1,0 +1,164 @@
+:root {
+  --primary-color: #472CB2; /* Màu chủ đạo */
+  --secondary-color: #aaa; /* Màu phụ cho các phần như giá gốc bị gạch ngang */
+  --text-color: #666; /* Màu văn bản phụ */
+  --star-color: #ffc107; /* Màu cho sao đánh giá */
+}
+
+.rental-container {
+  padding: 20px 0px;
+}
+
+/* Card Styles */
+.cycle-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  background-color: #fff;
+}
+
+.cycle-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.vehicle-types .vehicle-type {
+  border-radius: 20px;
+  margin: 0 8px;
+  border: 1px solid var(--primary-color); /* Sử dụng màu chủ đạo */
+  color: var(--primary-color); /* Màu chữ của nút chưa được chọn */
+}
+
+.vehicle-types .vehicle-type.btn-primary {
+  background-color: var(--primary-color); /* Màu nền của nút được chọn */
+  color: #fff; /* Màu chữ của nút được chọn */
+}
+
+.vehicle-types .vehicle-type.btn-outline-secondary {
+  background-color: transparent; /* Màu nền trong suốt cho nút chưa được chọn */
+  color: var(--primary-color); /* Màu chữ cho nút chưa được chọn */
+}
+
+.vehicle-types .vehicle-type:hover {
+  background-color: rgba(71, 44, 66, 0.1); /* Màu nền khi hover */
+  color: var(--primary-color);
+}
+
+.image-wrapper {
+  position: relative;
+  height: 200px;
+}
+
+.cycle-image {
+  border-radius: 8px 8px 0 0;
+  object-fit: cover;
+  width: 100%;
+  height: 200px;
+}
+
+/* Text and price formatting */
+.cycle-name {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.price-section {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 14px;
+  margin-bottom: 10px;
+  white-space: nowrap; /* Thêm thuộc tính này */
+}
+
+
+.current-price {
+  color: var(--primary-color); /* Sử dụng màu chủ đạo */
+  font-weight: bold;
+  font-size: 18px;
+  margin-right: 8px;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: var(--secondary-color); /* Màu gạch ngang */
+  font-size: 14px;
+}
+
+/* Location and icons */
+.cycle-location {
+  font-size: 14px;
+  color: var(--text-color); /* Màu văn bản phụ */
+  display: flex;
+  align-items: center;
+}
+
+.location-icon {
+  margin-right: 5px;
+  color: var(--primary-color); /* Màu chủ đạo cho icon */
+}
+
+/* Footer section */
+.cycle-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.cycle-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.status-icon {
+  color: var(--primary-color); /* Màu chủ đạo cho icon trạng thái */
+}
+
+.distance-icon {
+  margin-right: 5px;
+  color: var(--primary-color); /* Màu chủ đạo cho icon khoảng cách */
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+}
+
+.star {
+  color: var(--star-color); /* Màu cho ngôi sao */
+  font-size: 14px;
+}
+
+.review-count {
+  margin-left: 5px;
+  font-size: 12px;
+  color: var(--text-color); /* Màu văn bản phụ */
+}
+
+/* Pagination buttons */
+.page-btn {
+  margin: 0 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.page-btn.prev,
+.page-btn.next {
+  border: 3px solid var(--primary-color); /* Màu chủ đạo cho nút phân trang */
+  color: var(--primary-color);
+ 
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .cycle-image {
+    height: 150px;
+  }
+}

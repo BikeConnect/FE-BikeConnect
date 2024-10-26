@@ -1,0 +1,62 @@
+.rental-signup-container {
+    background-color: #f5f8f5;
+    padding: 40px 20px;
+    margin: 40px 0;
+    border-radius: 16px;
+  }
+  
+  .rental-content {
+    max-width: 1200px;
+    height: 200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .rental-text h2 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  .rental-text p {
+    font-size: 16px;
+    color: #666;
+    margin: 0;
+  }
+  
+  .signup-button {
+    background-color:#472CB2;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    white-space: nowrap;
+  }
+  
+
+  
+  @media (max-width: 768px) {
+    .rental-content {
+      flex-direction: column;
+      text-align: center;
+    }
+  
+    .rental-text h2 {
+      font-size: 24px;
+    }
+  
+    .rental-text p {
+      font-size: 14px;
+    }
+  
+    .signup-button {
+      width: 100%;
+      justify-content: center;
+    }
+  } 
