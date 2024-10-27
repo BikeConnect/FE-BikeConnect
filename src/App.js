@@ -7,7 +7,8 @@ import HeaderAfterLogin from './components/Header/HeaderAfterLogin';
 import HeaderNoLogin from './components/Header/HeaderNoLogin';
 import NavBar from './components/NavBar/NavBar';
 import CustomerProfile from './components/Profile/CustomerProfile';
-
+import ChangePassword from './components/ChangePassword/ChangePassword';
+import NameService from './components/NameService/NameService';
 function App() {
 
   const ShowNavBar = () => {
@@ -23,6 +24,7 @@ function App() {
           <Route path="/homepage" element={<HomePage />} />
           <Route path="/register-owner" element={<RegisterOwner />} />
           <Route path="/customerprofiles" element={<CustomerProfile />} />
+          <Route path="/changepassword" element={<ChangePassword />} />
         </Routes>
       </div>
     </Router>
