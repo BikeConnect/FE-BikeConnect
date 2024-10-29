@@ -1,13 +1,13 @@
-import React, { useState } from 'react'; 
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './CyclerentalGrid.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkerAlt, faMotorcycle, faBicycle, faTachometerAlt, faStar, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
-import thuexemay from '/CAPSTONE-BikeConnect/FE-BikeConnect/src/assets/images/images_homePage/v994_8600.png';
-import thuexedap from '/CAPSTONE-BikeConnect/FE-BikeConnect/src/assets/images/images_homePage/v994_9104.png';
+import thuexemay from '../../assets/images/images_homePage/v994_8600.png';
+import thuexedap from '../../assets/images/images_homePage/v994_9104.png';
 
 
-// BicycleCard Component
+
 const BicycleCard = ({ data }) => {
   return (
     <div className="col-lg-3 col-md-6 col-sm-12 mb-4">

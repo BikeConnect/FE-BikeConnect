@@ -1,6 +1,6 @@
 :root {
     --main-blue: #472CB2;
-    
+
 }
 
 .register-overlay {
@@ -28,7 +28,8 @@
 
 .register-title {
     text-align: center;
-    color: var(--main-blue); /* Sử dụng biến màu */
+    color: var(--main-blue);
+    /* Sử dụng biến màu */
     font-size: 30px;
     font-weight: bold;
     margin-bottom: 20px;
@@ -63,13 +64,13 @@ form {
 }
 
 .input-field:hover {
-    border-color: var(--main-blue); /* Đổi màu khi rê chuột */
+    border-color: var(--main-blue);
 }
 
 .input-field:focus {
-    outline: none; /* Loại bỏ viền mặc định của trình duyệt khi focus */
-    border-color: var(--main-blue); /* Đổi màu khi bấm vào */
-    box-shadow:var(--main-blue); /* Hiệu ứng bóng để nổi bật hơn */
+    outline: none;
+    border-color: var(--main-blue);
+    box-shadow: var(--main-blue);
 }
 
 .password-container {
@@ -102,7 +103,8 @@ form {
 .register-btn {
     width: 100%;
     padding: 12px;
-    background-color: var(--main-blue); /* Sử dụng biến màu */
+    background-color: var(--main-blue);
+    /* Sử dụng biến màu */
     color: white;
     border: none;
     border-radius: 4px;
@@ -138,9 +140,11 @@ form {
 }
 
 .facebook-btn:hover {
-    color: var(--main-blue); /* Sử dụng biến màu */
+    color: var(--main-blue);
+    /* Sử dụng biến màu */
 }
 
 .google-btn:hover {
-    color: var(--main-blue); /* Sử dụng biến màu */
+    color: var(--main-blue);
+    /* Sử dụng biến màu */
 }

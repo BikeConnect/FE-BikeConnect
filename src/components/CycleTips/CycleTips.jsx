@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import { ArrowRight } from 'lucide-react';
 import './CycleTips.css';
-import tintucxe from '/CAPSTONE-BikeConnect/FE-BikeConnect/src/assets/images/images_homePage/v994_9281.png';
+import tintucxe from '../../assets/images/images_homePage/v994_9281.png'
 
 const CycleTips = () => {
   const tips = [

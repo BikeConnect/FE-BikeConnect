@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { MapPin, X, Search } from 'lucide-react';
-import './LocationModal.css'
+import './LocationModal.css';
 
 const LocationModal = ({ isOpen, onClose, onSelectLocation }) => {
   const [selectedLocation, setSelectedLocation] = useState('');
@@ -60,7 +60,7 @@ const LocationModal = ({ isOpen, onClose, onSelectLocation }) => {
           )}
 
           <div
-            className="location-option"
+            className="location-option current-location"
             onClick={() => handleLocationSelect('Vị trí hiện tại')}
           >
             <MapPin size={20} className="icon" />

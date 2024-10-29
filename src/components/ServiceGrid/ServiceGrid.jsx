@@ -1,6 +1,6 @@
 import React from 'react';
 import './ServiceGrid.css';
-import diadiem from '/CAPSTONE-BikeConnect/FE-BikeConnect/src/assets/images/images_homePage/v994_9237.png';
+import diadiem from '../../assets/images/images_homePage/v994_9237.png';
 
 const services = [
   { id: 1, location: "Hà Nội", users: 1000, image: diadiem, shape: 'large-rect' },

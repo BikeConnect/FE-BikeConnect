@@ -1,9 +1,9 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faHandshake, faKey, faMotorcycle } from '@fortawesome/free-solid-svg-icons'; // Sử dụng icon xe máy thay cho ô tô
-import cachthue from '/CAPSTONE-BikeConnect/FE-BikeConnect/src/assets/images/images_homePage/v994_9046.png';
-import './CycleRentalSteps.css'; // Đổi tên file CSS
+import { faSearch, faHandshake, faKey, faMotorcycle } from '@fortawesome/free-solid-svg-icons';
+import cachthue from '../../assets/images/images_homePage/v994_9046.png'
+import './CycleRentalSteps.css';
 
 const CycleRentalSteps = () => {
   return (

@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import './Login.css';
 import { FaGoogle, FaFacebook, FaEye, FaEyeSlash } from 'react-icons/fa';
 
-const Login = ({ show, onClose, onRegisterClick }) => {
+const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
     const [formData, setFormData] = useState({
-        phoneNumber: '',
-        password: '',
+        phoneNumber: '12345',
+        password: '123',
         rememberMe: false,
     });
-
     const [showPassword, setShowPassword] = useState(false);
+    const [error, setError] = useState('');
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -19,24 +19,36 @@ const Login = ({ show, onClose, onRegisterClick }) => {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData);
+        setError('');
+        
+        try {
+            // Tại đây bạn sẽ thêm logic gọi API đăng nhập
+            // Giả lập đăng nhập thành công
+            if (formData.phoneNumber && formData.password) {
+                // Gọi callback để thông báo đăng nhập thành công
+                onLoginSuccess();
+            } else {
+                setError('Vui lòng nhập đầy đủ thông tin');
+            }
+        } catch (err) {
+            setError('Đăng nhập thất bại. Vui lòng thử lại.');
+        }
     };
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
 
-    if (!show) {
-        return null;
-    }
+    if (!show) return null;
 
     return (
         <div className="login-overlay" onClick={onClose}>
             <div className="login-container" onClick={(e) => e.stopPropagation()}>
                 <button className="close-btn" onClick={onClose}>×</button>
-                <h2 className="login-title">Đăng nhập</h2> {/* Chỉnh class cho title */}
+                <h2 className="login-title">Đăng nhập</h2>
+                {error && <div className="error-message">{error}</div>}
                 <form onSubmit={handleSubmit}>
                     <input
                         type="text"
@@ -44,7 +56,6 @@ const Login = ({ show, onClose, onRegisterClick }) => {
                         placeholder="Nhập số điện thoại"
                         value={formData.phoneNumber}
                         onChange={handleChange}
-                        required
                         className="input-field"
                     />
                     <div className="password-container">
@@ -54,7 +65,6 @@ const Login = ({ show, onClose, onRegisterClick }) => {
                             placeholder="Nhập mật khẩu"
                             value={formData.password}
                             onChange={handleChange}
-                            required
                             className="input-field"
                         />
                         <span className="password-toggle" onClick={togglePasswordVisibility}>
@@ -67,6 +77,7 @@ const Login = ({ show, onClose, onRegisterClick }) => {
                             name="rememberMe"
                             checked={formData.rememberMe}
                             onChange={handleChange}
+                            id="rememberMe"
                         />
                         <label htmlFor="rememberMe">Ghi nhớ mật khẩu</label>
                         <a href="#" className="forgot-password">Quên mật khẩu</a>
@@ -76,15 +87,18 @@ const Login = ({ show, onClose, onRegisterClick }) => {
                 </form>
                 <div className="additional-options">
                     <p>
-                        Bạn chưa có tài khoản? <a href="#" className="register-link" onClick={onRegisterClick}>Đăng ký ngay</a>
+                        Bạn chưa có tài khoản? <a href="#" className="register-link" onClick={(e) => {
+                            e.preventDefault();
+                            onRegisterClick();
+                        }}>Đăng ký ngay</a>
                     </p>
                 </div>
                 <div className="separator">Đăng nhập với</div>
                 <div className="social-login">
-                    <button className="google-btn">
+                    <button className="google-btn" type="button">
                         <FaGoogle /> Google
                     </button>
-                    <button className="facebook-btn">
+                    <button className="facebook-btn" type="button">
                         <FaFacebook /> Facebook
                     </button>
                 </div>

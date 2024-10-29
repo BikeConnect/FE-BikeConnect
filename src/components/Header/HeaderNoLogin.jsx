@@ -3,8 +3,9 @@ import logo from '../../assets/images/8.png';
 import './HeaderNoLogin.css';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
+import { NavLink, useNavigate } from 'react-router-dom';
 
-const Header = () => {
+const HeaderNoLogin = ({ onLoginSuccess }) => {
     const [showLogin, setShowLogin] = useState(false);
     const [showRegister, setShowRegister] = useState(false);
 
@@ -28,15 +29,17 @@ const Header = () => {
             <header className="header">
                 <div className="header-container">
                     <nav className="nav">
-                        <div className="logo">
-                            <img src={logo} alt="Bike Connect Logo" className="logo-img" />
+                    <div className="logo">
+                            <NavLink to="/homepage">
+                                <img src={logo} alt="Bike Connect Logo" className="logo-img" />
+                            </NavLink>
                         </div>
                         <div className="menu-items">
-                            <a href="#" className="menu-link">Trang chủ</a>
-                            <a href="#" className="menu-link">Cho thuê xe</a>
-                            <a href="#" className="menu-link">Hướng dẫn</a>
-                            <a href="#" className="menu-link">Chính sách</a>
-                            <a href="#" className="menu-link">Hỗ trợ</a>
+                            <NavLink to="/homepage" className="menu-link">Trang chủ</NavLink>
+                            <NavLink to="/rentals" className="menu-link">Cho thuê xe</NavLink>
+                            <NavLink to="/guide" className="menu-link">Hướng dẫn</NavLink>
+                            <NavLink to="/policies" className="menu-link">Chính sách</NavLink>
+                            <NavLink to="/support" className="menu-link">Hỗ trợ</NavLink>
                         </div>
                         <div className="auth-buttons">
                             <button className="btn-register" onClick={handleRegisterClick}>Đăng ký</button>
@@ -49,6 +52,10 @@ const Header = () => {
                 show={showLogin}
                 onClose={handleCloseModals}
                 onRegisterClick={handleRegisterClick}
+                onLoginSuccess={() => {
+                    handleCloseModals();
+                    onLoginSuccess();
+                }}   
             />
             <Register
                 show={showRegister}
@@ -58,4 +65,4 @@ const Header = () => {
     );
 };
 
-export default Header;
+export default HeaderNoLogin;

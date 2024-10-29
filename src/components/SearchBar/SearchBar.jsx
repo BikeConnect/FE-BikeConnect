@@ -18,21 +18,22 @@ const SearchBar = () => {
   const handleDateSelect = (dates) => {
     setSelectedDates(dates);
   };
-
+  
   const formatSelectedDates = () => {
     if (selectedDates.length === 0) return 'Chọn thời gian';
     if (selectedDates.length === 1) {
-      return selectedDates[0].toLocaleDateString('vi-VN');
+      return new Date(selectedDates[0]).toLocaleDateString('vi-VN'); // Chuyển đổi chuỗi thành Date
     }
-    return `${selectedDates[0].toLocaleDateString('vi-VN')} - ${selectedDates[selectedDates.length - 1].toLocaleDateString('vi-VN')}`;
+    return `${new Date(selectedDates[0]).toLocaleDateString('vi-VN')} - ${new Date(selectedDates[selectedDates.length - 1]).toLocaleDateString('vi-VN')}`;
   };
+  
 
   return (
     <>
       <div className="search-container">
         <div className="search-field">
           <div className="field-label">Địa điểm</div>
-          <button 
+          <button
             className="dropdown-button"
             onClick={() => setIsLocationModalOpen(true)}
           >
@@ -50,7 +51,7 @@ const SearchBar = () => {
 
         <div className="search-field">
           <div className="field-label">Thời gian</div>
-          <button 
+          <button
             className="dropdown-button"
             onClick={() => setIsTimeModalOpen(true)}
           >
