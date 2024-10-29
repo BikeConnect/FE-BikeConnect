@@ -9,7 +9,7 @@ const NavBar = ({ children }) => {
                 <NavLink to="/customerprofiles" activeClassName="active">
                     Tài khoản của tôi
                 </NavLink>
-                <NavLink to="/rental-history" activeClassName="active">
+                <NavLink to="/rentalhistory" activeClassName="active">
                     Lịch sử thuê xe
                 </NavLink>
                 <NavLink to="/changepassword" activeClassName="active">

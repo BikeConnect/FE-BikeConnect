@@ -4,7 +4,7 @@ import './HeaderNoLogin.css';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
 
-const HeaderNoLogin = () => {
+const HeaderNoLogin = ({ onLoginSuccess }) => {
     const [showLogin, setShowLogin] = useState(false);
     const [showRegister, setShowRegister] = useState(false);
 
@@ -23,6 +23,11 @@ const HeaderNoLogin = () => {
         setShowRegister(false);
     };
 
+    const handleLoginSuccess = () => {
+        onLoginSuccess();
+        handleCloseModals();
+    };
+
     return (
         <>
             <header className="header">
@@ -32,7 +37,7 @@ const HeaderNoLogin = () => {
                             <img src={logo} alt="Bike Connect Logo" className="logo-img" />
                         </div>
                         <div className="menu-items">
-                            <a href="#" className="menu-link">Trang chủ</a>
+                            <a href="/" className="menu-link">Trang chủ</a>
                             <a href="#" className="menu-link">Cho thuê xe</a>
                             <a href="#" className="menu-link">Hướng dẫn</a>
                             <a href="#" className="menu-link">Chính sách</a>
@@ -49,6 +54,7 @@ const HeaderNoLogin = () => {
                 show={showLogin}
                 onClose={handleCloseModals}
                 onRegisterClick={handleRegisterClick}
+                onLoginSuccess={handleLoginSuccess}
             />
             <Register
                 show={showRegister}

@@ -18,6 +18,12 @@ const HeaderAfterLogin = ({ onLogout }) => {
         setShowProfile(false);
     };
 
+    const handleLogout = () => {
+        onLogout();
+        navigate("/");
+        setShowProfile(false);
+    };
+
     return (
         <>
             <header className="header-after-login">
@@ -50,7 +56,7 @@ const HeaderAfterLogin = ({ onLogout }) => {
                         <button className="close-button" onClick={() => setShowProfile(false)}>✖</button>
                     </div>
                     <button onClick={handleNavigateToProfile} className="dropdown-button">Xem Hồ Sơ</button>
-                    <button onClick={onLogout} className="dropdown-button">Đăng xuất</button>
+                    <button onClick={handleLogout} className="dropdown-button">Đăng xuất</button>
                 </div>
             )}
         </>

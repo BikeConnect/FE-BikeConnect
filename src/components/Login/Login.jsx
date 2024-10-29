@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './Login.css';
 import { FaGoogle, FaFacebook, FaEye, FaEyeSlash } from 'react-icons/fa';
 
-const Login = ({ show, onClose, onRegisterClick }) => {
+const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
     const [formData, setFormData] = useState({
         phoneNumber: '',
         password: '',
@@ -10,6 +10,7 @@ const Login = ({ show, onClose, onRegisterClick }) => {
     });
 
     const [showPassword, setShowPassword] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -17,11 +18,18 @@ const Login = ({ show, onClose, onRegisterClick }) => {
             ...formData,
             [name]: type === 'checkbox' ? checked : value,
         });
+        setErrorMessage('');
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(formData);
+        if (formData.phoneNumber === '012345' && formData.password === '123') {
+            onLoginSuccess();
+            setErrorMessage('');
+            onClose();
+        } else {
+            setErrorMessage('Số điện thoại hoặc mật khẩu không chính xác.');
+        }
     };
 
     const togglePasswordVisibility = () => {
@@ -36,7 +44,8 @@ const Login = ({ show, onClose, onRegisterClick }) => {
         <div className="login-overlay" onClick={onClose}>
             <div className="login-container" onClick={(e) => e.stopPropagation()}>
                 <button className="close-btn" onClick={onClose}>×</button>
-                <h2 className="login-title">Đăng nhập</h2> {/* Chỉnh class cho title */}
+                <h2 className="login-title">Đăng nhập</h2>
+                {errorMessage && <p className="error-message">{errorMessage}</p>}
                 <form onSubmit={handleSubmit}>
                     <input
                         type="text"
