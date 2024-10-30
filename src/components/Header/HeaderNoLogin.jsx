@@ -3,6 +3,7 @@ import logo from '../../assets/images/8.png';
 import './HeaderNoLogin.css';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
+import { NavLink } from 'react-router-dom';
 
 const HeaderNoLogin = ({ onLoginSuccess }) => {
     const [showLogin, setShowLogin] = useState(false);
@@ -37,11 +38,11 @@ const HeaderNoLogin = ({ onLoginSuccess }) => {
                             <img src={logo} alt="Bike Connect Logo" className="logo-img" />
                         </div>
                         <div className="menu-items">
-                            <a href="/" className="menu-link">Trang chủ</a>
-                            <a href="#" className="menu-link">Cho thuê xe</a>
-                            <a href="#" className="menu-link">Hướng dẫn</a>
-                            <a href="#" className="menu-link">Chính sách</a>
-                            <a href="#" className="menu-link">Hỗ trợ</a>
+                            <NavLink to="/" className="menu-link">Trang chủ</NavLink> {/* Thay đổi ở đây */}
+                            <NavLink to="/rentals" className="menu-link">Cho thuê xe</NavLink>
+                            <NavLink to="/guide" className="menu-link">Hướng dẫn</NavLink> {/* Thay đổi ở đây */}
+                            <NavLink to="/policies" className="menu-link">Chính sách</NavLink>
+                            <NavLink to="/support" className="menu-link">Hỗ trợ</NavLink>
                         </div>
                         <div className="auth-buttons">
                             <button className="btn-register" onClick={handleRegisterClick}>Đăng ký</button>

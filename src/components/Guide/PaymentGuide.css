@@ -1,0 +1,43 @@
+.guide {
+    padding: 20px;
+    margin-top: 5%;
+}
+
+.guide-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.guide-list {
+    margin: 20px 0;
+}
+
+.guide-item {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
+    border-bottom: 1px solid #aca6a6;
+    cursor: pointer;
+}
+
+.guide-title {
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.toggle-icon {
+    margin-left: 10px;
+}
+
+.guide-details {
+    padding-left: 20px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.guide-item.expanded .guide-details {
+    max-height: 200px;
+}

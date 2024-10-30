@@ -19,9 +19,13 @@ const HeaderAfterLogin = ({ onLogout }) => {
     };
 
     const handleLogout = () => {
-        onLogout();
-        navigate("/");
-        setShowProfile(false);
+        if (typeof onLogout === 'function') {
+            onLogout();
+            navigate("/");
+            setShowProfile(false);
+        } else {
+            console.error('onLogout is not a function');
+        }
     };
 
     return (
@@ -30,7 +34,9 @@ const HeaderAfterLogin = ({ onLogout }) => {
                 <div className="header-container">
                     <nav className="nav">
                         <div className="logo">
-                            <img src={logo} alt="Bike Connect Logo" className="logo-img" />
+                            <NavLink to="/homepage">
+                                <img src={logo} alt="Bike Connect Logo" className="logo-img" />
+                            </NavLink>
                         </div>
                         <div className="menu-items">
                             <NavLink to="/homepage" className="menu-link">Trang chủ</NavLink>
@@ -39,7 +45,7 @@ const HeaderAfterLogin = ({ onLogout }) => {
                             <NavLink to="/policies" className="menu-link">Chính sách</NavLink>
                             <NavLink to="/support" className="menu-link">Hỗ trợ</NavLink>
                         </div>
-                        <div className="user-actions">
+                        <div className="auth-buttons">
                             <div className="notification-icon">
                                 <FaBell className="bell-icon" />
                             </div>
@@ -64,3 +70,4 @@ const HeaderAfterLogin = ({ onLogout }) => {
 };
 
 export default HeaderAfterLogin;
+

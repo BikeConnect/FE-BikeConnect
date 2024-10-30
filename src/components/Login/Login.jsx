@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import { FaGoogle, FaFacebook, FaEye, FaEyeSlash } from 'react-icons/fa';
 
@@ -11,6 +12,7 @@ const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
 
     const [showPassword, setShowPassword] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -27,8 +29,9 @@ const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
             onLoginSuccess();
             setErrorMessage('');
             onClose();
+            navigate('/homepage');
         } else {
-            setErrorMessage('Số điện thoại hoặc mật khẩu không chính xác.');
+            setErrorMessage('Số điện thoại hoặc mật khẩu không chính xác !');
         }
     };
 

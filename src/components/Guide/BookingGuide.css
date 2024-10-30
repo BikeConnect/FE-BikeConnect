@@ -1,0 +1,48 @@
+.guide {
+    padding: 20px;
+    margin-top: 5%;
+}
+
+.guide-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.guide-list {
+    margin: 20px 0;
+}
+
+.guide-item {
+    display: flex;
+    flex-direction: column;
+    /* Thay đổi hướng flex thành cột */
+    padding: 10px 0;
+    border-bottom: 1px solid #aca6a6;
+    cursor: pointer;
+}
+
+.guide-title {
+    font-weight: bold;
+    display: flex;
+    /* Sử dụng flex để căn chỉnh tiêu đề và dấu cộng */
+    justify-content: space-between;
+    /* Căn chỉnh giữa tiêu đề và dấu cộng */
+    align-items: center;
+    /* Căn giữa dọc */
+}
+
+.toggle-icon {
+    margin-left: 10px;
+}
+
+.guide-details {
+    padding-left: 20px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.guide-item.expanded .guide-details {
+    max-height: 200px;
+    /* Chiều cao tối đa khi mở rộng */
+}

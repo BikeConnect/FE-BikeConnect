@@ -9,6 +9,10 @@ import NavBar from './components/NavBar/NavBar';
 import CustomerProfile from './components/Profile/CustomerProfile';
 import ChangePassword from './components/ChangePassword/ChangePassword';
 import RentalHistory from './components/RentalHistory/RentalHistory';
+import VehicleRental from './components/VehicleRental/VehicleRental';
+import Guide from './components/Guide/Guide';
+import BookingGuide from './components/Guide/BookingGuide.';
+import PaymentGuide from './components/Guide/PaymentGuide';
 
 function AppContent() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -26,34 +30,31 @@ function AppContent() {
     setIsLoggedIn(false);
   };
 
-  const Header = isLoggedIn ? (
-    <HeaderAfterLogin onLogout={handleLogout} />
-  ) : (
-    <HeaderNoLogin onLoginSuccess={handleLogin} />
-  );
+  const Header = () => {
+    return isLoggedIn ? (
+      <HeaderAfterLogin onLogout={handleLogout} />
+    ) : (
+      <HeaderNoLogin onLoginSuccess={handleLogin} />
+    );
+  };
 
   return (
     <div className="App">
-      {Header}
+      <Header />
       <ShowNavBar />
       <Routes>
-        <Route path="/" element={
-          isLoggedIn ? <Navigate to="/homepage" /> : <HomePage />
-        } />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/homepage" element={<HomePage />} />
         <Route path="/homepage" element={<HomePage />} />
         <Route path="/register-owner" element={<RegisterOwner />} />
-        <Route
-          path="/customerprofiles"
-          element={isLoggedIn ? <CustomerProfile /> : <Navigate to="/" />}
-        />
-        <Route
-          path="/changepassword"
-          element={isLoggedIn ? <ChangePassword /> : <Navigate to="/" />}
-        />
-        <Route
-          path="/rentalhistory"
-          element={isLoggedIn ? <RentalHistory /> : <Navigate to="/" />}
-        />
+        <Route path="/customerprofiles" element={<CustomerProfile />} />
+        <Route path="/changepassword" element={<ChangePassword />} />
+        <Route path="/rentalhistory" element={<RentalHistory />} />
+        <Route path="/vehiclerental" element={<VehicleRental />} />
+        <Route path="/guide" element={<Guide />} />
+        <Route path="/guide1" element={<BookingGuide />} />
+        <Route path="/guide2" element={<PaymentGuide />} />
+
       </Routes>
     </div>
   );
