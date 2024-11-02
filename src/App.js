@@ -13,6 +13,10 @@ import VehicleRental from './components/VehicleRental/VehicleRental';
 import Guide from './components/Guide/Guide';
 import BookingGuide from './components/Guide/BookingGuide.';
 import PaymentGuide from './components/Guide/PaymentGuide';
+import Policy from './components/Policy/Policy';
+import PrinciplePage from './components/Policy/Principle';
+import PrivacyPolicy from './components/Policy/PrivacyPolicy';
+import Complaints from './components/Policy/Complaints';
 
 function AppContent() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -54,7 +58,10 @@ function AppContent() {
         <Route path="/guide" element={<Guide />} />
         <Route path="/guide1" element={<BookingGuide />} />
         <Route path="/guide2" element={<PaymentGuide />} />
-
+        <Route path="/policies" element={<Policy />} />
+        <Route path="/policies1" element={<PrinciplePage />} />
+        <Route path="/policies2" element={<PrivacyPolicy />} />
+        <Route path="/policies3" element={<Complaints />} />
       </Routes>
     </div>
   );

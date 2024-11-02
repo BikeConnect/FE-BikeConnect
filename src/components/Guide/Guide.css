@@ -1,42 +1,70 @@
-.guide {
-    padding: 20px;
-    margin-top: 5%;
-    font-family: 'Roboto', sans-serif;
-}
-
-.guide-content {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.guide-card-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-}
-
-.guide-card {
-    background-color: #f9f9f9;
-    border: 2px solid #472CB2;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-}
-
-.guide-card h3 {
-    margin-top: 0;
-}
-
-@media (max-width: 768px) {
-    .guide-card-container {
-        grid-template-columns: repeat(2, 1fr);
-        /* Hiển thị 2 ô mỗi hàng trên màn hình nhỏ */
+    .guide {
+        padding: 20px;
+        margin-top: 5%;
+        font-family: 'Roboto', sans-serif;
     }
-}
 
-@media (max-width: 480px) {
-    .guide-card-container {
-        grid-template-columns: 1fr;
+    .guide-content {
+        max-width: 1200px;
+        margin: 0 auto;
     }
-}
+
+    .guide-card-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+
+    .guide-card {
+        background-color: #f9f9f9;
+        border: 2px solid #472CB2;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        margin-top: 2%;
+    }
+
+    .guide-card h3 {
+        margin-top: 0;
+    }
+
+    .tab-navbar {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 20px;
+        margin-right: 2%;
+    }
+
+    .tab-button {
+        background-color: transparent;
+        border: 1px solid #472CB2;
+        color: #472CB2;
+        padding: 10px 15px;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-left: 10px;
+        transition: background-color 0.3s;
+    }
+
+    .tab-button:hover {
+        background-color: #472CB2;
+        color: white;
+    }
+
+    .tab-button.active {
+        background-color: #472CB2;
+        color: white;
+    }
+
+    @media (max-width: 768px) {
+        .guide-card-container {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 480px) {
+        .guide-card-container {
+            grid-template-columns: 1fr;
+        }
+    }

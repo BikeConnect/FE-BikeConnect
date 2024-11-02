@@ -4,10 +4,14 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import logo from '../../assets/images/8.png';
 import './HeaderAfterLogin.css';
 import ava from '../../assets/images/avatar_user1.png';
+import Support from '../Support/Support';
+import Notification from '../Notification/Notification';
 
 const HeaderAfterLogin = ({ onLogout }) => {
     const navigate = useNavigate();
     const [showProfile, setShowProfile] = useState(false);
+    const [showSupport, setShowSupport] = useState(false);
+    const [showNotification, setShowNotification] = useState(false);
 
     const handleAvatarClick = () => {
         setShowProfile(!showProfile);
@@ -18,6 +22,11 @@ const HeaderAfterLogin = ({ onLogout }) => {
         setShowProfile(false);
     };
 
+    const handleCloseModals = () => {
+        setShowSupport(false);
+        setShowNotification(false);
+    };
+
     const handleLogout = () => {
         if (typeof onLogout === 'function') {
             onLogout();
@@ -26,6 +35,12 @@ const HeaderAfterLogin = ({ onLogout }) => {
         } else {
             console.error('onLogout is not a function');
         }
+    };
+    const handleSupportClick = () => {
+        setShowSupport(true);
+    };
+    const handleNotificationClick = () => {
+        setShowNotification(!showNotification);
     };
 
     return (
@@ -43,10 +58,10 @@ const HeaderAfterLogin = ({ onLogout }) => {
                             <NavLink to="/rentals" className="menu-link">Cho thuê xe</NavLink>
                             <NavLink to="/guide" className="menu-link">Hướng dẫn</NavLink>
                             <NavLink to="/policies" className="menu-link">Chính sách</NavLink>
-                            <NavLink to="/support" className="menu-link">Hỗ trợ</NavLink>
+                            <button className="menu-link support-button" onClick={handleSupportClick}>Hỗ trợ</button>
                         </div>
                         <div className="auth-buttons">
-                            <div className="notification-icon">
+                            <div className="notification-icon" onClick={handleNotificationClick}>
                                 <FaBell className="bell-icon" />
                             </div>
                             <div className="user-avatar" onClick={handleAvatarClick}>
@@ -65,6 +80,14 @@ const HeaderAfterLogin = ({ onLogout }) => {
                     <button onClick={handleLogout} className="dropdown-button">Đăng xuất</button>
                 </div>
             )}
+            <Support
+                show={showSupport}
+                onClose={handleCloseModals}
+            />
+            <Notification
+                show={showNotification}
+                onClose={handleCloseModals}
+            />
         </>
     );
 };
