@@ -17,6 +17,10 @@ import Policy from './components/Policy/Policy';
 import PrinciplePage from './components/Policy/Principle';
 import PrivacyPolicy from './components/Policy/PrivacyPolicy';
 import Complaints from './components/Policy/Complaints';
+import Dashboard from './components/UI_Admin/Dashboard/Dashboard';
+import ManageCustomer from './components/UI_Admin/ManageCustomer/ManageCustomer';
+import ManageOwner from './components/UI_Admin/ManageOwner/ManageOwner';
+import { CustomerProvider } from './components/UI_Admin/CustomerContext';
 
 function AppContent() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -35,6 +39,16 @@ function AppContent() {
   };
 
   const Header = () => {
+    if (location.pathname === "/dashboard") {
+      return null;
+    }
+    if (location.pathname === "/manageCus") {
+      return null;
+    }
+    if (location.pathname === "/manageOwner") {
+      return null;
+    }
+
     return isLoggedIn ? (
       <HeaderAfterLogin onLogout={handleLogout} />
     ) : (
@@ -62,6 +76,11 @@ function AppContent() {
         <Route path="/policies1" element={<PrinciplePage />} />
         <Route path="/policies2" element={<PrivacyPolicy />} />
         <Route path="/policies3" element={<Complaints />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/manageCus" element={<ManageCustomer />} />
+        <Route path="/manageOwner" element={<ManageOwner />} />
+
+
       </Routes>
     </div>
   );
@@ -70,7 +89,9 @@ function AppContent() {
 function App() {
   return (
     <Router>
-      <AppContent />
+      <CustomerProvider> {/* Bao bọc AppContent với CustomerProvider */}
+        <AppContent />
+      </CustomerProvider>
     </Router>
   );
 }

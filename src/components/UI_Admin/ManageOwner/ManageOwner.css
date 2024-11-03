@@ -1,0 +1,150 @@
+.manage-owner-container {
+    padding: 20px;
+    font-family: 'Roboto', sans-serif;
+    margin-left: 10%;
+}
+
+.search-input {
+    width: 100%;
+    /* Độ rộng của thanh tìm kiếm */
+    padding: 10px;
+    /* Khoảng cách bên trong */
+    margin-bottom: 20px;
+    /* Khoảng cách dưới */
+    border: 1px solid #ddd;
+    /* Viền */
+    border-radius: 5px;
+    /* Bo tròn góc */
+    font-size: 16px;
+    /* Kích thước chữ */
+}
+
+.owner-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.owner-table th,
+.owner-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.owner-table th {
+    background-color: #472CB2;
+    color: white;
+}
+
+.icon {
+    margin-left: 10px;
+    cursor: pointer;
+    color: #007bff;
+    transition: color 0.2s;
+}
+
+.icon:hover {
+    color: #0056b3;
+}
+
+.status {
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
+}
+
+.status.active {
+    background-color: #28a745;
+}
+
+.status.inactive {
+    background-color: #dc3545;
+}
+
+.confirmation-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    z-index: 1000;
+    width: 300px;
+}
+
+.confirmation-modal p {
+    margin: 0 0 15px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.confirmation-modal button {
+    background-color: #472CB2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.confirmation-modal button:hover {
+    background-color: #5a5a5a;
+}
+
+.confirmation-modal button:last-child {
+    background-color: #dc3545;
+}
+
+.confirmation-modal button:last-child:hover {
+    background-color: #c82333;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination button {
+    margin: 0 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #472CB2;
+    color: white;
+    border: none;
+    border-radius: 3px;
+}
+
+.pagination button.active {
+    background-color: #0056b3;
+}
+
+.pagination button:hover {
+    background-color: #0056b3;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.pagination-container {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.items-per-page-select {
+    margin-left: 5px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}

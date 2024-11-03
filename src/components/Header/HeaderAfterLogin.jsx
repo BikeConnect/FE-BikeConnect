@@ -4,6 +4,8 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import logo from '../../assets/images/8.png';
 import './HeaderAfterLogin.css';
 import ava from '../../assets/images/avatar_user1.png';
+import ava2 from '../../assets/images/avatar_user2.png';
+import ava3 from '../../assets/images/avatar_user3.png';
 import Support from '../Support/Support';
 import Notification from '../Notification/Notification';
 
@@ -36,12 +38,52 @@ const HeaderAfterLogin = ({ onLogout }) => {
             console.error('onLogout is not a function');
         }
     };
+
     const handleSupportClick = () => {
         setShowSupport(true);
     };
+
     const handleNotificationClick = () => {
         setShowNotification(!showNotification);
     };
+
+    const fakeNotifications = [
+        {
+            name: "Nguyễn Văn A",
+            content: "Yêu cầu thuê xe của bạn đã được chấp nhận.",
+            time: "15 phút trước",
+            imageUrl: ava,
+            isRead: false
+        },
+        {
+            name: "Trần Thị B",
+            content: "Giao dịch sắp tới của bạn sẽ diễn ra vào ngày mai.",
+            time: "4 giờ trước",
+            imageUrl: ava,
+            isRead: true
+        },
+        {
+            name: "Lê Văn C",
+            content: "Thông tin về giao dịch đã được cập nhật.",
+            time: "4 giờ trước",
+            imageUrl: ava,
+            isRead: false
+        },
+        {
+            name: "Phạm Thị D",
+            content: "Yêu cầu thuê xe mới đã được gửi tới bạn.",
+            time: "4 giờ trước",
+            imageUrl: ava2,
+            isRead: false
+        },
+        {
+            name: "Hoàng Anh E",
+            content: "Bạn có thông báo mới về giao dịch.",
+            time: "5 ngày trước",
+            imageUrl: ava3,
+            isRead: true
+        }
+    ];
 
     return (
         <>
@@ -87,6 +129,7 @@ const HeaderAfterLogin = ({ onLogout }) => {
             <Notification
                 show={showNotification}
                 onClose={handleCloseModals}
+                notifications={fakeNotifications}
             />
         </>
     );
