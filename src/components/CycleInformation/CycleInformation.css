@@ -1,0 +1,26 @@
+/* Container Styling */
+.container {
+    background-color: #f9f9f9;
+    max-width: 1200px;
+    padding: 0px;
+  }
+  
+  /* Common Colors */
+  .cycle-name,
+  .documents-title,
+  .location-title,
+  .owner-title,
+  .icon {
+    color: #472CB2;
+  }
+  
+  .description-title {
+    color: #472CB2;
+  }
+  
+  .document-badge {
+    background-color: #472CB2;
+    color: #ffffff;
+  }
+  
+  

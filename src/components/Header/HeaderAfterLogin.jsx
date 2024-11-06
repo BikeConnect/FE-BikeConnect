@@ -1,10 +1,10 @@
-
 import React, { useState } from 'react';
 import { FaBell } from 'react-icons/fa';
 import { NavLink, useNavigate } from 'react-router-dom';
 import logo from '../../assets/images/8.png';
 import './HeaderAfterLogin.css';
 import ava from '../../assets/images/avatar_user1.png';
+
 
 const HeaderAfterLogin = ({ onLogout }) => {
     const navigate = useNavigate();
@@ -13,10 +13,20 @@ const HeaderAfterLogin = ({ onLogout }) => {
     const handleAvatarClick = () => {
         setShowProfile(!showProfile);
     };
- 
+
     const handleNavigateToProfile = () => {
         navigate("/customerprofiles");
         setShowProfile(false);
+    };
+
+    const handleLogout = () => {
+        if (typeof onLogout === 'function') {
+            onLogout();
+            navigate("/");
+            setShowProfile(false);
+        } else {
+            console.error('onLogout is not a function');
+        }
     };
 
     return (
@@ -53,7 +63,7 @@ const HeaderAfterLogin = ({ onLogout }) => {
                         <button className="close-button" onClick={() => setShowProfile(false)}>✖</button>
                     </div>
                     <button onClick={handleNavigateToProfile} className="dropdown-button">Xem Hồ Sơ</button>
-                    <button onClick={onLogout} className="dropdown-button">Đăng xuất</button>
+                    <button onClick={handleLogout} className="dropdown-button">Đăng xuất</button>
                 </div>
             )}
         </>
@@ -61,3 +71,4 @@ const HeaderAfterLogin = ({ onLogout }) => {
 };
 
 export default HeaderAfterLogin;
+

@@ -4,8 +4,10 @@ import LocationModal from '../LocationModal/LocationModal';
 import TimePickerModal from '../TimePickerModal/TimePickerModal';
 import hinhanhxe1 from '../../assets/images/images_homePage/v994_8600.png';
 import hinhanhxe2 from '../../assets/images/images_homePage/v994_9054.png';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faComments } from '@fortawesome/free-solid-svg-icons';
 
-const VehicleRental = () => {
+const VehicleRental = ({ bike, onOpenChat }) => {
   const [selectedMainImage, setSelectedMainImage] = useState(0);
   const [isAvailable, setIsAvailable] = useState(true);
   const [pickupLocation, setPickupLocation] = useState('Tại cửa hàng');
@@ -30,7 +32,7 @@ const VehicleRental = () => {
   const handleNextImage = () => {
     setSelectedMainImage((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
   };
-  
+
   const fees = {
     baseRate: 140000,
     insurance: 10000,
@@ -72,14 +74,14 @@ const VehicleRental = () => {
   };
 
   return (
-    <div className="container my-4">
+    <div className="rental-container my-4">
       <div className="row">
         <div className="col-md-6">
           <div className="image-gallery">
             <div className="main-image mb-3">
               <img src={images[selectedMainImage]} alt="Honda SH 150 ABS" className="img-fluid" />
-               {/* Nút Previous */}
-               <button className="image-nav-button previous-button" onClick={handlePreviousImage}>
+              {/* Nút Previous */}
+              <button className="image-nav-button previous-button" onClick={handlePreviousImage}>
                 &#9664;
               </button>
 
@@ -193,7 +195,11 @@ const VehicleRental = () => {
               <button className="rent-button flex-1 py-2 px-3 rounded-md text-white bg-indigo-600 hover:bg-indigo-700 font-bold">
                 Thuê xe ngay
               </button>
-              <button className="negotiate-button flex-1 py-2 px-3 rounded-md text-white bg-green-600 hover:bg-green-700 font-bold">
+              <button
+                className="negotiate-button flex-1 py-2 px-3 rounded-md text-white bg-green-600 hover:bg-green-700 font-bold" 
+                onClick={onOpenChat} // Sử dụng toggle
+              >
+                <FontAwesomeIcon icon={faComments} className="me-2" />
                 Chat thương lượng
               </button>
             </div>
@@ -201,6 +207,7 @@ const VehicleRental = () => {
         </div>
       </div>
 
+      {/* Modals */}
       <LocationModal
         isOpen={isLocationModalOpen}
         onClose={() => setIsLocationModalOpen(false)}

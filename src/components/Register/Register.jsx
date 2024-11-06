@@ -4,11 +4,12 @@ import { FaGoogle, FaFacebook, FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const Register = ({ show, onClose }) => {
     const [formData, setFormData] = useState({
-        phoneNumber: '',
+        email: '', // Đổi phoneNumber thành email
         displayName: '',
         password: '',
         confirmPassword: '',
         agreeTerms: false,
+        role: '', // thêm trường role để phân biệt
     });
 
     const [showPassword, setShowPassword] = useState(false);
@@ -24,7 +25,7 @@ const Register = ({ show, onClose }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(formData);
+        console.log(formData); // Thực hiện đăng ký với dữ liệu formData, bao gồm role
     };
 
     const togglePasswordVisibility = () => {
@@ -33,6 +34,14 @@ const Register = ({ show, onClose }) => {
 
     const toggleConfirmPasswordVisibility = () => {
         setShowConfirmPassword(!showConfirmPassword);
+    };
+
+    const handleRoleSelect = (role) => {
+        setFormData({
+            ...formData,
+            role: role,
+        });
+        handleSubmit(); // Tự động submit form khi người dùng chọn role
     };
 
     if (!show) {
@@ -46,10 +55,10 @@ const Register = ({ show, onClose }) => {
                 <button className="close-btn" onClick={onClose}>×</button>
                 <form onSubmit={handleSubmit}>
                     <input
-                        type="text"
-                        name="phoneNumber"
-                        placeholder="Số điện thoại"
-                        value={formData.phoneNumber}
+                        type="email" // Đổi type thành email
+                        name="email"
+                        placeholder="Email"
+                        value={formData.email}
                         onChange={handleChange}
                         required
                         className="input-field"
@@ -101,7 +110,23 @@ const Register = ({ show, onClose }) => {
                         />
                         <label htmlFor="agreeTerms">Tôi đã đọc và chấp thuận với <a href="#">Chính sách và Quy định</a> của Bike Connect</label>
                     </div>
-                    <button type="submit" className="register-btn">Đăng kí</button>
+
+                    <div className="role-buttons">
+                        <button
+                            type="button"
+                            className="role-btn"
+                            onClick={() => handleRoleSelect('renter')}
+                        >
+                            Đăng kí cho người đi thuê xe
+                        </button>
+                        <button
+                            type="button"
+                            className="role-btn"
+                            onClick={() => handleRoleSelect('owner')}
+                        >
+                            Đăng kí để trở thành chủ thuê xe
+                        </button>
+                    </div>
                 </form>
                 <div className="social-login">
                     <button className="google-btn">

@@ -100,22 +100,28 @@ form {
     margin: 0;
 }
 
-.register-btn {
-    width: 100%;
+.role-buttons {
+    display: flex;
+    gap: 10px;
+    width: 100%; /* Căn chỉnh chiều rộng */
+    margin-top: 15px;
+}
+
+.role-btn {
+    flex: 1;
     padding: 12px;
     background-color: var(--main-blue);
-    /* Sử dụng biến màu */
     color: white;
     border: none;
     border-radius: 4px;
     font-size: 16px;
     font-weight: 500;
     cursor: pointer;
-    margin-top: 10px;
+    text-align: center;
 }
 
-.register-btn:hover {
-    background-color: var(--main-blue);
+.role-btn:hover {
+    background-color: #4338ca;
 }
 
 .social-login {
