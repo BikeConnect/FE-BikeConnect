@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from 'react-router-dom';
 import HomePage from "./components/HomePage/HomePage";
 import RegisterOwner from './components/RegisterOwner/RegisterOwner';
 import HeaderAfterLogin from './components/Header/HeaderAfterLogin';
@@ -13,6 +13,8 @@ import VehicleRental from './components/VehicleRental/VehicleRental';
 import Guide from './components/Guide/Guide';
 import BookingGuide from './components/Guide/BookingGuide.';
 import PaymentGuide from './components/Guide/PaymentGuide';
+import BikeDetail from './components/BikeDetail/BikeDetail';
+import Chat from './components/Chat/Chat';
 import Policy from './components/Policy/Policy';
 import PrinciplePage from './components/Policy/Principle';
 import PrivacyPolicy from './components/Policy/PrivacyPolicy';
@@ -21,13 +23,17 @@ import Dashboard from './components/UI_Admin/Dashboard/Dashboard';
 import ManageCustomer from './components/UI_Admin/ManageCustomer/ManageCustomer';
 import ManageOwner from './components/UI_Admin/ManageOwner/ManageOwner';
 import { CustomerProvider } from './components/UI_Admin/CustomerContext';
+import Support from './components/Support/Support';
+
+
 
 function AppContent() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const location = useLocation();
 
   const ShowNavBar = () => {
-    return location.pathname === "/customerprofiles" ? <NavBar /> : null;
+    const displayNavPaths = ["/customerprofiles", "/changepassword", "/rentalhistory"];
+    return displayNavPaths.includes(location.pathname) ? <NavBar /> : null;
   };
 
   const handleLogin = () => {
@@ -39,16 +45,9 @@ function AppContent() {
   };
 
   const Header = () => {
-    if (location.pathname === "/dashboard") {
+    if (["/dashboard", "/manageCus", "/manageOwner"].includes(location.pathname)) {
       return null;
     }
-    if (location.pathname === "/manageCus") {
-      return null;
-    }
-    if (location.pathname === "/manageOwner") {
-      return null;
-    }
-
     return isLoggedIn ? (
       <HeaderAfterLogin onLogout={handleLogout} />
     ) : (
@@ -62,7 +61,6 @@ function AppContent() {
       <ShowNavBar />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/homepage" element={<HomePage />} />
         <Route path="/homepage" element={<HomePage />} />
         <Route path="/register-owner" element={<RegisterOwner />} />
         <Route path="/customerprofiles" element={<CustomerProfile />} />
@@ -79,8 +77,9 @@ function AppContent() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/manageCus" element={<ManageCustomer />} />
         <Route path="/manageOwner" element={<ManageOwner />} />
-
-
+        <Route path="/BikeDetail/:name" element={<BikeDetail />} />
+        <Route path="/chat" element={<Chat />} />
+        <Route path="/support" element={<Support />} />
       </Routes>
     </div>
   );
@@ -89,7 +88,7 @@ function AppContent() {
 function App() {
   return (
     <Router>
-      <CustomerProvider> {/* Bao bọc AppContent với CustomerProvider */}
+      <CustomerProvider>
         <AppContent />
       </CustomerProvider>
     </Router>

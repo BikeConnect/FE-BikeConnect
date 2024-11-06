@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import './NameService.css';
-import HeaderNoLogin from '../Header/HeaderNoLogin';
-import HeaderAfterLogin from '../Header/HeaderAfterLogin';
 
 const NameService = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleLogout = () => {
     setIsLoggedIn(false);

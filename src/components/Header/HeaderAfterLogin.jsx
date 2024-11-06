@@ -97,7 +97,7 @@ const HeaderAfterLogin = ({ onLogout }) => {
                         </div>
                         <div className="menu-items">
                             <NavLink to="/homepage" className="menu-link">Trang chủ</NavLink>
-                            <NavLink to="/rentals" className="menu-link">Cho thuê xe</NavLink>
+                            <NavLink to="/rentals" className="menu-link">Thuê xe</NavLink>
                             <NavLink to="/guide" className="menu-link">Hướng dẫn</NavLink>
                             <NavLink to="/policies" className="menu-link">Chính sách</NavLink>
                             <button className="menu-link support-button" onClick={handleSupportClick}>Hỗ trợ</button>
@@ -136,4 +136,3 @@ const HeaderAfterLogin = ({ onLogout }) => {
 };
 
 export default HeaderAfterLogin;
-

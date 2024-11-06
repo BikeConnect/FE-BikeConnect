@@ -5,6 +5,8 @@ import './TimePickerModal.css';
 const TimePickerModal = ({ isOpen, onClose, onSelectDates }) => {
   const [selectedDates, setSelectedDates] = useState(new Set());
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [rangeStart, setRangeStart] = useState(null);
+  const [hoverDate, setHoverDate] = useState(null);
 
   if (!isOpen) return null;
 
@@ -57,40 +59,58 @@ const TimePickerModal = ({ isOpen, onClose, onSelectDates }) => {
     return selectedDates.has(date.toDateString());
   };
 
-  const toggleDate = (date) => {
+  const isInRange = (date) => {
+    if (!rangeStart || !hoverDate || !date) return false;
+    const start = new Date(Math.min(rangeStart.getTime(), hoverDate.getTime()));
+    const end = new Date(Math.max(rangeStart.getTime(), hoverDate.getTime()));
+    return date >= start && date <= end;
+  };
+
+  const handleDateClick = (date) => {
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Đặt giờ về 0 để chỉ so sánh ngày
+    today.setHours(0, 0, 0, 0);
 
-    if (date < today) return; // Nếu ngày trong quá khứ, không thực hiện thao tác chọn
+    if (date < today) return;
 
-    const dateString = date.toDateString();
-    const newSelectedDates = new Set(selectedDates);
-
-    if (selectedDates.has(dateString)) {
-      newSelectedDates.delete(dateString);
+    if (!rangeStart) {
+      setRangeStart(date);
+      setSelectedDates(new Set([date.toDateString()]));
     } else {
-      newSelectedDates.add(dateString);
+      const start = new Date(Math.min(rangeStart.getTime(), date.getTime()));
+      const end = new Date(Math.max(rangeStart.getTime(), date.getTime()));
+      
+      const newSelectedDates = new Set();
+      let current = new Date(start);
+      
+      while (current <= end) {
+        newSelectedDates.add(current.toDateString());
+        current = new Date(current.setDate(current.getDate() + 1));
+      }
+      
+      setSelectedDates(newSelectedDates);
+      setRangeStart(null);
     }
+  };
 
-    setSelectedDates(newSelectedDates);
+  const handleDateHover = (date) => {
+    if (rangeStart && date) {
+      setHoverDate(date);
+    }
   };
 
   const handleApply = () => {
     const sortedDates = Array.from(selectedDates)
-      .map(dateStr => new Date(dateStr)) // Giữ lại dạng Date thay vì chuyển thành chuỗi
+      .map(dateStr => new Date(dateStr))
       .sort((a, b) => a - b);
     onSelectDates(sortedDates);
     onClose();
   };
-
-
 
   const weekDays = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
 
   return (
     <div className="time-modal-overlay" onClick={onClose}>
       <div className="time-modal-container" onClick={(e) => e.stopPropagation()}>
-        {/* Thêm tiêu đề "Thời gian" */}
         <div className="time-modal-title">Thời gian</div>
 
         <div className="time-modal-header">
@@ -115,7 +135,6 @@ const TimePickerModal = ({ isOpen, onClose, onSelectDates }) => {
         </div>
 
         <div className="calendar-container">
-          {/* Current Month */}
           <div className="month-calendar">
             <div className="weekdays">
               {weekDays.map(day => (
@@ -125,8 +144,9 @@ const TimePickerModal = ({ isOpen, onClose, onSelectDates }) => {
             <div className="days-grid">
               {getMonthData(currentDate).flat().map((date, index) => {
                 const today = new Date();
-                today.setHours(0, 0, 0, 0); // Đặt giờ về 0 để chỉ so sánh ngày
+                today.setHours(0, 0, 0, 0);
                 const isPastDay = date && date < today;
+                const inRange = isInRange(date);
 
                 return (
                   <div
@@ -134,20 +154,19 @@ const TimePickerModal = ({ isOpen, onClose, onSelectDates }) => {
                     className={`day-cell ${date ? [
                       isToday(date) ? 'today' : '',
                       isSelected(date) ? 'selected' : '',
+                      inRange ? 'in-range' : '',
                       isPastDay ? 'blurred-day' : ''
-                    ].filter(Boolean).join(' ') : 'disabled'
-                      }`}
-                    onClick={() => date && !isPastDay && toggleDate(date)} // Chỉ cho phép chọn ngày từ hiện tại trở đi
+                    ].filter(Boolean).join(' ') : 'disabled'}`}
+                    onClick={() => date && !isPastDay && handleDateClick(date)}
+                    onMouseEnter={() => handleDateHover(date)}
                   >
                     {date ? date.getDate() : ''}
                   </div>
                 );
               })}
             </div>
-
           </div>
 
-          {/* Next Month */}
           <div className="month-calendar">
             <div className="weekdays">
               {weekDays.map(day => (
@@ -155,19 +174,23 @@ const TimePickerModal = ({ isOpen, onClose, onSelectDates }) => {
               ))}
             </div>
             <div className="days-grid">
-              {getMonthData(getNextMonth(currentDate)).flat().map((date, index) => (
-                <div
-                  key={index}
-                  className={`day-cell ${date ? [
-                    isToday(date) ? 'today' : '',
-                    isSelected(date) ? 'selected' : '',
-                  ].filter(Boolean).join(' ') : 'disabled'
-                    }`}
-                  onClick={() => date && toggleDate(date)}
-                >
-                  {date ? date.getDate() : ''}
-                </div>
-              ))}
+              {getMonthData(getNextMonth(currentDate)).flat().map((date, index) => {
+                const inRange = isInRange(date);
+                return (
+                  <div
+                    key={index}
+                    className={`day-cell ${date ? [
+                      isToday(date) ? 'today' : '',
+                      isSelected(date) ? 'selected' : '',
+                      inRange ? 'in-range' : ''
+                    ].filter(Boolean).join(' ') : 'disabled'}`}
+                    onClick={() => date && handleDateClick(date)}
+                    onMouseEnter={() => handleDateHover(date)}
+                  >
+                    {date ? date.getDate() : ''}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -189,7 +212,11 @@ const TimePickerModal = ({ isOpen, onClose, onSelectDates }) => {
             ))}
           </div>
           {selectedDates.size > 0 && (
-            <button className="clear-button" onClick={() => setSelectedDates(new Set())}>
+            <button className="clear-button" onClick={() => {
+              setSelectedDates(new Set());
+              setRangeStart(null);
+              setHoverDate(null);
+            }}>
               Xóa
             </button>
           )}

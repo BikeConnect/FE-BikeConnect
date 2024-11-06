@@ -8,14 +8,15 @@
     background-color: #e6f0f8;
     padding: 40px 20px;
     border-top: 1px solid #e7e7e7;
-    width: 100%;
+    width:100%;
     box-sizing: border-box;
+    margin: auto ;
 }
 
 .footer-section {
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: center;
 }
 
 .footer .container {
@@ -26,6 +27,7 @@
     margin: 0 auto;
     padding: 0px;
     align-items: center;
+    background-color: #E6F0F8;
 }
 
 .logo {

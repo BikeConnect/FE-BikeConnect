@@ -4,7 +4,7 @@ import './HeaderNoLogin.css';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
 import { NavLink } from 'react-router-dom';
-import Support from '../Support/Support'; 
+import Support from '../Support/Support';
 
 const HeaderNoLogin = ({ onLoginSuccess }) => {
     const [showLogin, setShowLogin] = useState(false);

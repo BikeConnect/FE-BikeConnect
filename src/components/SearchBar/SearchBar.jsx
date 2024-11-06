@@ -18,14 +18,15 @@ const SearchBar = () => {
   const handleDateSelect = (dates) => {
     setSelectedDates(dates);
   };
-
+  
   const formatSelectedDates = () => {
     if (selectedDates.length === 0) return 'Chọn thời gian';
     if (selectedDates.length === 1) {
-      return selectedDates[0].toLocaleDateString('vi-VN');
+      return new Date(selectedDates[0]).toLocaleDateString('vi-VN'); // Chuyển đổi chuỗi thành Date
     }
-    return `${selectedDates[0].toLocaleDateString('vi-VN')} - ${selectedDates[selectedDates.length - 1].toLocaleDateString('vi-VN')}`;
+    return `${new Date(selectedDates[0]).toLocaleDateString('vi-VN')} - ${new Date(selectedDates[selectedDates.length - 1]).toLocaleDateString('vi-VN')}`;
   };
+  
 
   return (
     <>

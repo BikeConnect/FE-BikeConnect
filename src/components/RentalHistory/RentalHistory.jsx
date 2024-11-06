@@ -12,6 +12,7 @@ const RentalHistory = () => {
         { id: 5, licensePlate: '30E-13579', vehicleName: 'Yamaha Janus', vehicleType: 'Xe máy', date: '2024-10-29', notes: 'Không có ghi chú' },
     ];
 
+
     return (
         <div>
             <NavBar />
