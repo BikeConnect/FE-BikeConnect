@@ -1,3 +1,7 @@
+:root {
+    --main-blue: #472CB2;
+}
+
 .login-overlay {
     position: fixed;
     top: 0;
@@ -15,8 +19,8 @@
     background-color: #fff;
     padding: 30px;
     border-radius: 8px;
-    width: 20%;
-    max-width: 400px;
+    width: 643px;
+    max-width: 90%;
     position: relative;
     box-sizing: border-box;
 }
@@ -32,10 +36,10 @@
     color: #666;
 }
 
-h2 {
+.login-title {
     text-align: center;
     margin-bottom: 25px;
-    color: #472cb2;
+    color: var(--main-blue);
     font-size: 24px;
     font-weight: 600;
 }
@@ -47,36 +51,64 @@ form {
     align-items: center;
 }
 
-form input[type="text"],
-form input[type="password"] {
+.input-field {
     padding: 12px 15px;
+    width: 100%;
     border: 1px solid #e0e0e0;
     border-radius: 4px;
     font-size: 14px;
     color: #333;
+    transition: border-color 0.3s ease;
+}
+
+.input-field:hover {
+    border-color: var(--main-blue);
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: var(--main-blue);
+    box-shadow: 0 0 5px rgba(71, 44, 178, 0.5);
+}
+
+.password-container {
+    position: relative;
+    width: 100%;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 15px;
+    top: 12px;
+    cursor: pointer;
+    color: #666;
 }
 
 .checkbox-container {
     display: flex;
-    justify-content: flex-start;
-    gap: 8px;
+    justify-content: space-between;
+    width: 100%;
     margin: 5px 0;
+    font-size: 14px;
 }
 
-.checkbox-container input[type="checkbox"] {
-    width: auto;
-    margin: 0;
-}
 
 .checkbox-container label {
-    font-size: 14px;
     color: #666;
 }
 
+.forgot-password {
+    color: var(--main-blue); /* Đổi màu cho "Quên mật khẩu" */
+    margin-left: auto; /* Đẩy chữ "Quên mật khẩu" sang phải */
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
 .login-btn {
     width: 100%;
     padding: 12px;
-    background-color: #472cb2;
+    background-color: var(--main-blue);
     color: white;
     border: none;
     border-radius: 4px;
@@ -90,32 +122,46 @@ form input[type="password"] {
     background-color: #3b249a;
 }
 
-.additional-options {
-    text-align: center;
-    margin: 20px 0;
-}
-
-.forgot-password {
-    color: #472cb2;
-    text-decoration: none;
-    font-size: 14px;
-}
-
 .additional-options p {
-    margin: 10px 0;
-    font-size: 14px;
-    color: #666;
+    color: #666; /* Thay đổi màu sắc cho câu "Bạn chưa có tài khoản?" - ở đây là màu cam đỏ */
+    margin: 20px 0;
+    text-align: center;
 }
 
 .register-link {
-    color: #472cb2;
+    color: var(--main-blue);
     text-decoration: none;
     font-weight: 500;
 }
 
-.register-link:hover,
-.forgot-password:hover {
+.register-link:hover {
     text-decoration: underline;
+}
+
+.separator {
+    margin: 20px 0;
+    text-align: center;
+    color: #666;
+    position: relative;
+    font-size: 14px;
+}
+
+.separator::before,
+.separator::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background-color: #e0e0e0;
+}
+
+.separator::before {
+    left: 0;
+}
+
+.separator::after {
+    right: 0;
 }
 
 .social-login {
@@ -125,29 +171,7 @@ form input[type="password"] {
     margin-top: 20px;
 }
 
-
-.facebook-btn {
-    flex: 1;
-    padding: 10px 15px;
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
-    background-color: white;
-    font-size: 14px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-
-.facebook-btn:hover {
-    color: #4e2fd8;
-}
-
-.google-btn:hover {
-    color: #db4437;
-}
-
+.facebook-btn,
 .google-btn {
     flex: 1;
     padding: 10px 15px;
@@ -161,7 +185,22 @@ form input[type="password"] {
     justify-content: center;
 }
 
-.google-btn img,
-.facebook-btn img {
-    margin-right: 8px;
+.facebook-btn:hover {
+    color: var(--main-blue);
+}
+
+.google-btn:hover {
+    color: var(--main-blue);
+}
+
+
+.error-message {
+    color: #ff4d4f;
+    background-color: #fff2f0;
+    border: 1px solid #ffccc7;
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    text-align: center;
+    width: 100%;
 }

@@ -1,0 +1,274 @@
+/* Định nghĩa biến root cho màu xanh chính */
+:root {
+  --primary-blue: #472CB2;
+}
+
+body {
+  padding: 0 16px;
+}
+
+/* Container tổng thể */
+.rental-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0px;
+  background-color: #f3f4f6;
+  border-radius: 8px;
+}
+
+/* Phần hình ảnh */
+.image-gallery {
+  flex: 1;
+  position: relative;
+}
+
+.main-image-container {
+  position: relative;
+}
+
+.main-image {
+  width: 100%;
+  aspect-ratio: 4/3;
+  border-radius: 8px;
+  overflow: hidden;
+  object-fit: contain;
+  height: 400px;
+}
+
+/* Nút chuyển ảnh */
+.image-nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  font-size: 24px;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.image-nav-button:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.previous-button {
+  left: 10px;
+}
+
+.next-button {
+  right: 10px;
+}
+
+.thumbnail-container {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.thumbnail {
+  width: 80px;
+  height: 80px;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.thumbnail.active {
+  border-color: var(--primary-blue);
+}
+
+.thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Chi tiết cho thuê xe */
+.rental-details {
+  flex: 1;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Tiêu đề và trạng thái xe */
+.rental-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.rental-header h1 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+}
+
+.availability-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  border: 1px solid transparent;
+}
+
+.available {
+  background-color: #dcfce7;
+  color: #166534;
+  border-color: #16a34a;
+}
+
+.unavailable {
+  background-color: #fee2e2;
+  color: #991b1b;
+  border-color: #991b1b;
+}
+
+/* Giá thuê xe */
+.rental-price {
+  margin-bottom: 16px;
+  display: flex;
+  align-items: baseline;
+}
+
+.price {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--primary-blue);
+}
+
+.duration {
+  color: #6b7280;
+  margin-left: 4px;
+}
+
+/* Phần chọn địa điểm */
+.location-selection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.location-field label {
+  display: block;
+  font-size: 14px;
+  color: #4b5563;
+  margin-bottom: 4px;
+}
+
+.location-options {
+  display: flex;
+  gap: 8px;
+}
+
+/* Nút chọn địa điểm */
+.location-option {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  background-color: #f9fafb;
+  color: #4b5563;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease-in-out;
+}
+
+.location-option.active,
+.location-option:hover {
+  background-color: var(--primary-blue);
+  color: white;
+}
+
+/* Phần chọn thời gian */
+.time-selection {
+  margin-top: 12px;
+}
+
+.time-input {
+  padding: 8px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #f9fafb;
+  text-align: center;
+  transition: border-color 0.2s ease-in-out;
+}
+
+.time-input:hover {
+  border-color: var(--primary-blue);
+}
+
+/* Chi tiết phí */
+.fee-breakdown {
+  margin-top: 20px;
+  padding: 12px;
+  background-color: #f9fafb;
+  border-radius: 8px;
+}
+
+.fee-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  color: #4b5563;
+}
+
+.fee-total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e5e7eb;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+/* Nút hành động */
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.rent-button, .negotiate-button {
+  flex: 1;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.rent-button {
+  background-color: var(--primary-blue);
+}
+
+.rent-button:hover {
+  background-color: #4f46e5;
+}
+
+.negotiate-button {
+  background-color: #10b981;
+}
+
+.negotiate-button:hover {
+  background-color: #059669;
+}

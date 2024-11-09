@@ -1,0 +1,63 @@
+/* CycleRentalSteps.css */
+.cycle-rental-steps {
+  display: flex;
+  align-items: stretch; /* Ensures both columns match in height */
+  height: 100%;
+}
+
+.row {
+  display: flex;
+  align-items: stretch; /* Both columns will have equal height */
+}
+
+.steps-content, .image-column {
+  min-height: 100%; /* Ensures both sections grow to fill the height */
+}
+
+.image-column img {
+  height: 100%; /* Ensure the image takes up the full height of the column */
+  width: 100%; /* Ensure the image scales correctly */
+  object-fit: cover; /* Keep aspect ratio while covering the container */
+}
+
+
+
+.steps-title {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+.steps-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%; /* Đảm bảo chiều cao khung văn bản bằng với hình ảnh */
+}
+.step-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 25px; /* Điều chỉnh khoảng cách giữa các mục */
+}
+
+.step-icon {
+  font-size: 40px;
+  color: #472CB2; /* Màu chính cho các biểu tượng */
+  margin-right: 15px; /* Khoảng cách hợp lý giữa biểu tượng và văn bản */
+  margin-top: 5px; /* Đảm bảo biểu tượng căn giữa với văn bản */
+}
+
+.step-text h5 {
+  font-size: 18px; /* Điều chỉnh kích thước tiêu đề */
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.step-text p {
+  font-size: 16px;
+  color: #555;
+  margin: 0;
+  line-height: 1.5; /* Khoảng cách dòng phù hợp */
+}
+
+ 

@@ -1,0 +1,75 @@
+.body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #eef2f5;
+}
+
+.complaints-page {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-top: 5%;
+}
+
+.complaints-header {
+    border-bottom: 2px solid #472CB2;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.complaints-header h1 {
+    font-size: 28px;
+    color: #472CB2;
+    text-align: center;
+}
+
+.complaints-content {
+    line-height: 1.6;
+}
+
+.complaints-content h2 {
+    font-size: 22px;
+    color: #472CB2;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+.complaints-content p {
+    margin-bottom: 15px;
+    text-align: justify;
+    color: #555;
+}
+
+.complaints-content ul {
+    list-style-type: disc;
+    margin-left: 20px;
+    padding-left: 10px;
+}
+
+.complaints-content ul li {
+    margin-bottom: 8px;
+    position: relative;
+}
+
+.complaints-content ul li::marker {
+    color: #472CB2;
+}
+
+.complaints-content ul li::before {
+    content: "•";
+    color: #472CB2;
+    position: absolute;
+    left: -20px;
+    font-size: 1.2em;
+}
+
+.complaints-footer {
+    margin-top: 30px;
+    font-size: 14px;
+    text-align: center;
+    color: #777;
+}

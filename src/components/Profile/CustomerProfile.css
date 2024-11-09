@@ -1,0 +1,199 @@
+.customer-profile {
+    padding: 30px;
+    background-color: #f5f5f5;
+    margin-left: 250px;
+    margin-top: 80px;
+    min-height: calc(100vh - 80px);
+    width: 100%;
+}
+
+.profile-header {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
+}
+
+.profile-details {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 24px;
+    flex-direction: column;
+}
+
+.profile-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #472CB2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 36px;
+    font-weight: bold;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.profile-info h3 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 600;
+    color: #333;
+}
+
+.profile-info p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+    position: relative;
+}
+
+.edit-icon {
+    cursor: pointer;
+    margin-left: 10px;
+    color: #472CB2;
+    transition: color 0.3s ease;
+}
+
+.edit-icon:hover {
+    color: #FFB800;
+}
+
+.profile-info .icon-edit {
+    position: absolute;
+    right: 0;
+    cursor: pointer;
+    color: #472CB2;
+}
+
+.input[type="text"],
+.input[type="email"],
+.input[type="date"],
+.select {
+    margin-left: 10px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 200px;
+}
+
+.points {
+    background-color: #FFB800;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 14px;
+    display: inline-block;
+    margin-top: 5px;
+}
+
+.contact-info {
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.contact-info p {
+    margin: 10px 0;
+    color: #444;
+    font-size: 15px;
+}
+
+.contact-info strong {
+    margin-right: 10px;
+    color: #333;
+}
+
+.license-section {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.license-section h2 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.warning-text {
+    color: #dc3545;
+    font-size: 14px;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #fff8f8;
+    border-radius: 8px;
+    border-left: 4px solid #dc3545;
+}
+
+.license-details input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    margin-top: 15px;
+    font-size: 15px;
+    transition: border-color 0.3s ease;
+}
+
+.license-details input:focus {
+    outline: none;
+    border-color: #472CB2;
+    box-shadow: 0 0 0 3px rgba(71, 44, 178, 0.1);
+}
+
+.edit-button {
+    margin-top: 10px;
+    /* Khoảng cách cho nút lưu */
+}
+
+.edit-button button {
+    background-color: #472CB2;
+    /* Màu nền cho nút lưu */
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.edit-button button:hover {
+    background-color: #FFB800;
+    /* Màu nền khi hover */
+}
+
+@media (max-width: 1024px) {
+    .customer-profile {
+        margin-left: 0;
+        padding: 20px;
+    }
+
+    .profile-header,
+    .license-section {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .profile-details {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .profile-info {
+        align-items: center;
+    }
+}

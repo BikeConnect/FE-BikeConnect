@@ -1,0 +1,36 @@
+.rental-history {
+    margin-top: 100px;
+    padding: 20px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.rental-history h2 {
+    color: #472CB2;
+}
+
+.rental-history table {
+    width: 80%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-left: 14%;
+}
+
+.rental-history th,
+.rental-history td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.rental-history th {
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.rental-history tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.rental-history tr:hover {
+    background-color: #f1f1f1;
+}

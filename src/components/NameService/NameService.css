@@ -1,0 +1,43 @@
+/* App.css */
+.service-name {
+  position: relative; /* Để tạo overlay */
+  background-image: url('../../assets/images/images_homePage/pexels-green-1049872.jpg');
+  background-size: cover;
+  background-position: center;
+  color: white;
+  text-align: center;
+  padding: 100px 20px;
+  max-width: 1200px;
+  margin: auto;
+  border-radius: 20px;
+  margin-top: 20px;
+  opacity: inherit;
+}
+
+/* Thêm lớp overlay để tạo hiệu ứng mờ */
+.service-name::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4); /* Lớp phủ màu đen với độ mờ */
+  border-radius: 20px;
+  z-index: 1; /* Đảm bảo overlay nằm trên nền nhưng dưới nội dung */
+}
+
+.title-container {
+  position: relative;
+  z-index: 2; /* Đảm bảo nội dung nằm trên lớp overlay */
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.title {
+  font-size: 86px;
+  margin: 20px 0;
+  color: white; /* Đổi màu chữ thành màu trắng */
+  width: 100%;
+}
