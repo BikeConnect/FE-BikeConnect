@@ -16,7 +16,6 @@ const RentalHistory = () => {
     return (
         <div>
             <NavBar />
-            <HeaderAfterLogin />
             <div className="rental-history">
                 <h2>Lịch sử thuê xe</h2>
                 <table>
