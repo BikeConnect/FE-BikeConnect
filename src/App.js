@@ -24,6 +24,7 @@ import ManageCustomer from './components/UI_Admin/ManageCustomer/ManageCustomer'
 import ManageOwner from './components/UI_Admin/ManageOwner/ManageOwner';
 import { CustomerProvider } from './components/UI_Admin/CustomerContext';
 import Support from './components/Support/Support';
+import PostPage from './components/PostPage/PostPage';
 
 
 
@@ -80,6 +81,7 @@ function AppContent() {
         <Route path="/BikeDetail/:name" element={<BikeDetail />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/support" element={<Support />} />
+        <Route path="/post" element={<PostPage />} />
       </Routes>
     </div>
   );
