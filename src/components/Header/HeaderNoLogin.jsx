@@ -27,8 +27,8 @@ const HeaderNoLogin = ({ onLoginSuccess }) => {
         setShowSupport(false);
     };
 
-    const handleLoginSuccess = () => {
-        onLoginSuccess();
+    const handleLoginSuccess = (role) => {
+        onLoginSuccess(role);
         handleCloseModals();
     };
 
