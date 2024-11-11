@@ -10,9 +10,6 @@ import CycleTips from '../CycleTips/CycleTips';
 import RentalSignup from '../RentalSignup/RentalSignup';
 import CycleRentalSteps from '../CyCleRentalSteps/CycleRentalSteps';
 import CyclerentalGrid from '../MotorcycleGrid/CyclerentalGrid';
-import HeaderAfterLogin from '../Header/HeaderAfterLogin';
-import HeaderNoLogin from '../Header/HeaderNoLogin';
-
 
 const HomePage = () => {
     return (

@@ -1,4 +1,3 @@
-/* HeaderAfterLogin.css */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
 .header-after-login {
@@ -15,7 +14,7 @@
 .header-container {
     width: 1200px;
     height: 80px;
-    padding: 55px 0 0 0; /* Thêm padding-top 15px để nav thụt xuống */
+    padding: 55px 0 0 0;
     margin: 0;
 }
 
@@ -124,6 +123,7 @@
         opacity: 0;
         transform: translateY(-10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -174,14 +174,16 @@
 @media (max-width: 1200px) {
     .header-container {
         width: 100%;
-        padding: 15px 20px 0 20px; /* Giữ padding-top khi responsive */
+        padding: 15px 20px 0 20px;
     }
-    
+
     .nav {
         justify-content: space-between;
     }
-    
-    .logo, .menu-items, .auth-buttons {
+
+    .logo,
+    .menu-items,
+    .auth-buttons {
         position: static;
     }
 }
@@ -191,5 +193,4 @@
         height: auto;
         padding: 15px 20px 10px 20px;
     }
-    /* Rest of the media query remains the same */
 }

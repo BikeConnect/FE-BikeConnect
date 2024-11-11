@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-body {
+.body {
     font-family: 'Roboto', sans-serif;
     box-sizing: border-box;
     margin: 0;
@@ -20,26 +20,21 @@ body {
 
 .header-container {
     width: 1200px;
-    height: 100px;  /* Tăng từ 100px lên 140px */
+    height: 80px;
     padding: 0;
     margin: 0;
 }
 
 .nav {
-    max-height: fit-content;
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    height: 100%;  /* Đảm bảo nav chiếm toàn bộ chiều cao của container */
 }
 
 .logo {
     flex: 0 0 auto;
     width: 150px;
-    height: auto;  /* Cho phép logo scale theo tỷ lệ */
-    display: flex;
-    align-items: center;
 }
 
 .logo-img {
@@ -52,7 +47,6 @@ body {
     display: flex;
     gap: 30px;
     align-items: center;
-    height: 100%;  /* Cho menu items chiếm toàn bộ chiều cao */
 }
 
 .menu-link {
@@ -62,27 +56,30 @@ body {
     transition: color 0.3s ease-in-out;
     font-weight: bold;
     white-space: nowrap;
-    height: 100%;  /* Cho phép links chiếm toàn bộ chiều cao */
-    display: flex;
-    align-items: center;
 }
 
 .menu-link:hover {
     color: #472CB2;
 }
 
+.support-button {
+    background-color: transparent;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
 .auth-buttons {
     display: flex;
     gap: 15px;
     align-items: center;
-    height: 100%;  /* Cho auth buttons chiếm toàn bộ chiều cao */
 }
 
 .btn-register {
     background-color: transparent;
     border: 2px solid #472CB2;
     color: #472CB2;
-    padding: 12px 24px;  /* Tăng padding cho phù hợp với chiều cao mới */
+    padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
@@ -93,7 +90,7 @@ body {
     background-color: #472CB2;
     border: 2px solid transparent;
     color: white;
-    padding: 12px 24px;  /* Tăng padding cho phù hợp với chiều cao mới */
+    padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
@@ -119,13 +116,12 @@ body {
 @media (max-width: 768px) {
     .header-container {
         height: auto;
-        padding: 20px;  /* Tăng padding cho mobile view */
+        padding: 10px 20px;
     }
 
     .nav {
         flex-direction: column;
         height: auto;
-        gap: 20px;  /* Tăng khoảng cách giữa các phần tử khi stack vertically */
     }
 
     .logo {
@@ -135,16 +131,14 @@ body {
     .menu-items {
         flex-direction: column;
         align-items: center;
-        gap: 15px;  /* Tăng khoảng cách giữa menu items trên mobile */
+        gap: 10px;
         margin: 15px 0;
-        height: auto;
     }
 
     .auth-buttons {
         flex-direction: column;
         width: 100%;
-        gap: 15px;
-        height: auto;
+        gap: 10px;
     }
 
     .btn-login,
@@ -152,15 +146,4 @@ body {
         width: 100%;
         text-align: center;
     }
-}
-
-.error-message {
-    color: #ff4d4f;
-    background-color: #fff2f0;
-    border: 1px solid #ffccc7;
-    padding: 8px 12px;
-    border-radius: 4px;
-    margin-bottom: 16px;
-    text-align: center;
-    width: 100%;
 }

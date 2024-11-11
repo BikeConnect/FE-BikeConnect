@@ -1,45 +1,33 @@
 .support-modal {
     position: fixed;
-    /* Đặt modal cố định */
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
-    /* Nền mờ */
     display: flex;
-    /* Sử dụng Flexbox để căn giữa */
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    /* Đảm bảo modal nằm trên các thành phần khác */
 }
 
 .support-content {
     background-color: white;
-    /* Nền trắng cho nội dung */
     padding: 20px;
     border-radius: 8px;
-    /* Bo tròn góc */
     max-width: 500px;
     width: 100%;
     position: relative;
-    /* Để có thể đặt vị trí cho nút đóng */
 }
 
 .close-button {
     position: absolute;
-    /* Đặt vị trí cho nút đóng */
     top: 10px;
     right: 10px;
     border: none;
-    /* Không viền */
     background: none;
-    /* Không nền */
     font-size: 20px;
-    /* Kích thước chữ */
     cursor: pointer;
-    /* Con trỏ chuột khi di chuột qua */
 }
 
 

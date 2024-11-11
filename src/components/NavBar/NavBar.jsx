@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './NavBar.css';
 
+
 const NavBar = ({ children }) => {
     return (
         <div className="nav-bar-wrapper">
@@ -9,7 +10,7 @@ const NavBar = ({ children }) => {
                 <NavLink to="/customerprofiles" activeClassName="active">
                     Tài khoản của tôi
                 </NavLink>
-                <NavLink to="/rental-history" activeClassName="active">
+                <NavLink to="/rentalhistory" activeClassName="active">
                     Lịch sử thuê xe
                 </NavLink>
                 <NavLink to="/changepassword" activeClassName="active">

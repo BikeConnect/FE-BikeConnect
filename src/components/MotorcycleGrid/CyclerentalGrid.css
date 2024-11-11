@@ -1,170 +1,166 @@
-  :root {
-    --primary-color: #472CB2; /* Màu chủ đạo */
-    --secondary-color: #aaa; /* Màu phụ cho các phần như giá gốc bị gạch ngang */
-    --text-color: #666; /* Màu văn bản phụ */
-    --star-color: #ffc107; /* Màu cho sao đánh giá */
-  }
-
-  .rental-container {
-    padding: 20px 0px;
-  }
-
-  a {
-    text-decoration: none;
+:root {
+  --primary-color: #472CB2;
+  --secondary-color: #aaa;
+  --text-color: #666;
+  --star-color: #ffc107;
 }
 
-  /* Card Styles */
-  .cycle-card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s, box-shadow 0.2s;
-    background-color: #fff;
-  }
+.rental-grid-container {
+  padding: 20px 0px;
+}
 
-  .cycle-card:hover {
-    transform: scale(1.03);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  }
+a {
+  text-decoration: none;
+}
 
-  .vehicle-types .vehicle-type {
-    border-radius: 20px;
-    margin: 0 8px;
-    border: 1px solid var(--primary-color); /* Sử dụng màu chủ đạo */
-    color: var(--primary-color); /* Màu chữ của nút chưa được chọn */
-  }
+/* Card Styles */
+.rental-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  background-color: #fff;
+}
 
-  .vehicle-types .vehicle-type.btn-primary {
-    background-color: var(--primary-color); /* Màu nền của nút được chọn */
-    color: #fff; /* Màu chữ của nút được chọn */
-  }
+.rental-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
 
-  .vehicle-types .vehicle-type.btn-outline-secondary {
-    background-color: transparent; /* Màu nền trong suốt cho nút chưa được chọn */
-    color: var(--primary-color); /* Màu chữ cho nút chưa được chọn */
-  }
+.rental-type-buttons .rental-type-button {
+  border-radius: 20px;
+  margin: 0 8px;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+}
 
-  .vehicle-types .vehicle-type:hover {
-    background-color: rgba(71, 44, 66, 0.1); /* Màu nền khi hover */
-    color: var(--primary-color);
-  }
+.rental-type-buttons .rental-type-button.btn-primary {
+  background-color: var(--primary-color);
+  color: #fff;
+}
 
-  .image-wrapper {
-    position: relative;
-    height: 200px;
-  }
+.rental-type-buttons .rental-type-button.btn-outline-secondary {
+  background-color: transparent;
+  color: var(--primary-color);
+}
 
-  .cycle-image {
-    border-radius: 8px 8px 0 0;
-    object-fit: cover;
-    width: 100%;
-    height: 200px;
-  }
+.rental-type-buttons .rental-type-button:hover {
+  background-color: rgba(71, 44, 66, 0.1);
+  color: var(--primary-color);
+}
+
+.rental-image-wrapper {
+  position: relative;
+  height: 200px;
+}
+
+.rental-image {
+  border-radius: 8px 8px 0 0;
+  object-fit: cover;
+  width: 100%;
+  height: 200px;
+}
+
+/* Text and price formatting */
+.rental-name {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.rental-price-section {
+  display: flex;
+  flex-direction: column; /* Đặt giá hiện tại và giá cũ trên các dòng riêng */
+  align-items: start;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.rental-current-price {
+  color: var(--primary-color);
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 4px; /* Khoảng cách giữa giá hiện tại và giá cũ */
+}
+
+.rental-original-price {
+  text-decoration: line-through;
+  color: var(--secondary-color);
+  font-size: 14px;
+}
 
 
+/* Location and icons */
+.rental-location {
+  font-size: 14px;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+}
 
-  /* Text and price formatting */
-  .cycle-name {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
+.location-icon {
+  margin-right: 5px;
+  color: var(--primary-color);
+}
 
-  .price-section {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    font-size: 14px;
-    margin-bottom: 10px;
-    white-space: nowrap; /* Thêm thuộc tính này */
-  }
+/* Footer section */
+.rental-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
 
+.rental-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
 
-  .current-price {
-    color: var(--primary-color); /* Sử dụng màu chủ đạo */
-    font-weight: bold;
-    font-size: 18px;
-    margin-right: 8px;
-  }
+.status-icon {
+  color: var(--primary-color);
+}
 
-  .original-price {
-    text-decoration: line-through;
-    color: var(--secondary-color); /* Màu gạch ngang */
-    font-size: 14px;
-  }
+.distance-icon {
+  margin-right: 5px;
+  color: var(--primary-color);
+}
 
-  /* Location and icons */
-  .cycle-location {
-    font-size: 14px;
-    color: var(--text-color); /* Màu văn bản phụ */
-    display: flex;
-    align-items: center;
-  }
+.rental-rating {
+  display: flex;
+  align-items: center;
+}
 
-  .location-icon {
-    margin-right: 5px;
-    color: var(--primary-color); /* Màu chủ đạo cho icon */
-  }
+.rental-star {
+  color: var(--star-color);
+  font-size: 14px;
+}
 
-  /* Footer section */
-  .cycle-footer {
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-  }
+.rental-review-count {
+  margin-left: 5px;
+  font-size: 12px;
+  color: var(--text-color);
+}
 
-  .cycle-status {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
+/* Pagination buttons */
+.rental-page-btn {
+  margin: 0 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .status-icon {
-    color: var(--primary-color); /* Màu chủ đạo cho icon trạng thái */
-  }
+.rental-prev-btn,
+.rental-next-btn {
+  border: 3px solid var(--primary-color);
+  color: var(--primary-color);
+}
 
-  .distance-icon {
-    margin-right: 5px;
-    color: var(--primary-color); /* Màu chủ đạo cho icon khoảng cách */
-  }
-
-  .rating {
-    display: flex;
-    align-items: center;
-  }
-
-  .star {
-    color: var(--star-color); /* Màu cho ngôi sao */
-    font-size: 14px;
-  }
-
-  .review-count {
-    margin-left: 5px;
-    font-size: 12px;
-    color: var(--text-color); /* Màu văn bản phụ */
-  }
-
-  /* Pagination buttons */
-  .page-btn {
-    margin: 0 10px;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .page-btn.prev,
-  .page-btn.next {
-    border: 3px solid var(--primary-color); /* Màu chủ đạo cho nút phân trang */
-    color: var(--primary-color);
-  
-  }
-
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .cycle-image {
+/* Responsive Design */
+@media (max-width: 768px) {
+  .rental-image {
       height: 150px;
-    }
   }
+}

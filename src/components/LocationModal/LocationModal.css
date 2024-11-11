@@ -1,4 +1,4 @@
-.modal-overlay {
+.location-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -11,9 +11,9 @@
   z-index: 1000;
 }
 
-.modal-container {
+.location-modal-container {
   background-color: white;
-  width: 643px; /* Chiều rộng cố định */
+  width: 643px;
   min-height: 500px;
   max-height: 80vh;
   border-radius: 8px;
@@ -22,8 +22,7 @@
   flex-direction: column;
 }
 
-
-.modal-header {
+.location-modal-header {
   padding: 1.5rem;
   border-bottom: 1px solid #e5e7eb;
   position: relative;
@@ -32,7 +31,7 @@
   align-items: center;
 }
 
-.modal-title {
+.location-modal-title {
   font-size: 1.5rem;
   font-weight: 600;
   color: #472CB2;
@@ -41,7 +40,7 @@
   flex-grow: 1;
 }
 
-.close-button {
+.location-close-button {
   position: absolute;
   right: 1.5rem;
   background: none;
@@ -50,31 +49,32 @@
   padding: 4px;
 }
 
-.modal-content {
+.location-modal-content {
   padding: 1.5rem;
   flex-grow: 1;
   overflow-y: auto;
 }
 
-.search-input-container {
+.location-search-container {
   position: relative;
   margin-bottom: 1.5rem;
 }
 
-.search-input {
+.location-search-input {
   width: 100%;
   padding: 0.75rem 1rem 0.75rem 2.5rem;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   font-size: 1rem;
+  box-sizing: border-box;
 }
 
-.search-input:focus {
+.location-search-input:focus {
   outline: none;
   border-color: #4f46e5;
 }
 
-.search-icon {
+.location-search-icon {
   position: absolute;
   left: 0.75rem;
   top: 50%;
@@ -97,27 +97,27 @@
   background-color: #f3f4f6;
 }
 
-.location-option .icon {
+.location-icon {
   color: #472CB2;
 }
 
-.vehicle-section {
+.location-suggestions {
   margin-top: 1.5rem;
 }
 
-.section-title {
+.suggestion-title {
   margin-bottom: 1rem;
   font-size: 1.1rem;
   font-weight: 600;
 }
 
-.vehicle-grid {
+.suggestions-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 1rem;
 }
 
-.vehicle-button {
+.suggestion-button {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -129,7 +129,7 @@
   transition: all 0.2s;
 }
 
-.vehicle-button:hover {
+.suggestion-button:hover {
   border-color: #472CB2;
   background-color: #f8f8ff;
 }
@@ -139,7 +139,7 @@
   border: 1px solid #4f46e5;
 }
 
-.remove-button {
+.location-remove-button {
   background: #ef4444;
   color: white;
   border: none;

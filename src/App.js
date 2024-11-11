@@ -24,7 +24,7 @@ import ManageCustomer from './components/UI_Admin/ManageCustomer/ManageCustomer'
 import ManageOwner from './components/UI_Admin/ManageOwner/ManageOwner';
 import { CustomerProvider } from './components/UI_Admin/CustomerContext';
 import Support from './components/Support/Support';
-
+import CusFilterOptions from './components/CusFilterOptions/CusFilterOptions';
 
 
 function AppContent() {
@@ -79,7 +79,9 @@ function AppContent() {
         <Route path="/manageOwner" element={<ManageOwner />} />
         <Route path="/BikeDetail/:name" element={<BikeDetail />} />
         <Route path="/chat" element={<Chat />} />
-        <Route path="/support" element={<Support/>} />
+        <Route path="/support" element={<Support />} />
+        <Route path="/CusFilterOptions" element={<CusFilterOptions />} />
+        
       </Routes>
     </div>
   );
