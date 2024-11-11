@@ -99,7 +99,6 @@ const HeaderAfterLogin = ({ onLogout, userRole }) => {
               <NavLink to="/homepage" className="menu-link">
                 Trang chủ
               </NavLink>
-              {/* <NavLink to="/rentals" className="menu-link">Thuê xe</NavLink> */}
               {userRole === "owner" ? (
                 <>
                   <NavLink to="/rentals" className="menu-link">
@@ -109,7 +108,7 @@ const HeaderAfterLogin = ({ onLogout, userRole }) => {
               ) : (
                 <>
                   <NavLink to="/rentals" className="menu-link">
-                    thuê xe
+                    Thuê xe
                   </NavLink>
                 </>
               )}
