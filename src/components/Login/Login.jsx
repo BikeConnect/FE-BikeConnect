@@ -28,28 +28,7 @@ const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
     setThongBaoLoi("");
 
     try {
-      const customerResponse = await fetch('http://localhost:8080/api/customer/customer-login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.matKhau
-        }),
-      });
-
-      if (customerResponse.ok) {
-        const data = await customerResponse.json();
-        console.log('Đăng nhập khách hàng thành công:', data);
-        onLoginSuccess("customer");
-        localStorage.setItem('userRole', 'customer');
-        localStorage.setItem('userData', JSON.stringify(data));
-        onClose();
-        navigate("/homepage");
-        return;
-      }
-
+      // First try owner login
       const ownerResponse = await fetch('http://localhost:8080/api/auth/owner-login', {
         method: 'POST',
         headers: {
@@ -64,9 +43,34 @@ const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
       if (ownerResponse.ok) {
         const data = await ownerResponse.json();
         console.log('Đăng nhập chủ xe thành công:', data);
-        onLoginSuccess("owner");
+        // Set owner role first
         localStorage.setItem('userRole', 'owner');
         localStorage.setItem('userData', JSON.stringify(data));
+        onLoginSuccess("owner");
+        onClose();
+        navigate("/homepage");
+        return;
+      }
+
+      // If owner login fails, try customer login
+      const customerResponse = await fetch('http://localhost:8080/api/customer/customer-login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.matKhau
+        }),
+      });
+
+      if (customerResponse.ok) {
+        const data = await customerResponse.json();
+        console.log('Đăng nhập khách hàng thành công:', data);
+        // Set customer role
+        localStorage.setItem('userRole', 'customer');
+        localStorage.setItem('userData', JSON.stringify(data));
+        onLoginSuccess("customer");
         onClose();
         navigate("/homepage");
         return;
@@ -163,3 +167,7 @@ const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
 };
 
 export default Login;
+
+
+
+
