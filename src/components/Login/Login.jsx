@@ -52,7 +52,6 @@ const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
         return;
       }
 
-      // If owner login fails, try customer login
       const customerResponse = await fetch('http://localhost:8080/api/customer/customer-login', {
         method: 'POST',
         headers: {
@@ -67,7 +66,6 @@ const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
       if (customerResponse.ok) {
         const data = await customerResponse.json();
         console.log('Đăng nhập khách hàng thành công:', data);
-        // Set customer role
         localStorage.setItem('userRole', 'customer');
         localStorage.setItem('userData', JSON.stringify(data));
         onLoginSuccess("customer");
@@ -167,7 +165,4 @@ const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
 };
 
 export default Login;
-
-
-
 

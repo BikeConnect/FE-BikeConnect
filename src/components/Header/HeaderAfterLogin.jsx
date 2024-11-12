@@ -101,7 +101,7 @@ const HeaderAfterLogin = ({ onLogout, userRole }) => {
               </NavLink>
               {userRole === "owner" ? (
                 <>
-                  <NavLink to="/rentals" className="menu-link">
+                  <NavLink to="/post" className="menu-link">
                     Đăng bài thuê xe
                   </NavLink>
                 </>
