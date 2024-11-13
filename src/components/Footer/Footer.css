@@ -1,129 +1,125 @@
 :root {
-    --main-color: #472CB2;
+    --main-color: #472CB2; /* Đặt màu chính ở đây */
     --secondary-color: #2b6cb0;
     --text-color: #4a5568;
 }
 
-.bike-footer {
+.footer {
     background-color: #e6f0f8;
-    /* padding: 0px 0px; */
+    padding: 40px 20px;
     border-top: 1px solid #e7e7e7;
-    width: 100%;
+    width:100%;
     box-sizing: border-box;
-
+    margin: auto ;
 }
 
-.footer-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0;
-    align-items: center;
-    background-color: #E6F0F8;
-}
-
-.footer-content {
+.footer-section {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.footer-logo {
+.footer .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0px;
+    align-items: center;
+    background-color: #E6F0F8;
+}
+
+.logo {
     width: 200px;
     height: auto;
 }
 
-.footer-title {
+.footer-section h3 {
     font-size: 18px;
     font-weight: bold;
-    color: var(--main-color);
+    color: var(--main-color); /* Sử dụng màu chính */
     text-align: center;
 }
 
-.footer-text {
+.footer-section p {
     margin-top: 10px;
     font-size: 14px;
-    color: var(--text-color);
+    color: var(--text-color); /* Màu văn bản phụ */
     text-align: center;
 }
 
-.footer-email-form {
+.email-form {
     display: flex;
     justify-content: center;
     margin-top: 10px;
     gap: 10px;
 }
 
-.footer-email-input {
+.email-input {
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
     width: 200px;
 }
 
-.footer-btn-submit {
+.btn-submit {
     padding: 8px 16px;
-    background-color: var(--main-color);
+    background-color: var(--main-color); /* Sử dụng màu chính */
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 
-.footer-btn-submit:hover {
-    background-color: var(--secondary-color);
+.btn-submit:hover {
+    background-color: var(--secondary-color); /* Màu phụ khi hover */
 }
 
-.footer-links {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    text-align: center;
-}
-
-.footer-links a {
-    color: var(--main-color);
+.footer-section a {
+    color: var(--main-color); /* Sử dụng màu chính */
     text-decoration: none;
     margin-bottom: 5px;
 }
 
-.footer-links a:hover {
+.footer-section a:hover {
     text-decoration: underline;
 }
 
-.footer-contact {
+.footer-section ul {
     list-style: none;
     padding: 0;
     margin: 0;
     text-align: center;
 }
 
-.footer-contact-item {
+.footer-section li {
     margin-bottom: 8px;
+}
+
+.footer-section .flex {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.footer-icon {
-    color: var(--main-color);
+.footer-section .icon {
+    color: var(--main-color); /* Màu chính cho icon */
 }
 
-.footer-copyright {
+.footer .text-center {
     margin-top: 20px;
     font-size: 12px;
-    color: var(--text-color);
+    color: var(--text-color); /* Màu văn bản */
 }
 
 @media (max-width: 768px) {
-    .footer-container {
+    .footer .container {
         grid-template-columns: 1fr;
         text-align: center;
     }
 
-    .footer-content {
+    .footer-section {
         align-items: center;
     }
 }

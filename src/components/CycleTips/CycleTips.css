@@ -18,7 +18,10 @@
     border: 1px solid #e0e0e0;
   }
   
-
+  .tip-card:hover {
+    transform: translateY(-5px);
+  }
+  
   .card-image-wrapper {
     position: relative;
     padding-top: 75%; /* 4:3 Aspect Ratio */

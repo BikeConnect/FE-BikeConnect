@@ -5,21 +5,21 @@ import logo from '../../assets/images/8.png';
 
 const Footer = () => {
     return (
-        <footer className="bike-footer">
-            <div className="footer-container">
+        <footer className="footer">
+            <div className="container">
         
-                <div className="footer-content">
-                    <img src={logo} alt="Bike Connect Logo" className="footer-logo" />
-                    <p className="footer-text mt-4">Đăng kí email để có thể nhận thông tin về thuê xe từ chúng tôi</p>
-                    <div className="footer-email-form mt-4">
-                        <input type="email" placeholder="Nhập email của bạn" className="footer-email-input" />
-                        <button className="footer-btn-submit">Gửi</button>
+                <div className="footer-section">
+                    <img src={logo} alt="Bike Connect Logo" className="logo" />
+                    <p className="mt-4">Đăng kí email để có thể nhận thông tin về thuê xe từ chúng tôi</p>
+                    <div className="email-form mt-4">
+                        <input type="email" placeholder="Nhập email của bạn" className="email-input" />
+                        <button className="btn-submit">Gửi</button>
                     </div>
                 </div>
 
-                <div className="footer-content">
-                    <h3 className="footer-title font-bold">Liên kết nhanh</h3>
-                    <ul className="footer-links mt-4 space-y-2">
+                <div className="footer-section">
+                    <h3 className="font-bold">Liên kết nhanh</h3>
+                    <ul className="mt-4 space-y-2">
                         <li><a href="#">Trang chủ</a></li>
                         <li><a href="#">Cho thuê xe</a></li>
                         <li><a href="#">Hướng dẫn</a></li>
@@ -28,26 +28,26 @@ const Footer = () => {
                     </ul>
                 </div>
 
-                <div className="footer-content">
-                    <h3 className="footer-title font-bold">Tương tác</h3>
-                    <ul className="footer-contact mt-4 space-y-2">
-                        <li className="footer-contact-item flex items-center space-x-2">
-                            <MapPin className="footer-icon" />
+                <div className="footer-section">
+                    <h3 className="font-bold">Tương tác</h3>
+                    <ul className="mt-4 space-y-2">
+                        <li className="flex items-center space-x-2">
+                            <MapPin className="icon" />
                             <span>Cẩm Lệ, Đà Nẵng</span>
                         </li>
-                        <li className="footer-contact-item flex items-center space-x-2">
-                            <Mail className="footer-icon" />
+                        <li className="flex items-center space-x-2">
+                            <Mail className="icon" />
                             <span>bikeconnect@gmail.com</span>
                         </li>
-                        <li className="footer-contact-item flex items-center space-x-2">
-                            <Phone className="footer-icon" />
+                        <li className="flex items-center space-x-2">
+                            <Phone className="icon" />
                             <span>02321324324</span>
                         </li>
                     </ul>
                 </div>
             </div>
 
-            <div className="footer-copyright text-center mt-8 text-sm text-gray-500">
+            <div className="text-center mt-8 text-sm text-gray-500">
                 Copyright © 2024. Bike Connect
             </div>
         </footer>
