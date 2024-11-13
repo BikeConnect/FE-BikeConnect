@@ -43,7 +43,7 @@ const VerifyEmail = ({ role, onClose }) => {
             });
 
             if (response.ok) {
-                alert("Đăng ký tài khoản thành công !");
+                alert("Đăng ký tài khoản thành công!");
                 onClose();
                 navigate('/homepage');
             } else {
@@ -61,27 +61,30 @@ const VerifyEmail = ({ role, onClose }) => {
     };
 
     return (
-        <div className="register-container">
-            <h2 className="register-title">Xác thực Email</h2>
-            <Form onSubmit={(e) => e.preventDefault()}>
-                <div className="code-inputs">
-                    {code.map((digit, index) => (
-                        <input
-                            key={index}
-                            type="text"
-                            maxLength="1"
-                            value={digit}
-                            onChange={(e) => handleChange(e, index)}
-                        />
-                    ))}
-                </div>
-                <button type="button" className="btn btn-primary" onClick={handleVerify}>
-                    Xác thực
-                </button>
-                <button type="button" className="btn btn-secondary" onClick={handleResend}>
-                    Gửi lại mã
-                </button>
-            </Form>
+        <div className="verification-overlay" onClick={onClose}>
+            <div className="verification-container" onClick={(e) => e.stopPropagation()}>
+                <h2>Xác thực Email</h2>
+                <Form onSubmit={(e) => e.preventDefault()}>
+                    <div className="code-input">
+                        {code.map((digit, index) => (
+                            <input
+                                key={index}
+                                type="text"
+                                maxLength="1"
+                                value={digit}
+                                onChange={(e) => handleChange(e, index)}
+                                className="form-control"
+                            />
+                        ))}
+                    </div>
+                    <button type="button" className="verify-btn" onClick={handleVerify}>
+                        Xác thực
+                    </button>
+                    <button type="button" className="resend-btn" onClick={handleResend}>
+                        Gửi lại mã
+                    </button>
+                </Form>
+            </div>
         </div>
     );
 };
