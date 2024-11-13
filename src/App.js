@@ -24,33 +24,47 @@ import ManageCustomer from './components/UI_Admin/ManageCustomer/ManageCustomer'
 import ManageOwner from './components/UI_Admin/ManageOwner/ManageOwner';
 import { CustomerProvider } from './components/UI_Admin/CustomerContext';
 import Support from './components/Support/Support';
+import Register from "./components/Register/Register";
 import PostPage from './components/PostPage/PostPage';
 
 
 
 function AppContent() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userRole, setUserRole] = useState("");
   const location = useLocation();
 
   const ShowNavBar = () => {
-    const displayNavPaths = ["/customerprofiles", "/changepassword", "/rentalhistory"];
-    return displayNavPaths.includes(location.pathname) ? <NavBar /> : null;
+    const displayNavPaths = [
+      "/customerprofiles",
+      "/changepassword",
+      "/rentalhistory",
+    ];
+    return displayNavPaths.includes(location.pathname) ? (
+      <NavBar userRole={userRole} />
+    ) : null;
   };
 
-  const handleLogin = () => {
+  const handleLogin = (role) => {
+    setUserRole(role);
     setIsLoggedIn(true);
+    console.log("User role after login:", role);
   };
 
   const handleLogout = () => {
+    setUserRole("");
     setIsLoggedIn(false);
   };
 
   const Header = () => {
-    if (["/dashboard", "/manageCus", "/manageOwner"].includes(location.pathname)) {
+    if (
+      ["/dashboard", "/manageCus", "/manageOwner"].includes(location.pathname)
+    ) {
       return null;
     }
+
     return isLoggedIn ? (
-      <HeaderAfterLogin onLogout={handleLogout} />
+      <HeaderAfterLogin onLogout={handleLogout} userRole={userRole} />
     ) : (
       <HeaderNoLogin onLoginSuccess={handleLogin} />
     );
@@ -59,10 +73,11 @@ function AppContent() {
   return (
     <div className="App">
       <Header />
-      <ShowNavBar />
+      <ShowNavBar userRole={userRole} />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/homepage" element={<HomePage />} />
+        <Route path="/register" element={<Register />} />{" "}
         <Route path="/register-owner" element={<RegisterOwner />} />
         <Route path="/customerprofiles" element={<CustomerProfile />} />
         <Route path="/changepassword" element={<ChangePassword />} />

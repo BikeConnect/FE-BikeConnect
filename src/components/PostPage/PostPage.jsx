@@ -71,7 +71,7 @@ const PostPage = () => {
                         description: description,
                         model: model,
                         images: [image.name],
-                        rating: 1,  // Cập nhật rating thành 1 hoặc giá trị hợp lệ khác
+                        rating: 1,
                         availability_status: 'available',
                         license: 'Public',
                         startDate: startDate,
