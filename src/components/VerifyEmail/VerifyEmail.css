@@ -1,0 +1,75 @@
+.verification-container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    width: 643px;
+    max-width: 90%;
+    text-align: center;
+    box-sizing: border-box;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.verification-container h2 {
+    color: var(--main-blue);
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.code-input {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.code-input .form-control {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    /* Match the font size */
+    text-align: center;
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+}
+
+.code-input .form-control:focus {
+    border-color: var(--main-blue);
+    outline: none;
+}
+
+.verify-btn {
+    background-color: var(--main-blue);
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.verify-btn:hover {
+    background-color: #4338ca;
+}
+
+.verify-btn:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+}
+
+p {
+    margin-top: 15px;
+    color: #666;
+}
+
+.resend-btn {
+    background: none;
+    color: var(--main-blue);
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 14px;
+}
