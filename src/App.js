@@ -27,6 +27,8 @@ import Support from './components/Support/Support';
 import Register from "./components/Register/Register";
 import PostPage from './components/PostPage/PostPage';
 import CusFilterOptions from "./components/CusFilterOptions/CusFilterOptions";
+import ForgotPassword from './components/ForgotPassword/ForgotPassword';
+import ResetPassword from './components/ResetPassword/ResetPassword';
 
 
 
@@ -99,6 +101,8 @@ function AppContent() {
         <Route path="/support" element={<Support />} />
         <Route path="/post" element={<PostPage />} />
         <Route path="/CusFilterOptions" element={<CusFilterOptions />} />
+        <Route path="/ForgotPassword" element={<ForgotPassword />} />
+        <Route path="/ResetPassword" element={<ResetPassword />} />
       </Routes>
     </div>
   );

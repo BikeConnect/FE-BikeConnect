@@ -64,6 +64,9 @@ const VerifyEmail = ({ role, onClose }) => {
         <div className="verification-overlay" onClick={onClose}>
             <div className="verification-container" onClick={(e) => e.stopPropagation()}>
                 <h2>Xác thực Email</h2>
+               
+                <p>Nhập mã để xác thực tài khoản của bạn</p>
+                
                 <Form onSubmit={(e) => e.preventDefault()}>
                     <div className="code-input">
                         {code.map((digit, index) => (

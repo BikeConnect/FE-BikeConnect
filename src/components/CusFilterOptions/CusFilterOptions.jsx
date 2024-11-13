@@ -202,7 +202,7 @@ const CusFilterOptions = () => {
                             </Form.Group>
                         </Col>
 
-                        <Col xs={6} md={3}>
+                        <Col xs={8} md={5}>
                             <Form.Group controlId="price" className="filter-group">
                                 <Form.Label>Khoảng Giá</Form.Label>
                                 <div className="d-flex">
@@ -228,7 +228,7 @@ const CusFilterOptions = () => {
                         </Col>
 
                         <Col xs={6} md={3}>
-                            <Form.Group controlId="sortBy" className="filter-group">
+                        <Form.Group controlId="sortBy" className="filter-group">
                                 <Form.Label>Sắp Xếp Theo</Form.Label>
                                 <Form.Control
                                     as="select"

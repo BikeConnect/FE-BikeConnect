@@ -84,6 +84,10 @@ const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
     setHienMatKhau(!hienMatKhau);
   };
 
+  const handleForgotPasswordClick = () => {
+    navigate("/ForgotPassword"); // Navigate to ForgotPassword component
+  };
+
   if (!show) {
     return null;
   }
@@ -135,8 +139,7 @@ const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
               <a
                 href="#"
                 className="forgot-password"
-                onClick={(e) => {
-                }}
+                onClick={handleForgotPasswordClick} // Handle Forgot Password click
               >
                 Quên mật khẩu
               </a>
