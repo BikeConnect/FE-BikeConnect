@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
+
+
 import {
   BrowserRouter as Router,
   Route,
@@ -7,6 +9,7 @@ import {
   useLocation,
   Navigate,
 } from "react-router-dom";
+import { Button } from 'react-bootstrap';
 import HomePage from "./components/HomePage/HomePage";
 import RegisterOwner from "./components/RegisterOwner/RegisterOwner";
 import HeaderAfterLogin from "./components/Header/HeaderAfterLogin";
@@ -32,11 +35,14 @@ import { CustomerProvider } from "./components/UI_Admin/CustomerContext";
 import Support from "./components/Support/Support";
 import Register from "./components/Register/Register";
 import CusFilterOptions from "./components/CusFilterOptions/CusFilterOptions";
+import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
+import ResetPassword from "./components/ResetPassword/ResetPassword";
 
 function AppContent() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState("");
   const location = useLocation();
+
 
   console.log("Current userRole:", userRole);
 
@@ -103,6 +109,8 @@ function AppContent() {
         <Route path="/chat" element={<Chat />} />
         <Route path="/support" element={<Support />} />
         <Route path="/CusFilterOptions" element={<CusFilterOptions />} />
+        <Route path="/ForgotPassword" element={<ForgotPassword />} />
+        <Route path="/ResetPassword" element={<ResetPassword />} />
       </Routes>
     </div>
   );
