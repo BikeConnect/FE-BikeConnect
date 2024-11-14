@@ -38,12 +38,13 @@ const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
           password: formData.matKhau
         }),
       });
-
+      console.log('ownerResponse:', ownerResponse);
       if (ownerResponse.ok) {
         const data = await ownerResponse.json();
-        console.log('Đăng nhập chủ xe thành công:', data);
+        console.log('Đăng nhập chủ xe thành công:', data.accessToken);
+        localStorage.setItem('accessToken', data.accessToken);
         localStorage.setItem('userRole', 'owner');
-        localStorage.setItem('userData', JSON.stringify(data));
+        localStorage.setItem('userData', JSON.stringify(data.accessToken));
         onLoginSuccess("owner");
         onClose();
         navigate("/homepage");
@@ -64,6 +65,7 @@ const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
       if (customerResponse.ok) {
         const data = await customerResponse.json();
         console.log('Đăng nhập khách hàng thành công:', data);
+        localStorage.setItem('accessToken', data.token);
         localStorage.setItem('userRole', 'customer');
         localStorage.setItem('userData', JSON.stringify(data));
         onLoginSuccess("customer");

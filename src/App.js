@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from 'react-router-dom';
 import HomePage from "./components/HomePage/HomePage";
@@ -55,6 +55,8 @@ function AppContent() {
   };
 
   const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('userRole');
     setUserRole("");
     setIsLoggedIn(false);
   };
@@ -72,6 +74,16 @@ function AppContent() {
       <HeaderNoLogin onLoginSuccess={handleLogin} />
     );
   };
+
+  useEffect(() => {
+    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const savedUserRole = localStorage.getItem('userRole');
+    
+    if (loggedIn && savedUserRole) {
+        setIsLoggedIn(true);
+        setUserRole(savedUserRole);
+    }
+  },[])
 
   return (
     <div className="App">
