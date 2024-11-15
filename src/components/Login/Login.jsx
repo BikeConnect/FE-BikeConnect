@@ -23,6 +23,9 @@ const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
     setErrorMessage("");
   };
 
+  const handleForgotPasswordClick = () => {
+    navigate("/ForgotPassword"); // Navigate to ForgotPassword component
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -110,7 +113,7 @@ const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
               onChange={handleChange}
             />
             <label htmlFor="rememberMe">Ghi nhớ mật khẩu</label>
-            <a href="#" className="forgot-password">
+            <a href="#" className="forgot-password"  onClick={handleForgotPasswordClick}>
               Quên mật khẩu
             </a>
           </div>

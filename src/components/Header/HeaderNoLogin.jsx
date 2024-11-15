@@ -46,7 +46,7 @@ const HeaderNoLogin = ({ onLoginSuccess }) => {
                         </div>
                         <div className="menu-items">
                             <NavLink to="/" className="menu-link">Trang chủ</NavLink>
-                            <NavLink to="/rentals" className="menu-link">Cho thuê xe</NavLink>
+                            <NavLink to="RentalSignup" className="menu-link">Cho thuê xe</NavLink>
                             <NavLink to="/guide" className="menu-link">Hướng dẫn</NavLink>
                             <NavLink to="/policies" className="menu-link">Chính sách</NavLink>
                             <button className="menu-link support-button" onClick={handleSupportClick}>Hỗ trợ</button>
