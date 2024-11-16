@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from 'react-router-dom';
 import HomePage from "./components/HomePage/HomePage";
@@ -26,6 +26,9 @@ import { CustomerProvider } from './components/UI_Admin/CustomerContext';
 import Support from './components/Support/Support';
 import Register from "./components/Register/Register";
 import PostPage from './components/PostPage/PostPage';
+import CusFilterOptions from "./components/CusFilterOptions/CusFilterOptions";
+import ForgotPassword from './components/ForgotPassword/ForgotPassword';
+import ResetPassword from './components/ResetPassword/ResetPassword';
 
 
 
@@ -52,6 +55,8 @@ function AppContent() {
   };
 
   const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('userRole');
     setUserRole("");
     setIsLoggedIn(false);
   };
@@ -69,6 +74,16 @@ function AppContent() {
       <HeaderNoLogin onLoginSuccess={handleLogin} />
     );
   };
+
+  useEffect(() => {
+    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const savedUserRole = localStorage.getItem('userRole');
+
+    if (loggedIn && savedUserRole) {
+      setIsLoggedIn(true);
+      setUserRole(savedUserRole);
+    }
+  }, [])
 
   return (
     <div className="App">
@@ -97,6 +112,9 @@ function AppContent() {
         <Route path="/chat" element={<Chat />} />
         <Route path="/support" element={<Support />} />
         <Route path="/post" element={<PostPage />} />
+        <Route path="/CusFilterOptions" element={<CusFilterOptions />} />
+        <Route path="/ForgotPassword" element={<ForgotPassword />} />
+        <Route path="/reset-password/:resetToken" element={<ResetPassword />} />
       </Routes>
     </div>
   );

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './Register.css';
 import { FaGoogle, FaFacebook, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import VerifyEmail from '../VerifyEmail/VerifyEmail';
 
 const Register = ({ show, onClose }) => {
     const [formData, setFormData] = useState({
@@ -15,6 +16,8 @@ const Register = ({ show, onClose }) => {
 
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [showVerifyEmail, setShowVerifyEmail] = useState(false);
+    const [verificationCode, setVerificationCode] = useState(null);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -60,7 +63,8 @@ const Register = ({ show, onClose }) => {
             if (response.ok) {
                 const data = await response.json();
                 console.log('Đăng ký thành công:', data);
-                alert('Đăng ký thành công!');
+                setVerificationCode(data.verificationCode);
+                setShowVerifyEmail(true); // Hiển thị modal xác thực email
             } else {
                 const errorData = await response.json();
                 console.error('Đăng ký thất bại:', errorData);
@@ -93,98 +97,96 @@ const Register = ({ show, onClose }) => {
     }
 
     return (
-        <div className="register-overlay" onClick={onClose}>
-            <div className="register-container" onClick={(e) => e.stopPropagation()}>
-                <h2 className="register-title">Đăng kí</h2>
-                <button className="close-btn" onClick={onClose}>×</button>
-                <form onSubmit={(e) => e.preventDefault()}>
-                    <input
-                        type="text"
-                        name="displayName"
-                        placeholder="Tên hiển thị"
-                        value={formData.displayName}
-                        onChange={handleChange}
-                        required
-                        className="input-field"
-                    />
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="Email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                        className="input-field"
-                    />
-
-                    <div className="password-container">
+        <>
+            <div className="register-overlay" onClick={onClose}>
+                <div className="register-container" onClick={(e) => e.stopPropagation()}>
+                    <h2 className="register-title">Đăng kí</h2>
+                    <button className="close-btn" onClick={onClose}>×</button>
+                    <form onSubmit={(e) => e.preventDefault()}>
+                        {/* Các trường nhập liệu */}
                         <input
-                            type={showPassword ? 'text' : 'password'}
-                            name="password"
-                            placeholder="Mật khẩu"
-                            value={formData.password}
+                            type="text"
+                            name="displayName"
+                            placeholder="Tên hiển thị"
+                            value={formData.displayName}
                             onChange={handleChange}
                             required
                             className="input-field"
                         />
-                        <span className="password-toggle" onClick={togglePasswordVisibility}>
-                            {showPassword ? <FaEyeSlash /> : <FaEye />}
-                        </span>
-                    </div>
-                    <div className="password-container">
                         <input
-                            type={showConfirmPassword ? 'text' : 'password'}
-                            name="confirmPassword"
-                            placeholder="Xác nhận mật khẩu"
-                            value={formData.confirmPassword}
+                            type="email"
+                            name="email"
+                            placeholder="Email"
+                            value={formData.email}
                             onChange={handleChange}
                             required
                             className="input-field"
                         />
-                        <span className="password-toggle" onClick={toggleConfirmPasswordVisibility}>
-                            {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-                        </span>
-                    </div>
-                    <div className="checkbox-container">
-                        <input
-                            type="checkbox"
-                            name="agreeTerms"
-                            checked={formData.agreeTerms}
-                            onChange={handleChange}
-                            required
-                        />
-                        <label htmlFor="agreeTerms">
-                            Tôi đã đọc và chấp thuận với <Link to="/policies">Chính sách và Quy định</Link> của Bike Connect
-                        </label>
-                    </div>
 
-                    <div className="role-buttons">
-                        <button
-                            type="button"
-                            className="role-btn"
-                            onClick={() => handleRoleSelectAndSubmit('customer')}
-                        >
-                            Đăng kí cho người đi thuê xe
-                        </button>
-                        <button
-                            type="button"
-                            className="role-btn"
-                            onClick={() => handleRoleSelectAndSubmit('owner')}
-                        >
-                            Đăng kí để trở thành chủ thuê xe
-                        </button>
-                    </div>
-                </form>
-                <div className="social-login">
-                    <button className="google-btn">
-                        <FaGoogle /> Google
-                    </button>
-                    <button className="facebook-btn">
-                        <FaFacebook /> Facebook
-                    </button>
+                        <div className="password-container">
+                            <input
+                                type={showPassword ? 'text' : 'password'}
+                                name="password"
+                                placeholder="Mật khẩu"
+                                value={formData.password}
+                                onChange={handleChange}
+                                required
+                                className="input-field"
+                            />
+                            <span className="password-toggle" onClick={togglePasswordVisibility}>
+                                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                            </span>
+                        </div>
+                        <div className="password-container">
+                            <input
+                                type={showConfirmPassword ? 'text' : 'password'}
+                                name="confirmPassword"
+                                placeholder="Xác nhận mật khẩu"
+                                value={formData.confirmPassword}
+                                onChange={handleChange}
+                                required
+                                className="input-field"
+                            />
+                            <span className="password-toggle" onClick={toggleConfirmPasswordVisibility}>
+                                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                            </span>
+                        </div>
+                        <div className="checkbox-container">
+                            <input
+                                type="checkbox"
+                                name="agreeTerms"
+                                checked={formData.agreeTerms}
+                                onChange={handleChange}
+                                required
+                            />
+                            <label htmlFor="agreeTerms">
+                                Tôi đã đọc và chấp thuận với <Link to="/policies">Chính sách và Quy định</Link> của Bike Connect
+                            </label>
+                        </div>
+
+                        <div className="role-buttons">
+                            <button
+                                type="button"
+                                className="role-btn"
+                                onClick={() => handleRoleSelectAndSubmit('customer')}
+                            >
+                                Đăng kí cho người đi thuê xe
+                            </button>
+                            <button
+                                type="button"
+                                className="role-btn"
+                                onClick={() => handleRoleSelectAndSubmit('owner')}
+                            >
+                                Đăng kí để trở thành chủ thuê xe
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
-        </div>
+            {showVerifyEmail && (
+                <VerifyEmail role={formData.role} onClose={() => setShowVerifyEmail(false)} />
+            )}
+        </>
     );
 };
 
