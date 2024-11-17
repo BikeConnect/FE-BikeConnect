@@ -37,6 +37,10 @@ const CusFilterOptions = () => {
     const selectedDates = queryParams.get('dates') ? queryParams.get('dates').split(',') : [];
 
 
+    const selectedLocations = queryParams.get('location')
+  ? queryParams.get('location').split(',').map(loc => loc.trim())
+  : [];
+
     // Hàm định dạng số với dấu ','
     const formatNumberWithCommas = (value) => {
         const numericValue = value.replace(/\D/g, '');
@@ -141,10 +145,23 @@ const CusFilterOptions = () => {
 
     return (
         <Container className="centered-container mt-4 mb-5">
-            <h1 className="my-4 text-center">Thông tin </h1>
-            <h2>Thông tin tìm kiếm</h2>
-            <p>Địa điểm: {selectedLocation}</p>
-            <p>Thời gian: {selectedDates.join(' - ')}</p>
+            <h1 className="my-4 text-center">Kết quả cho tìm kiếm </h1>
+            <p>Địa điểm: 
+  {selectedLocations.length > 1 
+    ? `${selectedLocations.slice(0, 2).join(', ')}${selectedLocations.length > 2 ? '...' : ''}`
+    : selectedLocations.length === 1
+    ? selectedLocations[0]
+    : 'Không chọn'}
+</p>
+
+            <p>Thời gian:
+                {selectedDates.length > 1
+                    ? `${new Date(selectedDates[0]).toLocaleDateString('vi-VN')} đến ${new Date(selectedDates[selectedDates.length - 1]).toLocaleDateString('vi-VN')}`
+                    : selectedDates.length === 1
+                        ? `${new Date(selectedDates[0]).toLocaleDateString('vi-VN')}`
+                        : 'Không chọn'}
+            </p>
+
             <Row>
                 <Col md={3} className="mb-4">
                     <div className="filter-container">
@@ -202,7 +219,7 @@ const CusFilterOptions = () => {
                             </Form.Group>
                         </Col>
 
-                        <Col xs={6} md={3}>
+                        <Col xs={5} md={5}>
                             <Form.Group controlId="price" className="filter-group">
                                 <Form.Label>Khoảng Giá</Form.Label>
                                 <div className="d-flex">
@@ -228,7 +245,7 @@ const CusFilterOptions = () => {
                         </Col>
 
                         <Col xs={6} md={3}>
-                        <Form.Group controlId="sortBy" className="filter-group">
+                            <Form.Group controlId="sortBy" className="filter-group">
                                 <Form.Label>Sắp Xếp Theo</Form.Label>
                                 <Form.Control
                                     as="select"
