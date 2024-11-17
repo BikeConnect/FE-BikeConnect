@@ -113,8 +113,10 @@ function AppContent() {
         <Route path="/support" element={<Support />} />
         <Route path="/post" element={<PostPage />} />
         <Route path="/CusFilterOptions" element={<CusFilterOptions />} />
-        <Route path="/ForgotPassword" element={<ForgotPassword />} />
-        <Route path="/ResetPassword" element={<ResetPassword />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
+        <Route path="/owner-reset-password/:token" element={<ResetPassword />} />
+
       </Routes>
     </div>
   );

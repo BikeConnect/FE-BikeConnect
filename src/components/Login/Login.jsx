@@ -9,7 +9,7 @@ const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
     matKhau: "",
     ghiNhoMatKhau: false,
   });
-
+  const [selectedRole, setSelectedRole] = useState("customer");
   const [hienMatKhau, setHienMatKhau] = useState(false);
   const [thongBaoLoi, setThongBaoLoi] = useState("");
   const navigate = useNavigate();
@@ -23,62 +23,119 @@ const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
     setThongBaoLoi("");
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setThongBaoLoi("");
+
+  //   try {
+  //     const ownerResponse = await fetch(
+  //       "http://localhost:8080/api/auth/owner-login",
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({
+  //           email: formData.email,
+  //           password: formData.matKhau,
+  //         }),
+  //       }
+  //     );
+  //     console.log("ownerResponse:", ownerResponse);
+  //     if (ownerResponse.ok) {
+  //       const data = await ownerResponse.json();
+  //       console.log("Đăng nhập chủ xe thành công:", data.accessToken);
+  //       localStorage.setItem("accessToken", data.accessToken);
+  //       localStorage.setItem("userRole", "owner");
+  //       localStorage.setItem("userData", JSON.stringify(data.accessToken));
+  //       onLoginSuccess("owner");
+  //       onClose();
+  //       navigate("/homepage");
+  //       return;
+  //     }
+
+  //     const customerResponse = await fetch(
+  //       "http://localhost:8080/api/customer/customer-login",
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({
+  //           email: formData.email,
+  //           password: formData.matKhau,
+  //         }),
+  //       }
+  //     );
+
+  //     if (customerResponse.ok) {
+  //       const data = await customerResponse.json();
+  //       console.log("Đăng nhập khách hàng thành công:", data);
+  //       localStorage.setItem("accessToken", data.token);
+  //       localStorage.setItem("userRole", "customer");
+  //       localStorage.setItem("userData", JSON.stringify(data));
+  //       onLoginSuccess("customer");
+  //       onClose();
+  //       navigate("/homepage");
+  //       return;
+  //     }
+
+  //     setThongBaoLoi("Email hoặc mật khẩu không chính xác!");
+  //   } catch (error) {
+  //     console.error("Lỗi đăng nhập:", error);
+  //     setThongBaoLoi(
+  //       "Đã xảy ra lỗi trong quá trình đăng nhập. Vui lòng thử lại sau!"
+  //     );
+  //   }
+  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
     setThongBaoLoi("");
 
     try {
-      const ownerResponse = await fetch('http://localhost:8080/api/auth/owner-login', {
-        method: 'POST',
+      // Xác định endpoint dựa vào selectedRole
+      const endpoint =
+        selectedRole === "owner"
+          ? "http://localhost:8080/api/auth/owner-login"
+          : "http://localhost:8080/api/customer/customer-login";
+
+      const response = await fetch(endpoint, {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email: formData.email,
-          password: formData.matKhau
-        }),
-      });
-      console.log('ownerResponse:', ownerResponse);
-      if (ownerResponse.ok) {
-        const data = await ownerResponse.json();
-        console.log('Đăng nhập chủ xe thành công:', data.accessToken);
-        localStorage.setItem('accessToken', data.accessToken);
-        localStorage.setItem('userRole', 'owner');
-        localStorage.setItem('userData', JSON.stringify(data.accessToken));
-        onLoginSuccess("owner");
-        onClose();
-        navigate("/homepage");
-        return;
-      }
-
-      const customerResponse = await fetch('http://localhost:8080/api/customer/customer-login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.matKhau
+          password: formData.matKhau,
         }),
       });
 
-      if (customerResponse.ok) {
-        const data = await customerResponse.json();
-        console.log('Đăng nhập khách hàng thành công:', data);
-        localStorage.setItem('accessToken', data.token);
-        localStorage.setItem('userRole', 'customer');
-        localStorage.setItem('userData', JSON.stringify(data));
-        onLoginSuccess("customer");
+      if (response.ok) {
+        const data = await response.json();
+        console.log(`Đăng nhập ${selectedRole} thành công:`, data);
+
+        if (selectedRole === "owner") {
+          localStorage.setItem("accessToken", data.accessToken);
+          localStorage.setItem("userRole", "owner");
+          localStorage.setItem("userData", JSON.stringify(data.accessToken));
+        } else {
+          localStorage.setItem("accessToken", data.token);
+          localStorage.setItem("userRole", "customer");
+          localStorage.setItem("userData", JSON.stringify(data));
+        }
+
+        onLoginSuccess(selectedRole);
         onClose();
         navigate("/homepage");
         return;
       }
 
       setThongBaoLoi("Email hoặc mật khẩu không chính xác!");
-
     } catch (error) {
-      console.error('Lỗi đăng nhập:', error);
-      setThongBaoLoi("Đã xảy ra lỗi trong quá trình đăng nhập. Vui lòng thử lại sau!");
+      console.error("Lỗi đăng nhập:", error);
+      setThongBaoLoi(
+        "Đã xảy ra lỗi trong quá trình đăng nhập. Vui lòng thử lại sau!"
+      );
     }
   };
 
@@ -86,8 +143,19 @@ const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
     setHienMatKhau(!hienMatKhau);
   };
 
-  const handleForgotPasswordClick = () => {
-    navigate("/ForgotPassword"); // Navigate to ForgotPassword component
+  const handleForgotPasswordClick = (e) => {
+    e.preventDefault();
+    if (onClose) onClose();
+
+    navigate("/forgot-password", {
+      state: { userRole: selectedRole },
+    });
+  };
+
+  const handleRoleChange = (role) => {
+    setSelectedRole(role);
+    localStorage.setItem("userRole", role);
+    setThongBaoLoi("");
   };
 
   if (!show) {
@@ -102,6 +170,30 @@ const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
             ×
           </button>
           <h2 className="login-title">Đăng nhập</h2>
+          <div className="flex justify-center space-x-4 mb-6">
+            <button
+              type="button"
+              onClick={() => handleRoleChange("customer")}
+              className={`px-4 py-2 rounded-md ${
+                selectedRole === "customer"
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-200 text-gray-700"
+              } transition-colors duration-200`}
+            >
+              Người thuê
+            </button>
+            <button
+              type="button"
+              onClick={() => handleRoleChange("owner")}
+              className={`px-4 py-2 rounded-md ${
+                selectedRole === "owner"
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-200 text-gray-700"
+              } transition-colors duration-200`}
+            >
+              Người cho thuê
+            </button>
+          </div>
           {thongBaoLoi && <p className="error-message">{thongBaoLoi}</p>}
           <form onSubmit={handleSubmit}>
             <input
@@ -123,10 +215,7 @@ const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
                 required
                 className="input-field"
               />
-              <span
-                className="password-toggle"
-                onClick={toggleMatKhau}
-              >
+              <span className="password-toggle" onClick={toggleMatKhau}>
                 {hienMatKhau ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
@@ -140,8 +229,8 @@ const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
               <label>Ghi nhớ mật khẩu</label>
               <a
                 href="#"
-                className="forgot-password"
-                onClick={handleForgotPasswordClick} // Handle Forgot Password click
+                className="text-blue-600 hover:text-blue-800 text-sm ml-auto transition-colors duration-200"
+                onClick={handleForgotPasswordClick}
               >
                 Quên mật khẩu
               </a>
@@ -153,7 +242,7 @@ const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
           </form>
           <div className="additional-options">
             <p>
-              Bạn chưa có tài khoản?{" "}
+              Bạn chưa có tài khoản?
               <a href="#" className="register-link" onClick={onRegisterClick}>
                 Đăng ký ngay
               </a>

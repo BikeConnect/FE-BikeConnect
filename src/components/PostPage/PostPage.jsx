@@ -4,7 +4,6 @@ import AssetUpload from "../AssetUpload/AssetUpload";
 
 const PostPage = () => {
   const [title, setTitle] = useState("");
-  // const [slug, setSlug] = useState('');
   const [category, setCategory] = useState("");
   const [brand, setBrand] = useState("");
   const [price, setPrice] = useState(0);
@@ -34,7 +33,6 @@ const PostPage = () => {
 
     const newErrors = {};
     if (!title.trim()) newErrors.title = "Tiêu đề không được để trống";
-    // if (!slug.trim()) newErrors.slug = 'Slug không được để trống';
     if (!category.trim()) newErrors.category = "Danh mục không được để trống";
     if (!brand.trim()) newErrors.brand = "Thương hiệu không được để trống";
     if (price <= 0) newErrors.price = "Giá không hợp lệ";
@@ -56,11 +54,9 @@ const PostPage = () => {
           alert("Vui lòng đăng nhập để đăng bài");
           return;
         }
-        // Lấy ngày hiện tại làm startDate
         const startDate = new Date().toISOString();
-        // Tạo endDate bằng cách cộng 1 ngày vào startDate
         const endDate = new Date();
-        endDate.setDate(endDate.getDate() + 1); // Cộng thêm 1 ngày
+        endDate.setDate(endDate.getDate() + 1); 
         const endDateString = endDate.toISOString();
 
         const response = await fetch("http://localhost:8080/api/post/", {
@@ -71,7 +67,6 @@ const PostPage = () => {
           },
           body: JSON.stringify({
             name: title,
-            // slug: slug,
             category: category,
             brand: brand,
             price: price,
@@ -91,7 +86,6 @@ const PostPage = () => {
         if (response.ok) {
           console.log("Đăng bài thành công:", {
             title,
-            // slug,
             category,
             brand,
             price,
@@ -121,7 +115,6 @@ const PostPage = () => {
         <h1>Đăng Bài</h1>
 
         <div className="form-container">
-          {/* Row 1 */}
           <div className="form-row">
             <div className="form-group">
               <label>Tiêu đề:</label>
@@ -150,7 +143,6 @@ const PostPage = () => {
             </div>
           </div>
 
-          {/* Row 2 */}
           <div className="form-row">
             <div className="form-group">
               <label>Thương hiệu:</label>
@@ -179,7 +171,6 @@ const PostPage = () => {
             </div>
           </div>
 
-          {/* Row 3 */}
           <div className="form-row">
             <div className="form-group">
               <label>Giá:</label>
@@ -208,7 +199,6 @@ const PostPage = () => {
             </div>
           </div>
 
-          {/* Row 4 */}
           <div className="form-row">
             <div className="form-group">
               <label>Chiết khấu:</label>
@@ -243,7 +233,6 @@ const PostPage = () => {
             </div>
           </div>
 
-          {/* Mô tả - Full width */}
           <div className="form-group full-width">
             <label>Mô tả:</label>
             <textarea
