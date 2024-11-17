@@ -29,8 +29,8 @@ import PostPage from './components/PostPage/PostPage';
 import CusFilterOptions from "./components/CusFilterOptions/CusFilterOptions";
 import ForgotPassword from './components/ForgotPassword/ForgotPassword';
 import ResetPassword from './components/ResetPassword/ResetPassword';
-
-
+import ContractManagement from './components/Contract/ContractManagement';
+import CreateContract from './components/Contract/CreateContract';
 
 function AppContent() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -115,6 +115,9 @@ function AppContent() {
         <Route path="/CusFilterOptions" element={<CusFilterOptions />} />
         <Route path="/ForgotPassword" element={<ForgotPassword />} />
         <Route path="/reset-password/:resetToken" element={<ResetPassword />} />
+        <Route path="/managecontract" element={<ContractManagement />} />
+        <Route path="/contract" element={<CreateContract />} />
+
       </Routes>
     </div>
   );
