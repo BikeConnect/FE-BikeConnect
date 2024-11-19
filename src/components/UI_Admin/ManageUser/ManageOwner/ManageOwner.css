@@ -1,7 +1,6 @@
-.manage-customer-container {
+.manage-owner-container {
     padding: 20px;
     font-family: 'Roboto', sans-serif;
-    margin-left: 10%;
 }
 
 .search-sort-container {
@@ -30,20 +29,20 @@
     margin-left: 10px;
 }
 
-.customer-table {
+.owner-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
 }
 
-.customer-table th,
-.customer-table td {
+.owner-table th,
+.owner-table td {
     border: 1px solid #ddd;
     padding: 10px;
     text-align: center;
 }
 
-.customer-table th {
+.owner-table th {
     background-color: #472CB2;
     color: white;
 }
@@ -94,7 +93,7 @@
 }
 
 .status.inactive {
-    background-color: #dc3545;
+    background-color: #ffc107;
 }
 
 .confirmation-modal {

@@ -1,0 +1,101 @@
+.auth-customer-container {
+    padding: 20px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.search-sort-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    padding: 8px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.sort-select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.sort-label {
+    margin: 0 10px;
+}
+
+.request-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.request-table th,
+.request-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.request-table th {
+    background-color: #472CB2;
+    color: white;
+}
+
+.icon {
+    margin: 0 5px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.icon.approve {
+    color: #28a745;
+}
+
+.icon.approve:hover {
+    color: #218838;
+}
+
+.icon.delete {
+    color: #dc3545;
+}
+
+.icon.delete:hover {
+    color: #c82333;
+}
+
+.status {
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
+}
+
+.status.approved {
+    background-color: #28a745;
+}
+
+.status.pending {
+    background-color: #ffc107;
+    color: black;
+}
+
+.pagination {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.page-button {
+    margin-left: 5px;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.page-button.active {
+    background-color: #472CB2;
+    color: white;
+}

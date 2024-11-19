@@ -12,13 +12,13 @@ const NavbarDashboard = () => {
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to="/manageCus" className="nav-link" activeClassName="active">
-                        Quản lý tài khoản khách hàng
+                    <NavLink to="/manageuser" className="nav-link" activeClassName="active">
+                        Quản lý tài khoản người dùng
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to="/manageOwner" className="nav-link" activeClassName="active">
-                        Quản lý tài khoản chủ xe
+                    <NavLink to="/valrequest" className="nav-link" activeClassName="active">
+                        Xác thực yêu cầu
                     </NavLink>
                 </li>
             </ul>

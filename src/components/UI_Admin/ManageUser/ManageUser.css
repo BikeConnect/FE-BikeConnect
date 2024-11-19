@@ -1,0 +1,30 @@
+.auth-user-container {
+    padding: 20px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.tab-button {
+    padding: 10px 20px;
+    margin-left: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    color: #472CB2;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.tab-button.active {
+    background-color: #472CB2;
+    color: white;
+}
+
+.tab-content {
+    margin-top: 20px;
+}

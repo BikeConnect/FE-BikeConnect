@@ -20,8 +20,6 @@ import PrinciplePage from './components/Policy/Principle';
 import PrivacyPolicy from './components/Policy/PrivacyPolicy';
 import Complaints from './components/Policy/Complaints';
 import Dashboard from './components/UI_Admin/Dashboard/Dashboard';
-import ManageCustomer from './components/UI_Admin/ManageCustomer/ManageCustomer';
-import ManageOwner from './components/UI_Admin/ManageOwner/ManageOwner';
 import { CustomerProvider } from './components/UI_Admin/CustomerContext';
 import Support from './components/Support/Support';
 import Register from "./components/Register/Register";
@@ -31,6 +29,8 @@ import ForgotPassword from './components/ForgotPassword/ForgotPassword';
 import ResetPassword from './components/ResetPassword/ResetPassword';
 import ContractManagement from './components/Contract/ContractManagement';
 import CreateContract from './components/Contract/CreateContract';
+import AuthUser from './components/UI_Admin/AuthUser/AuthUser';
+import ManageUser from './components/UI_Admin/ManageUser/ManageUser';
 
 function AppContent() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -106,8 +106,6 @@ function AppContent() {
         <Route path="/policies2" element={<PrivacyPolicy />} />
         <Route path="/policies3" element={<Complaints />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/manageCus" element={<ManageCustomer />} />
-        <Route path="/manageOwner" element={<ManageOwner />} />
         <Route path="/BikeDetail/:name" element={<BikeDetail />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/support" element={<Support />} />
@@ -117,6 +115,8 @@ function AppContent() {
         <Route path="/reset-password/:resetToken" element={<ResetPassword />} />
         <Route path="/managecontract" element={<ContractManagement />} />
         <Route path="/contract" element={<CreateContract />} />
+        <Route path="/valrequest" element={<AuthUser />} />
+        <Route path="/manageuser" element={<ManageUser />} />
 
       </Routes>
     </div>

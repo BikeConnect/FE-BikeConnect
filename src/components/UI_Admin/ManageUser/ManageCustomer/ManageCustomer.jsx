@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import './ManageCustomer.css';
-import NavbarDashboard from '../NavbarDashboard/NavbarDashboard';
-import { useCustomer } from '../CustomerContext';
+import { useCustomer } from '../../CustomerContext';
 
 const getRandomName = () => {
     const names = [
@@ -26,7 +25,7 @@ const ManageCustomer = () => {
             password: `password${index + 1}`,
             registrationDate: `2024-0${(index % 12) + 1}-01`,
             displayName: getRandomName(),
-            status: 'Còn hoạt động',
+            status: index % 3 === 0 ? 'Chưa kích hoạt' : 'Đã kích hoạt',
         }))
     );
 
@@ -37,15 +36,15 @@ const ManageCustomer = () => {
         setCustomerCount(customers.length);
     }, [customers, setCustomerCount]);
 
-    const handleEditClick = (id) => {
+    const handleActivateClick = (id) => {
         setActiveCustomerId(id);
-        setConfirmationMessage('Bạn có muốn thay đổi Tình trạng người dùng thành Hết hoạt động không?');
+        setConfirmationMessage('Bạn có muốn kích hoạt tài khoản này không?');
     };
 
-    const confirmEdit = () => {
+    const confirmActivate = () => {
         setCustomers(customers.map(customer =>
             customer.id === activeCustomerId
-                ? { ...customer, status: 'Hết hoạt động' }
+                ? { ...customer, status: 'Đã kích hoạt' }
                 : customer
         ));
         setConfirmationMessage('');
@@ -75,7 +74,6 @@ const ManageCustomer = () => {
 
     return (
         <div>
-            <NavbarDashboard />
             <div className="manage-customer-container">
                 <h1>Quản lý tài khoản khách hàng</h1>
                 <div className="search-sort-container">
@@ -124,13 +122,21 @@ const ManageCustomer = () => {
                                 <td>{customer.password.replace(/.(?=.{4})/g, '*')}</td>
                                 <td>{customer.registrationDate}</td>
                                 <td>
-                                    <span className={`status ${customer.status === 'Còn hoạt động' ? 'active' : 'inactive'}`}>
+                                    <span className={`status ${customer.status === 'Đã kích hoạt' ? 'active' : 'inactive'}`}>
                                         {customer.status}
                                     </span>
                                 </td>
                                 <td>
-                                    <FaEdit className="icon" onClick={() => handleEditClick(customer.id)} />
-                                    <FaTrash className="icon" onClick={() => handleDeleteClick(customer.id)} />
+                                    {customer.status === 'Chưa kích hoạt' && (
+                                        <>
+                                            <FaEdit className="icon" onClick={() => handleActivateClick(customer.id)} />
+                                            <FaTrash className="icon" onClick={() => handleDeleteClick(customer.id)} />
+                                        </>
+
+                                    )}
+                                    {customer.status === 'Đã kích hoạt' && (
+                                        <FaTrash className="icon" onClick={() => handleDeleteClick(customer.id)} />
+                                    )}
                                 </td>
                             </tr>
                         ))}
@@ -150,7 +156,7 @@ const ManageCustomer = () => {
                 {confirmationMessage && (
                     <div className="confirmation-modal">
                         <p>{confirmationMessage}</p>
-                        <button onClick={activeCustomerId !== null && confirmationMessage.includes('Hết hoạt động') ? confirmEdit : confirmDelete}>
+                        <button onClick={activeCustomerId !== null && confirmationMessage.includes('kích hoạt') ? confirmActivate : confirmDelete}>
                             Xác nhận
                         </button>
                         <button onClick={() => setConfirmationMessage('')}>Hủy</button>
