@@ -93,7 +93,6 @@ const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
     setThongBaoLoi("");
 
     try {
-      // Xác định endpoint dựa vào selectedRole
       const endpoint =
         selectedRole === "owner"
           ? "http://localhost:8080/api/auth/owner-login"

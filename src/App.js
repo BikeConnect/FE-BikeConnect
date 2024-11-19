@@ -1,34 +1,40 @@
-import React, { useEffect, useState } from 'react';
-import './App.css';
-import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useLocation,
+  Navigate,
+} from "react-router-dom";
 import HomePage from "./components/HomePage/HomePage";
-import RegisterOwner from './components/RegisterOwner/RegisterOwner';
-import HeaderAfterLogin from './components/Header/HeaderAfterLogin';
-import HeaderNoLogin from './components/Header/HeaderNoLogin';
-import NavBar from './components/NavBar/NavBar';
-import CustomerProfile from './components/Profile/CustomerProfile';
-import ChangePassword from './components/ChangePassword/ChangePassword';
-import RentalHistory from './components/RentalHistory/RentalHistory';
-import VehicleRental from './components/VehicleRental/VehicleRental';
-import Guide from './components/Guide/Guide';
-import BookingGuide from './components/Guide/BookingGuide.';
-import PaymentGuide from './components/Guide/PaymentGuide';
-import BikeDetail from './components/BikeDetail/BikeDetail';
-import Chat from './components/Chat/Chat';
-import Policy from './components/Policy/Policy';
-import PrinciplePage from './components/Policy/Principle';
-import PrivacyPolicy from './components/Policy/PrivacyPolicy';
-import Complaints from './components/Policy/Complaints';
-import Dashboard from './components/UI_Admin/Dashboard/Dashboard';
-import ManageCustomer from './components/UI_Admin/ManageCustomer/ManageCustomer';
-import ManageOwner from './components/UI_Admin/ManageOwner/ManageOwner';
-import { CustomerProvider } from './components/UI_Admin/CustomerContext';
-import Support from './components/Support/Support';
+import RegisterOwner from "./components/RegisterOwner/RegisterOwner";
+import HeaderAfterLogin from "./components/Header/HeaderAfterLogin";
+import HeaderNoLogin from "./components/Header/HeaderNoLogin";
+import NavBar from "./components/NavBar/NavBar";
+import CustomerProfile from "./components/Profile/CustomerProfile";
+import ChangePassword from "./components/ChangePassword/ChangePassword";
+import RentalHistory from "./components/RentalHistory/RentalHistory";
+import VehicleRental from "./components/VehicleRental/VehicleRental";
+import Guide from "./components/Guide/Guide";
+import BookingGuide from "./components/Guide/BookingGuide.";
+import PaymentGuide from "./components/Guide/PaymentGuide";
+import BikeDetail from "./components/BikeDetail/BikeDetail";
+import Chat from "./components/Chat/Chat";
+import Policy from "./components/Policy/Policy";
+import PrinciplePage from "./components/Policy/Principle";
+import PrivacyPolicy from "./components/Policy/PrivacyPolicy";
+import Complaints from "./components/Policy/Complaints";
+import Dashboard from "./components/UI_Admin/Dashboard/Dashboard";
+import ManageCustomer from "./components/UI_Admin/ManageCustomer/ManageCustomer";
+import ManageOwner from "./components/UI_Admin/ManageOwner/ManageOwner";
+import { CustomerProvider } from "./components/UI_Admin/CustomerContext";
+import Support from "./components/Support/Support";
 import Register from "./components/Register/Register";
-import PostPage from './components/PostPage/PostPage';
+import PostPage from "./components/PostPage/PostPage";
 import CusFilterOptions from "./components/CusFilterOptions/CusFilterOptions";
-import ForgotPassword from './components/ForgotPassword/ForgotPassword';
-import ResetPassword from './components/ResetPassword/ResetPassword';
+import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
+import ResetPassword from "./components/ResetPassword/ResetPassword";
 
 
 
@@ -55,8 +61,8 @@ function AppContent() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('userRole');
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("userRole");
     setUserRole("");
     setIsLoggedIn(false);
   };
@@ -76,20 +82,23 @@ function AppContent() {
   };
 
   useEffect(() => {
-    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    const savedUserRole = localStorage.getItem('userRole');
-    
+    const loggedIn = localStorage.getItem("isLoggedIn") === "true";
+    const savedUserRole = localStorage.getItem("userRole");
+
     if (loggedIn && savedUserRole) {
-        setIsLoggedIn(true);
-        setUserRole(savedUserRole);
+      setIsLoggedIn(true);
+      setUserRole(savedUserRole);
     }
-  },[])
+  }, []);
 
   return (
     <div className="App">
       <Header />
       <ShowNavBar userRole={userRole} />
       <Routes>
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/manageCus" element={<ManageCustomer />} />
+        <Route path="/manageOwner" element={<ManageOwner />} />
         <Route path="/" element={<HomePage />} />
         <Route path="/homepage" element={<HomePage />} />
         <Route path="/register" element={<Register />} />{" "}
@@ -105,9 +114,6 @@ function AppContent() {
         <Route path="/policies1" element={<PrinciplePage />} />
         <Route path="/policies2" element={<PrivacyPolicy />} />
         <Route path="/policies3" element={<Complaints />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/manageCus" element={<ManageCustomer />} />
-        <Route path="/manageOwner" element={<ManageOwner />} />
         <Route path="/BikeDetail/:name" element={<BikeDetail />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/support" element={<Support />} />
@@ -115,8 +121,10 @@ function AppContent() {
         <Route path="/CusFilterOptions" element={<CusFilterOptions />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
-        <Route path="/owner-reset-password/:token" element={<ResetPassword />} />
-
+        <Route
+          path="/owner-reset-password/:token"
+          element={<ResetPassword />}
+        />
       </Routes>
     </div>
   );

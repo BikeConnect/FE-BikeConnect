@@ -28,11 +28,11 @@ const ForgotPassword = () => {
         email: email,
       });
       console.log("response::::", response);
-      if (response.data.success) {
+      if (response.status === 200) {
         setSuccess("Vui lòng kiểm tra email để đặt lại mật khẩu");
         setEmail("");
       } else {
-        setError(response.data.message);
+        setError("Email không tồn tại");
       }
     } catch (error) {
       setError(error.response?.data?.message);

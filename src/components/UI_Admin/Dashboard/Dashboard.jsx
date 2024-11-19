@@ -9,7 +9,6 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 const Dashboard = () => {
     const { customerCount, ownerCount } = useCustomer();
-
     const revenueData = {
         labels: ['Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10'],
         datasets: [
