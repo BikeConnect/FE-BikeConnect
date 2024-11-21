@@ -1,0 +1,103 @@
+@keyframes multiShadow {
+  0% {
+    box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0);
+  }
+  100% {
+    box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.75);
+  }
+}
+
+.post-list-owner {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 260px;
+  margin-right: 20px;
+  gap: 20px;
+}
+
+.icon-star,
+.icon-motorcycle {
+  width: 20px;
+  height: 20px;
+}
+
+.post-list-figure {
+  display: flex;
+  overflow: hidden;
+  justify-content: center;
+  margin: 24px 24px 0;
+  border-radius: 12px;
+}
+
+.post-list-item {
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  box-shadow: -1px -1px 25px rgba(0, 0, 0, 0.1);
+  flex: 0 0 30%;
+  cursor: pointer;
+  transition: transform 0.5s ease;
+}
+
+.post-list-item:hover {
+  transform: translateY(-10px);
+  animation: multiShadow 0.8s forwards, transform 3s ease;
+}
+
+.post-list-item:is(:hover, :focus-within) .post-list-figure .post-list-image {
+  opacity: 0.9;
+  transform: scale(1.1);
+  transition: all 0.3s ease;
+}
+
+.post-list-image {
+  height: 246px;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.post-list-item-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+  padding: 0 24px 20px;
+  margin-top: 18px;
+}
+
+.post-list-item-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #212529;
+  margin-bottom: 0;
+}
+
+.icon-motorcycle {
+  fill: #686868;
+}
+
+.post-list-item-brand {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 16px;
+  color: #686868;
+}
+
+.post-list-item-rating {
+  display: flex;
+  gap: 6px;
+}
+
+.post-list-item-price {
+  font-size: 17px;
+  font-weight: 700;
+  color: #212529;
+  margin-bottom: 0;
+  letter-spacing: 0.4px;
+}
+
+.icon-star {
+  fill: #ffd700;
+}

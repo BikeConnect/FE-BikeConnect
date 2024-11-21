@@ -19,6 +19,9 @@ const NavBar = ({ userRole, children }) => {
             Lịch sử thuê xe
           </NavLink>
         )}
+        <NavLink to="/postlistowner" activeClassName="active">
+          Danh sách xe
+        </NavLink>
         <NavLink to="/changepassword" activeClassName="active">
           Đổi mật khẩu
         </NavLink>

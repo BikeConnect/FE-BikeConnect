@@ -26,8 +26,8 @@ import PrinciplePage from "./components/Policy/Principle";
 import PrivacyPolicy from "./components/Policy/PrivacyPolicy";
 import Complaints from "./components/Policy/Complaints";
 import Dashboard from "./components/UI_Admin/Dashboard/Dashboard";
-import ManageCustomer from "./components/UI_Admin/ManageCustomer/ManageCustomer";
-import ManageOwner from "./components/UI_Admin/ManageOwner/ManageOwner";
+import ManageCustomer from "./components/UI_Admin/ManageUser/ManageCustomer/ManageCustomer";
+import ManageOwner from "./components/UI_Admin/ManageUser/ManageOwner/ManageOwner";
 import { CustomerProvider } from "./components/UI_Admin/CustomerContext";
 import Support from "./components/Support/Support";
 import Register from "./components/Register/Register";
@@ -35,7 +35,7 @@ import PostPage from "./components/PostPage/PostPage";
 import CusFilterOptions from "./components/CusFilterOptions/CusFilterOptions";
 import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
 import ResetPassword from "./components/ResetPassword/ResetPassword";
-
+import PostListOwner from "./components/PostListOwner/PostListOwner";
 
 
 function AppContent() {
@@ -125,6 +125,7 @@ function AppContent() {
           path="/owner-reset-password/:token"
           element={<ResetPassword />}
         />
+        <Route path="/postlistowner" element={<PostListOwner />} />
       </Routes>
     </div>
   );
