@@ -98,13 +98,14 @@ form {
 }
 
 .forgot-password {
-    color: var(--main-blue); /* Đổi màu cho "Quên mật khẩu" */
-    margin-left: auto; /* Đẩy chữ "Quên mật khẩu" sang phải */
+    color: var(--main-blue);
+    margin-left: auto;
 }
 
 .forgot-password:hover {
     text-decoration: underline;
 }
+
 .login-btn {
     width: 100%;
     padding: 12px;
@@ -123,7 +124,8 @@ form {
 }
 
 .additional-options p {
-    color: #666; /* Thay đổi màu sắc cho câu "Bạn chưa có tài khoản?" - ở đây là màu cam đỏ */
+    color: #666;
+    /* Thay đổi màu sắc cho câu "Bạn chưa có tài khoản?" - ở đây là màu cam đỏ */
     margin: 20px 0;
     text-align: center;
 }

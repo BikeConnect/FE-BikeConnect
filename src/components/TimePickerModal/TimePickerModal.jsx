@@ -102,15 +102,9 @@ const TimePickerModal = ({ isOpen, onClose, onSelectDates }) => {
     const sortedDates = Array.from(selectedDates)
       .map(dateStr => new Date(dateStr))
       .sort((a, b) => a - b);
-  
-    const result = sortedDates.length > 1
-      ? [sortedDates[0], sortedDates[sortedDates.length - 1]]
-      : sortedDates;
-  
-    onSelectDates(result);
+    onSelectDates(sortedDates);
     onClose();
   };
-  
 
   const weekDays = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
 
@@ -202,24 +196,21 @@ const TimePickerModal = ({ isOpen, onClose, onSelectDates }) => {
         </div>
 
         <div className="selected-dates">
-        <div style={{ flex: 1 }}>
-  {selectedDates.size > 0 && (
-    <span className="selected-date-tag">
-      {Array.from(selectedDates).length > 1
-        ? `${new Date(Array.from(selectedDates)[0]).toLocaleDateString('vi-VN')} - ${new Date(Array.from(selectedDates)[selectedDates.size - 1]).toLocaleDateString('vi-VN')}`
-        : new Date(Array.from(selectedDates)[0]).toLocaleDateString('vi-VN')}
-      <X
-        size={14}
-        onClick={() => {
-          setSelectedDates(new Set());
-          setRangeStart(null);
-          setHoverDate(null);
-        }}
-      />
-    </span>
-  )}
-</div>
-
+          <div style={{ flex: 1 }}>
+            {Array.from(selectedDates).map(dateStr => (
+              <span key={dateStr} className="selected-date-tag">
+                {new Date(dateStr).toLocaleDateString('vi-VN')}
+                <X
+                  size={14}
+                  onClick={() => {
+                    const newDates = new Set(selectedDates);
+                    newDates.delete(dateStr);
+                    setSelectedDates(newDates);
+                  }}
+                />
+              </span>
+            ))}
+          </div>
           {selectedDates.size > 0 && (
             <button className="clear-button" onClick={() => {
               setSelectedDates(new Set());

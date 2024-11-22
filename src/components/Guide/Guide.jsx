@@ -11,7 +11,9 @@ const Guide = () => {
 
     return (
         <div className="guide">
-            <GuideNavBar activeTab={activeTab} onTabChange={handleTabChange} />
+            <div className="container">
+                <GuideNavBar activeTab={activeTab} onTabChange={handleTabChange} />
+            </div>
 
             {/* Navbar mới cho Khách thuê và Chủ xe */}
             <div className="tab-navbar">
@@ -96,3 +98,4 @@ const Guide = () => {
 };
 
 export default Guide;
+

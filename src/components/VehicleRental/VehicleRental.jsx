@@ -16,22 +16,6 @@ const VehicleRental = ({ bike, onOpenChat }) => {
   const [isTimeModalOpen, setIsTimeModalOpen] = useState(false);
   const [activeLocationField, setActiveLocationField] = useState(null);
   const [selectedDates, setSelectedDates] = useState([]);
-  const [isRequestSent, setIsRequestSent] = useState(false);
-
-
-  const handleRentNow = () => {
-    setIsRequestSent(true); // Hiển thị thông báo
-    
-    // setTimeout(() => {
-    //   setIsRequestSent(false); // Ẩn thông báo sau 10 giây
-    // }, 10000);
-  };
-  
-  const closeNotification = () => {
-    setIsRequestSent(false);
-  };
-  
-
 
   const images = [
     hinhanhxe1,
@@ -208,15 +192,11 @@ const VehicleRental = ({ bike, onOpenChat }) => {
             </div>
 
             <div className="action-buttons d-flex gap-2 mt-4">
-              <button
-                className="rent-button flex-1 py-2 px-3 rounded-md text-white bg-indigo-600 hover:bg-indigo-700 font-bold"
-                onClick={handleRentNow}
-              >
+              <button className="rent-button flex-1 py-2 px-3 rounded-md text-white bg-indigo-600 hover:bg-indigo-700 font-bold">
                 Thuê xe ngay
               </button>
-
               <button
-                className="negotiate-button flex-1 py-2 px-3 rounded-md text-white bg-green-600 hover:bg-green-700 font-bold"
+                className="negotiate-button flex-1 py-2 px-3 rounded-md text-white bg-green-600 hover:bg-green-700 font-bold" 
                 onClick={onOpenChat} // Sử dụng toggle
               >
                 <FontAwesomeIcon icon={faComments} className="me-2" />
@@ -225,25 +205,6 @@ const VehicleRental = ({ bike, onOpenChat }) => {
             </div>
           </div>
         </div>
-        {isRequestSent && (
-  <div className="notification-overlay" onClick={closeNotification}>
-    <div
-      className="notification-box"
-      onClick={(e) => e.stopPropagation()} // Ngăn chặn đóng khi click vào bên trong hộp
-    >
-      <div className="icon-container">
-        <FontAwesomeIcon icon={faComments} />
-      </div>
-      <p>Đã gửi yêu cầu đến người cho thuê</p>
-      <button className="close-button" onClick={closeNotification}>
-        <FontAwesomeIcon icon="fa-solid fa-times" />
-        <span>Đóng</span>
-      </button>
-    </div>
-  </div>
-)}
-
-
       </div>
 
       {/* Modals */}

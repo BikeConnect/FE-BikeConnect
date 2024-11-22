@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from 'react-router-dom';
 import HomePage from "./components/HomePage/HomePage";
@@ -25,13 +25,13 @@ import ManageOwner from './components/UI_Admin/ManageOwner/ManageOwner';
 import { CustomerProvider } from './components/UI_Admin/CustomerContext';
 import Support from './components/Support/Support';
 import Register from "./components/Register/Register";
-import Login from './components/Login/Login';
 import PostPage from './components/PostPage/PostPage';
 import CusFilterOptions from "./components/CusFilterOptions/CusFilterOptions";
 import ForgotPassword from './components/ForgotPassword/ForgotPassword';
 import ResetPassword from './components/ResetPassword/ResetPassword';
 import RentalSignup from './components/RentalSignup/RentalSignup';
-
+import RentalStatusTabs from './components/RentalStatusTabs/RentalStatusTabs';
+import MotorbikeReview from './components/MotorbikeReview/MotorbikeReview';
 
 
 function AppContent() {
@@ -57,6 +57,8 @@ function AppContent() {
   };
 
   const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('userRole');
     setUserRole("");
     setIsLoggedIn(false);
   };
@@ -75,6 +77,16 @@ function AppContent() {
     );
   };
 
+  useEffect(() => {
+    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const savedUserRole = localStorage.getItem('userRole');
+    
+    if (loggedIn && savedUserRole) {
+        setIsLoggedIn(true);
+        setUserRole(savedUserRole);
+    }
+  },[])
+
   return (
     <div className="App">
       <Header />
@@ -84,12 +96,10 @@ function AppContent() {
         <Route path="/homepage" element={<HomePage />} />
         <Route path="/register" element={<Register />} />{" "}
         <Route path="/register-owner" element={<RegisterOwner />} />
-        <Route path="/" element={<RentalSignup />} />
-        <Route path="/login" element={<Login/>} />
         <Route path="/customerprofiles" element={<CustomerProfile />} />
         <Route path="/changepassword" element={<ChangePassword />} />
         <Route path="/rentalhistory" element={<RentalHistory />} />
-        <Route path="/vehiclerental" element={<VehicleRental />} /> 
+        <Route path="/vehiclerental" element={<VehicleRental />} />
         <Route path="/guide" element={<Guide />} />
         <Route path="/guide1" element={<BookingGuide />} />
         <Route path="/guide2" element={<PaymentGuide />} />
@@ -101,15 +111,15 @@ function AppContent() {
         <Route path="/manageCus" element={<ManageCustomer />} />
         <Route path="/manageOwner" element={<ManageOwner />} />
         <Route path="/BikeDetail/:name" element={<BikeDetail />} />
-        <Route path="/RentalSignup" element={<RentalSignup />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/support" element={<Support />} />
         <Route path="/post" element={<PostPage />} />
         <Route path="/CusFilterOptions" element={<CusFilterOptions />} />
         <Route path="/ForgotPassword" element={<ForgotPassword />} />
         <Route path="/ResetPassword" element={<ResetPassword />} />
-        
-        
+        <Route path="/RentalSignup" element={<RentalSignup />} />
+        <Route path="/RentalStatusTabs" element={<RentalStatusTabs />} />
+        <Route path="/MotorbikeReview" element={<MotorbikeReview />} />
       </Routes>
     </div>
   );

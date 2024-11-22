@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import './VerifyEmail.css';
 import { Form } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 
-const VerifyEmail = ({ onClose }) => {
+const VerifyEmail = ({ role, onClose }) => {
     const [code, setCode] = useState(new Array(6).fill(""));
-    const navigate = useNavigate(); // Initialize navigate function
+    const navigate = useNavigate();
 
     const handleChange = (e, index) => {
         const value = e.target.value;
@@ -28,17 +28,30 @@ const VerifyEmail = ({ onClose }) => {
         }
     };
 
-    const handleVerify = () => {
-        if (code.join("").length === 6) {
-            if (code.join("") === "745678") { 
-                alert("Xác thực thành công!");
-                onClose(); 
-                navigate('/homepage'); // Redirect to homepage or desired route
+    const handleVerify = async () => {
+        const endpoint = role === 'owner'
+            ? 'http://localhost:8080/api/auth/owner-verify-email'
+            : 'http://localhost:8080/api/customer/customer-verify-email';
+
+        try {
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ code: code.join("") }),
+            });
+
+            if (response.ok) {
+                alert("Đăng ký tài khoản thành công!");
+                onClose();
+                navigate('/homepage');
             } else {
                 alert("Mã xác thực không chính xác. Vui lòng thử lại.");
             }
-        } else {
-            alert("Vui lòng nhập đủ 6 ký tự.");
+        } catch (error) {
+            console.error('Lỗi:', error);
+            alert("Đã xảy ra lỗi khi kết nối với server");
         }
     };
 
@@ -48,29 +61,33 @@ const VerifyEmail = ({ onClose }) => {
     };
 
     return (
-        <div className="register-container">
-            <h2 className="register-title">Xác thực email</h2>
-            <p>Chúng tôi đã gửi mã xác thực đến email <span id="email">contact@gmail.com</span></p>
-            <p>Nhập mã để xác thực tài khoản của bạn</p>
-            <div className="code-input">
-                {code.map((value, index) => (
-                   <Form.Control
-                       type="text"
-                       maxLength="1"
-                       value={code[index]}
-                       onChange={(e) => handleChange(e, index)}
-                       onFocus={(e) => e.target.select()}
-                       className="text-center"
-                       key={index} // Add key prop
-                   />
-                ))}
+        <div className="verification-overlay" onClick={onClose}>
+            <div className="verification-container" onClick={(e) => e.stopPropagation()}>
+                <h2>Xác thực Email</h2>
+               
+                <p>Nhập mã để xác thực tài khoản của bạn</p>
+                
+                <Form onSubmit={(e) => e.preventDefault()}>
+                    <div className="code-input">
+                        {code.map((digit, index) => (
+                            <input
+                                key={index}
+                                type="text"
+                                maxLength="1"
+                                value={digit}
+                                onChange={(e) => handleChange(e, index)}
+                                className="form-control"
+                            />
+                        ))}
+                    </div>
+                    <button type="button" className="verify-btn" onClick={handleVerify}>
+                        Xác thực
+                    </button>
+                    <button type="button" className="resend-btn" onClick={handleResend}>
+                        Gửi lại mã
+                    </button>
+                </Form>
             </div>
-            <button className="verify-btn role-btn" onClick={handleVerify}>
-                Xác thực
-            </button>
-            <p>
-                Bạn chưa nhận được mã? <button onClick={handleResend} className="resend-btn">Gửi lại</button>
-            </p>
         </div>
     );
 };

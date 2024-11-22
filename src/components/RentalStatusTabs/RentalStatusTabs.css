@@ -1,0 +1,270 @@
+.rental-status-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Tabs Styling */
+.tabs-wrapper {
+  margin-bottom: 20px;
+}
+
+.nav-tabs {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid #dee2e6;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  overflow-x: auto;
+}
+
+.nav-tabs .nav-link {
+  color: #666;
+  border: none;
+  padding: 10px 16px;
+  font-weight: 500;
+  background: none;
+  cursor: pointer;
+  font-size: 14px;
+  position: relative;
+  white-space: nowrap;
+}
+
+.nav-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.nav-tabs .nav-link.active {
+  color: #472CB2;
+  border-bottom: 2px solid #472CB2;
+}
+
+.nav-tabs .badge {
+  background-color: #f0f0f0;
+  color: #666;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 12px;
+  margin-left: 0px;
+  font-size: 12px;
+}
+
+/* Motorcycle Card */
+.motorcycle-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.card-content {
+  padding: 16px;
+}
+
+.motorcycle-grid {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 16px;
+}
+
+.image-container {
+  width: 120px;
+  height: 120px;
+}
+
+.motorcycle-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.info-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.motorcycle-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.motorcycle-price {
+  font-size: 18px;
+  font-weight: 500;
+  color: #472CB2;
+  margin: 0;
+}
+
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  color: white;
+  background-color: #00BCD4;
+}
+
+/* Status badge colors */
+.status-badge.pending-confirm {
+  background-color: #FFA500;
+}
+
+.status-badge.receiving {
+  background-color: #2196F3;
+}
+
+.status-badge.returning {
+  background-color: #2196F3;
+}
+
+.status-badge.rating {
+  background-color: #2196F3;
+}
+
+.status-badge.cancelled {
+  background-color: #dc3545;
+}
+
+.status-badge.completed {
+  background-color: #28a745;
+}
+
+.info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+}
+
+.icon {
+  color: #666;
+  flex-shrink: 0;
+  margin:0px;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  gap: 8px;
+  flex: 1;
+  max-width: none;
+}
+
+.action-button.primary {
+  background-color: #472CB2;
+  color: white;
+}
+
+.action-button.outline {
+  background-color: #f8f9fa;
+  color: #666;
+  border: 1px solid #dee2e6;
+}
+
+.action-button.success {
+  background-color: #472CB2;
+  color: white;
+}
+
+.action-button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.action-button.outline:hover {
+  background-color: #f0f0f0;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .motorcycle-grid {
+    grid-template-columns: 100px 1fr;
+    gap: 12px;
+  }
+
+  .image-container,
+  .motorcycle-image {
+    width: 100px;
+    height: 100px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .action-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .rental-status-container {
+    padding: 16px;
+  }
+
+  .motorcycle-grid {
+    grid-template-columns: 80px 1fr;
+    gap: 10px;
+  }
+
+  .image-container,
+  .motorcycle-image {
+    width: 80px;
+    height: 80px;
+  }
+
+  .card-content {
+    padding: 12px;
+  }
+
+  .motorcycle-name {
+    font-size: 16px;
+  }
+
+  .motorcycle-price {
+    font-size: 16px;
+  }
+
+  .status-badge {
+    padding: 4px 10px;
+    font-size: 10px;
+  }
+}

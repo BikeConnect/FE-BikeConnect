@@ -28,21 +28,21 @@ const LocationModal = ({ isOpen, onClose, onSelectLocation }) => {
   };
 
   return (
-    <div className="location-modal-overlay" onClick={onClose}>
-      <div className="location-modal-container" onClick={e => e.stopPropagation()}>
-        <div className="location-modal-header">
-          <h2 className="location-modal-title">Địa điểm</h2>
-          <button className="location-close-button" onClick={onClose}>
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-container" onClick={e => e.stopPropagation()}>
+        <div className="modal-header">
+          <h2 className="modal-title">Địa điểm</h2>
+          <button className="close-button" onClick={onClose}>
             <X size={20} />
           </button>
         </div>
 
-        <div className="location-modal-content">
-          <div className="location-search-container">
-            <Search className="location-search-icon" size={20} />
+        <div className="modal-content">
+          <div className="search-input-container">
+            <Search className="search-icon" size={20} />
             <input
               type="text"
-              className="location-search-input"
+              className="search-input"
               placeholder="Tìm kiếm địa điểm..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -51,9 +51,9 @@ const LocationModal = ({ isOpen, onClose, onSelectLocation }) => {
 
           {selectedLocation && (
             <div className="location-option selected-location">
-              <MapPin size={20} className="location-icon" />
+              <MapPin size={20} className="icon" />
               <span>{selectedLocation}</span>
-              <button className="location-remove-button" onClick={clearSelection}>
+              <button className="remove-button" onClick={clearSelection}>
                 <X size={12} />
               </button>
             </div>
@@ -63,17 +63,17 @@ const LocationModal = ({ isOpen, onClose, onSelectLocation }) => {
             className="location-option current-location"
             onClick={() => handleLocationSelect('Vị trí hiện tại')}
           >
-            <MapPin size={20} className="location-icon" />
+            <MapPin size={20} className="icon" />
             <span>Vị trí hiện tại</span>
           </div>
 
-          <div className="location-suggestions">
-            <h3 className="suggestion-title">Địa điểm gợi ý</h3>
-            <div className="suggestions-grid">
+          <div className="vehicle-section">
+            <h3 className="section-title">Địa điểm gợi ý</h3>
+            <div className="vehicle-grid">
               {suggestedLocations.map((location) => (
                 <button
                   key={location}
-                  className={`suggestion-button ${selectedLocation === location ? 'selected-location' : ''}`}
+                  className={`vehicle-button ${selectedLocation === location ? 'selected-location' : ''}`}
                   onClick={() => handleLocationSelect(location)}
                 >
                   <MapPin size={16} />

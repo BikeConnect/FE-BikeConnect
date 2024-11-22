@@ -1,3 +1,8 @@
+.nav-bar-wrapper{
+    width: 1200px;
+    margin: 0 auto;
+}
+.nav-bar-wrapper
 .nav-bar {
     width: 250px;
     background-color: #472CB2;
@@ -7,7 +12,7 @@
     flex-direction: column;
     top: 80px;
     position: fixed;
-    left: 0;
+    left: 120px;
     z-index: 5;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
