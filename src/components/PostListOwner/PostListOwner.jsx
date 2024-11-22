@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import NavBar from "../NavBar/NavBar";
 import "./PostListOwner.css";
 import api from "../../api/api";
 
 const PostListOwner = () => {
+  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [deletePostId, setDeletePostId] = useState(null);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -46,10 +49,39 @@ const PostListOwner = () => {
     fetchPosts();
   }, []);
 
-  // Debug 7
   useEffect(() => {
     console.log("Current posts state:", posts);
   }, [posts]);
+
+  const handleDeleteClick = (post) => {
+    setDeletePostId(post._id);
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      const response = await api.delete(`/post/${deletePostId}`);
+      
+      if (response.status === 200) {
+        // Cập nhật state để xóa post khỏi danh sách
+        setPosts(posts.filter(post => post._id !== deletePostId));
+        // Hiển thị thông báo thành công
+        alert("Xóa bài đăng thành công!");
+      } else {
+        throw new Error("Không thể xóa bài đăng");
+      }
+    } catch (error) {
+      console.error("Lỗi khi xóa bài đăng:", error);
+      alert("Có lỗi xảy ra khi xóa bài đăng");
+    } finally {
+      // Đóng modal xác nhận
+      setDeletePostId(null);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setDeletePostId(null);
+  };
+
 
   if (loading) {
     return <div>Đang tải...</div>;
@@ -72,6 +104,26 @@ const PostListOwner = () => {
                   alt={post.name}
                   className="post-list-image"
                 />
+                <div className="post-item-action">
+                  <div className="post-item-update">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 512 512"
+                      className="post-item-update-icon"
+                    >
+                      <path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160L0 416c0 53 43 96 96 96l256 0c53 0 96-43 96-96l0-96c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 96c0 17.7-14.3 32-32 32L96 448c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l96 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 64z" />
+                    </svg>
+                  </div>
+                  <div className="post-item-delete" onClick={() => handleDeleteClick(post)}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 448 512"
+                      className="post-item-delete-icon"
+                    >
+                      <path d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0L284.2 0c12.1 0 23.2 6.8 28.6 17.7L320 32l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l96 0 7.2-14.3zM32 128l384 0 0 320c0 35.3-28.7 64-64 64L96 512c-35.3 0-64-28.7-64-64l0-320zm96 64c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16z" />
+                    </svg>
+                  </div>
+                </div>
               </figure>
               <div className="post-list-item-content">
                 <h3 className="post-list-item-title">{post.name}</h3>
@@ -86,7 +138,7 @@ const PostListOwner = () => {
                   Brand: {post.brand}
                 </span>
                 <span className="post-list-item-rating">
-                {[...Array(post.rating)].map((_, index) => (
+                  {[...Array(post.rating)].map((_, index) => (
                     <svg
                       key={index}
                       xmlns="http://www.w3.org/2000/svg"
@@ -105,6 +157,28 @@ const PostListOwner = () => {
           ))
         ) : (
           <div>Không có bài đăng nào</div>
+        )}
+        {deletePostId && (
+          <div className="delete-overlay">
+            <div className="delete-modal">
+              <h2>Xác Nhận Xóa</h2>
+              <p>Bạn có chắc chắn muốn xóa bài đăng này?</p>
+              <div className="delete-modal-actions">
+                <button 
+                  className="btn btn-confirm"
+                  onClick={handleConfirmDelete}
+                >
+                  Có
+                </button>
+                <button 
+                  className="btn btn-cancel"
+                  onClick={handleCancelDelete}
+                >
+                  Không
+                </button>
+              </div>
+            </div>
+          </div>
         )}
       </div>
     </div>
