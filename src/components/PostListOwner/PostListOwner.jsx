@@ -6,82 +6,122 @@ import api from "../../api/api";
 
 const PostListOwner = () => {
   const navigate = useNavigate();
-  const [posts, setPosts] = useState([]);
+  const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [deletePostId, setDeletePostId] = useState(null);
+  const [deleteVehicleId, setDeleteVehicleId] = useState(null);
+  const userRole = localStorage.getItem("userRole") || "owner";
 
   useEffect(() => {
-    const fetchPosts = async () => {
+    const fetchVehicles = async () => {
       try {
         const token = localStorage.getItem("accessToken");
-
+        console.log("=== START API CALL ===");
+        console.log("Token:", token);
+  
+        if (!token) {
+          throw new Error("No access token found");
+        }
+  
         const response = await fetch(
-          "http://localhost:8080/api/post/owner-list-posts",
+          "http://localhost:8080/api/post/owner-list-vehicles",
           {
             method: "GET",
             headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`,
+              "Content-Type": "application/json"
             },
+            credentials: "include"
           }
         );
 
+        console.log("Response status:", response.status);
+      
         if (!response.ok) {
+          if (response.status === 401) {
+            // Token hết hạn hoặc không hợp lệ
+            localStorage.removeItem("accessToken");
+            navigate("/");
+            throw new Error("Phiên đăng nhập đã hết hạn");
+          }
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-
+  
         const data = await response.json();
-
-        if (data.metadata && Array.isArray(data.metadata)) {
-          setPosts(data.metadata);
+        console.log("Response data:", data);
+  
+        if (data && data.metadata) {
+          setVehicles(data.metadata);
         } else {
           throw new Error("Dữ liệu không đúng định dạng");
         }
       } catch (error) {
-        console.error("Error fetching posts:", error);
-        setError(`Lỗi: ${error.message || "Không thể tải danh sách bài đăng"}`);
+        console.error("Error fetching vehicles:", error);
+        setError(`Lỗi: ${error.message}`);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchPosts();
+    fetchVehicles();
   }, []);
 
   useEffect(() => {
-    console.log("Current posts state:", posts);
-  }, [posts]);
+    console.log("Current vehicles state:", {
+      length: vehicles.length,
+      isEmpty: vehicles.length === 0,
+      firstItem: vehicles[0],
+    });
+  }, [vehicles]);
 
-  const handleDeleteClick = (post) => {
-    setDeletePostId(post._id);
+  const handleDeleteClick = (vehicle) => {
+    setDeleteVehicleId(vehicle._id);
   };
 
   const handleConfirmDelete = async () => {
     try {
-      const response = await api.delete(`/post/${deletePostId}`);
-      
-      if (response.status === 200) {
-        // Cập nhật state để xóa post khỏi danh sách
-        setPosts(posts.filter(post => post._id !== deletePostId));
-        // Hiển thị thông báo thành công
-        alert("Xóa bài đăng thành công!");
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        throw new Error("No access token found");
+      }
+  
+      const myHeaders = new Headers();
+      myHeaders.append("Authorization", `Bearer ${token}`);
+      myHeaders.append("Content-Type", "application/json");
+  
+      const requestOptions = {
+        method: "DELETE",
+        headers: myHeaders,
+        redirect: "follow",
+        credentials: "include"
+      };
+  
+      const response = await fetch(
+        `http://localhost:8080/api/post/vehicle/${deleteVehicleId}`,
+        requestOptions
+      );
+  
+      console.log("Delete response status:", response.status);
+  
+      if (response.ok) {
+        setVehicles(vehicles.filter((v) => v._id !== deleteVehicleId));
+        alert("Xóa xe thành công!");
       } else {
-        throw new Error("Không thể xóa bài đăng");
+        const errorData = await response.text();
+        console.error("Delete error response:", errorData);
+        throw new Error("Không thể xóa xe");
       }
     } catch (error) {
-      console.error("Lỗi khi xóa bài đăng:", error);
-      alert("Có lỗi xảy ra khi xóa bài đăng");
+      console.error("Lỗi khi xóa xe:", error);
+      alert("Có lỗi xảy ra khi xóa xe");
     } finally {
-      // Đóng modal xác nhận
-      setDeletePostId(null);
+      setDeleteVehicleId(null);
     }
   };
 
   const handleCancelDelete = () => {
-    setDeletePostId(null);
+    setDeleteVehicleId(null);
   };
-
 
   if (loading) {
     return <div>Đang tải...</div>;
@@ -93,15 +133,15 @@ const PostListOwner = () => {
 
   return (
     <div>
-      <NavBar />
+      <NavBar userRole={userRole} />
       <div className="post-list-owner">
-        {posts.length > 0 ? (
-          posts.map((post) => (
-            <div key={post._id} className="post-list-item">
+        {vehicles.length > 0 ? (
+          vehicles.map((vehicle) => (
+            <div key={vehicle._id} className="post-list-item">
               <figure className="post-list-figure">
                 <img
-                  src={post.images?.[0]?.url || "default-image-url"}
-                  alt={post.name}
+                  src={vehicle.images?.[0]?.url || "/default-vehicle.jpg"}
+                  alt={vehicle.name}
                   className="post-list-image"
                 />
                 <div className="post-item-action">
@@ -114,7 +154,10 @@ const PostListOwner = () => {
                       <path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160L0 416c0 53 43 96 96 96l256 0c53 0 96-43 96-96l0-96c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 96c0 17.7-14.3 32-32 32L96 448c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l96 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 64z" />
                     </svg>
                   </div>
-                  <div className="post-item-delete" onClick={() => handleDeleteClick(post)}>
+                  <div
+                    className="post-item-delete"
+                    onClick={() => handleDeleteClick(vehicle)}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 448 512"
@@ -126,7 +169,7 @@ const PostListOwner = () => {
                 </div>
               </figure>
               <div className="post-list-item-content">
-                <h3 className="post-list-item-title">{post.name}</h3>
+                <h3 className="post-list-item-title">{vehicle.name}</h3>
                 <span className="post-list-item-brand">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -135,10 +178,10 @@ const PostListOwner = () => {
                   >
                     <path d="M280 32c-13.3 0-24 10.7-24 24s10.7 24 24 24l57.7 0 16.4 30.3L256 192l-45.3-45.3c-12-12-28.3-18.7-45.3-18.7L64 128c-17.7 0-32 14.3-32 32l0 32 96 0c88.4 0 160 71.6 160 160c0 11-1.1 21.7-3.2 32l70.4 0c-2.1-10.3-3.2-21-3.2-32c0-52.2 25-98.6 63.7-127.8l15.4 28.6C402.4 276.3 384 312 384 352c0 70.7 57.3 128 128 128s128-57.3 128-128s-57.3-128-128-128c-13.5 0-26.5 2.1-38.7 6L418.2 128l61.8 0c17.7 0 32-14.3 32-32l0-32c0-17.7-14.3-32-32-32l-20.4 0c-7.5 0-14.7 2.6-20.5 7.4L391.7 78.9l-14-26c-7-12.9-20.5-21-35.2-21L280 32zM462.7 311.2l28.2 52.2c6.3 11.7 20.9 16 32.5 9.7s16-20.9 9.7-32.5l-28.2-52.2c2.3-.3 4.7-.4 7.1-.4c35.3 0 64 28.7 64 64s-28.7 64-64 64s-64-28.7-64-64c0-15.5 5.5-29.7 14.7-40.8zM187.3 376c-9.5 23.5-32.5 40-59.3 40c-35.3 0-64-28.7-64-64s28.7-64 64-64c26.9 0 49.9 16.5 59.3 40l66.4 0C242.5 268.8 190.5 224 128 224C57.3 224 0 281.3 0 352s57.3 128 128 128c62.5 0 114.5-44.8 125.8-104l-66.4 0zM128 384a32 32 0 1 0 0-64 32 32 0 1 0 0 64z" />
                   </svg>
-                  Brand: {post.brand}
+                  Brand: {vehicle.brand}
                 </span>
                 <span className="post-list-item-rating">
-                  {[...Array(post.rating)].map((_, index) => (
+                  {[...Array(vehicle.rating)].map((_, index) => (
                     <svg
                       key={index}
                       xmlns="http://www.w3.org/2000/svg"
@@ -150,7 +193,7 @@ const PostListOwner = () => {
                   ))}
                 </span>
                 <span className="post-list-item-price">
-                  {post.price?.toLocaleString()} VND / ngày
+                  {vehicle.price?.toLocaleString()} VND / ngày
                 </span>
               </div>
             </div>
@@ -158,22 +201,19 @@ const PostListOwner = () => {
         ) : (
           <div>Không có bài đăng nào</div>
         )}
-        {deletePostId && (
+        {deleteVehicleId && (
           <div className="delete-overlay">
             <div className="delete-modal">
               <h2>Xác Nhận Xóa</h2>
               <p>Bạn có chắc chắn muốn xóa bài đăng này?</p>
               <div className="delete-modal-actions">
-                <button 
+                <button
                   className="btn btn-confirm"
                   onClick={handleConfirmDelete}
                 >
                   Có
                 </button>
-                <button 
-                  className="btn btn-cancel"
-                  onClick={handleCancelDelete}
-                >
+                <button className="btn btn-cancel" onClick={handleCancelDelete}>
                   Không
                 </button>
               </div>
