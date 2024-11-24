@@ -3,38 +3,40 @@ import "./PostPage.css";
 import AssetUpload from "../AssetUpload/AssetUpload";
 
 const PostPage = () => {
-  const [title, setTitle] = useState("");
-  const [slug, setSlug] = useState("");
-  const [category, setCategory] = useState("");
-  const [brand, setBrand] = useState("");
-  const [price, setPrice] = useState(0);
   const [quantity, setQuantity] = useState(0);
-  const [discount, setDiscount] = useState(0);
-  const [description, setDescription] = useState("");
-  const [model, setModel] = useState("");
-  const [image, setImage] = useState(null);
+  const [vehicles, setVehicles] = useState([]);
   const [showUploadModal, setShowUploadModal] = useState(false);
+  const [image, setImage] = useState(null);
   const [errors, setErrors] = useState({});
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [license, setLicense] = useState("");
 
-  const handleUploadClick = () => {
-    setShowUploadModal(true);
+  const handleQuantityChange = (e) => {
+    const qty = parseInt(e.target.value);
+    setQuantity(qty);
+    if (qty > 0) {
+      const newVehicles = Array.from({ length: qty }, (_, index) => ({
+        name: "",
+        category: "",
+        brand: "",
+        price: 0,
+        discount: 0,
+        description: "",
+        model: "",
+        address: "",
+        license: "",
+        startDate: "",
+        endDate: "",
+        images: [],
+      }));
+      setVehicles(newVehicles);
+    } else {
+      setVehicles([]);
+    }
   };
 
-  const generateSlug = (title) => {
-    return title.trim().toLowerCase().replace(/\s+/g, '-');
-  };
-
-  const handleTitleChange = (e) => {
-    const newTitle = e.target.value;
-    setTitle(newTitle);
-    setSlug(generateSlug(newTitle));
-  };
-
-  const handleCloseUploadModal = () => {
-    setShowUploadModal(false);
+  const handleVehicleChange = (index, field, value) => {
+    const updatedVehicles = [...vehicles];
+    updatedVehicles[index][field] = value;
+    setVehicles(updatedVehicles);
   };
 
   const handleImageUpload = (uploadedImage) => {
@@ -45,97 +47,68 @@ const PostPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    vehicles.forEach((vehicle, index) => {
+      console.log(`Xe ${index + 1}: endDate = ${vehicle.endDate}`);
+    });
+
     const newErrors = {};
-    if (!title.trim()) newErrors.title = "Tiêu đề không được để trống";
-    if (!category.trim()) newErrors.category = "Danh mục không được để trống";
-    if (!brand.trim()) newErrors.brand = "Thương hiệu không được để trống";
-    if (price <= 0) newErrors.price = "Giá không hợp lệ";
     if (quantity <= 0) newErrors.quantity = "Số lượng không hợp lệ";
-    if (discount < 0 || discount > 100)
-      newErrors.discount = "Chiết khấu không hợp lệ";
-    if (!description.trim())
-      newErrors.description = "Mô tả không được để trống";
-    if (!model.trim()) newErrors.model = "Model không được để trống";
     if (!image) newErrors.image = "Hãy upload một ảnh";
-    if (!startDate) newErrors.startDate = "Ngày bắt đầu không được để trống";
-    if (!endDate) newErrors.endDate = "Ngày kết thúc không được để trống";
-    if (startDate && endDate && new Date(startDate) >= new Date(endDate)) {
-      newErrors.endDate = "Ngày kết thúc phải lớn hơn ngày bắt đầu";
-    }
-    if (!license.trim()) newErrors.license = "License không được để trống";
+
+    vehicles.forEach((vehicle, index) => {
+      if (!vehicle.startDate) {
+        newErrors[`startDate_${index}`] = "Ngày bắt đầu là bắt buộc";
+      }
+      if (!vehicle.endDate) {
+        newErrors[`endDate_${index}`] = "Ngày kết thúc là bắt buộc";
+      } else if (vehicle.startDate && vehicle.endDate) {
+        const start = new Date(vehicle.startDate);
+        const end = new Date(vehicle.endDate);
+        if (start > end) {
+          newErrors[`endDate_${index}`] = "Ngày kết thúc phải sau ngày bắt đầu";
+        }
+      }
+    });
 
     setErrors(newErrors);
 
-    if (Object.keys(newErrors).length === 0) {
-      try {
-        const accessToken = localStorage.getItem("accessToken");
-        console.log("accessToken::::", accessToken);
-        if (!accessToken) {
-          alert("Vui lòng đăng nhập để đăng bài");
-          return;
-        }
-        const startDate = new Date().toISOString();
-        const endDate = new Date();
-        endDate.setDate(endDate.getDate() + 1);
-        const endDateString = endDate.toISOString();
-
-        const response = await fetch("http://localhost:8080/api/post/", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-          body: JSON.stringify({
-            name: title,
-            slug: slug,
-            category: category,
-            brand: brand,
-            price: price,
-            quantity: quantity,
-            discount: discount,
-            description: description,
-            model: model,
-            images: [image.name],
-            rating: 1,
-            availability_status: "available",
-            license: "Public",
-            startDate: startDate,
-            endDate: endDateString,
-          }),
-        });
-
-        if (response.ok) {
-          console.log("Đăng bài thành công:", {
-            title,
-            category,
-            brand,
-            price,
-            quantity,
-            discount,
-            description,
-            model,
-            image,
-          });
-          alert("Đăng bài thành công!");
-        } else {
-          const errorText = await response.text();
-          console.log(response);
-          console.error("Lỗi khi đăng bài:", response.status, errorText);
-          alert(`Lỗi: ${response.status} - ${errorText}`);
-        }
-      } catch (error) {
-        console.error("Lỗi khi đăng bài:", error);
-        alert("Lỗi 2");
-      }
+    if (Object.keys(newErrors).length > 0) {
+      return;
     }
-  };
 
-  const handleDiscountChange = (value) => {
-    setDiscount((prev) => {
-      let newDiscount = prev + value;
-      newDiscount = Math.max(0, Math.min(newDiscount, 100));
-      return newDiscount;
-    });
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      if (!accessToken) {
+        alert("Vui lòng đăng nhập để đăng bài");
+        return;
+      }
+
+      const response = await fetch("http://localhost:8080/api/post/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+          quantity,
+          vehicles: vehicles.map((vehicle) => ({
+            ...vehicle,
+            images: [image.name],
+          })),
+        }),
+      });
+
+      if (response.ok) {
+        alert("Đăng bài thành công!");
+      } else {
+        const errorText = await response.text();
+        console.error("Lỗi khi đăng bài:", response.status, errorText);
+        alert(`Lỗi: ${response.status} - ${errorText}`);
+      }
+    } catch (error) {
+      console.error("Lỗi khi đăng bài:", error);
+      alert("Đã có lỗi xảy ra. Vui lòng thử lại sau.");
+    }
   };
 
   return (
@@ -144,218 +117,142 @@ const PostPage = () => {
         <h1>Đăng Bài</h1>
 
         <div className="form-container">
-          {/* Row 1 */}
           <div className="form-row">
             <div className="form-group">
-              <label>Tiêu đề:</label>
-              <input
-                type="text"
-                value={title}
-                onChange={handleTitleChange}
-                placeholder="Nhập tiêu đề..."
-                className="input-field"
-              />
-              {errors.title && (
-                <div className="error-message">{errors.title}</div>
-              )}
-            </div>
-
-            <div className="form-group">
-              <label>Danh mục:</label>
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-              >
-                <option value="">Chọn danh mục</option>
-                <option value="Xe máy">Xe máy</option>
-                <option value="Xe đạp">Xe đạp</option>
-              </select>
-              {errors.category && (
-                <div className="error-message">{errors.category}</div>
-              )}
-            </div>
-          </div>
-
-          {/* Row 2 */}
-          <div className="form-row">
-            <div className="form-group">
-              <label>Thương hiệu:</label>
-              <input
-                type="text"
-                value={brand}
-                onChange={(e) => setBrand(e.target.value)}
-                placeholder="Nhập thương hiệu..."
-              />
-              {errors.brand && (
-                <div className="error-message">{errors.brand}</div>
-              )}
-            </div>
-
-            <div className="form-group">
-              <label>Model:</label>
-              <input
-                type="text"
-                value={model}
-                onChange={(e) => setModel(e.target.value)}
-                placeholder="Nhập model..."
-              />
-              {errors.model && (
-                <div className="error-message">{errors.model}</div>
-              )}
-            </div>
-          </div>
-
-          {/* Row 3: Giá và Giảm giá */}
-          <div className="form-row">
-            <div className="form-group">
-              <label>Giá:</label>
-              <input
-                type="number"
-                value={price}
-                onChange={(e) => setPrice(parseFloat(e.target.value))}
-                placeholder="Nhập giá..."
-                className="input-field"
-              />
-              {errors.price && (
-                <div className="error-message">{errors.price}</div>
-              )}
-            </div>
-
-            <div className="form-group">
-              <label>Số lượng:</label>
+              <label>Số lượng xe:</label>
               <input
                 type="number"
                 value={quantity}
-                onChange={(e) => setQuantity(parseInt(e.target.value))}
-                placeholder="Nhập số lượng..."
-                className="input-field"
+                onChange={handleQuantityChange}
+                placeholder="Nhập số lượng xe..."
+                min="1"
               />
-              {errors.quantity && (
-                <div className="error-message">{errors.quantity}</div>
-              )}
+              {errors.quantity && <div className="error-message">{errors.quantity}</div>}
             </div>
           </div>
 
-          {/* Row 4: License */}
-          <div className="form-row">
-            <div className="form-group">
-              <label>Giảm giá:</label>
-              <div className="discount-controls">
-                <button
-                  type="button"
-                  onClick={() => handleDiscountChange(-10)}
-                  className="discount-button"
-                >
-                  -
-                </button>
+          {vehicles.map((vehicle, index) => (
+            <div key={index} className="vehicle-form">
+              <h2>Xe {index + 1}</h2>
+              <div className="form-group">
+                <label>Tên xe:</label>
                 <input
                   type="text"
-                  value={discount}
-                  readOnly
-                  className="discount-input"
+                  value={vehicle.name}
+                  onChange={(e) => handleVehicleChange(index, 'name', e.target.value)}
+                  placeholder="Nhập tên xe..."
                 />
-                <button
-                  type="button"
-                  onClick={() => handleDiscountChange(10)}
-                  className="discount-button"
-                >
-                  +
-                </button>
               </div>
-              {errors.discount && (
-                <div className="error-message">{errors.discount}</div>
-              )}
+              <div className="form-group">
+                <label>Danh mục:</label>
+                <input
+                  type="text"
+                  value={vehicle.category}
+                  onChange={(e) => handleVehicleChange(index, 'category', e.target.value)}
+                  placeholder="Nhập danh mục xe..."
+                />
+              </div>
+              <div className="form-group">
+                <label>Thương hiệu:</label>
+                <input
+                  type="text"
+                  value={vehicle.brand}
+                  onChange={(e) => handleVehicleChange(index, 'brand', e.target.value)}
+                  placeholder="Nhập thương hiệu xe..."
+                />
+              </div>
+              <div className="form-group">
+                <label>Giá:</label>
+                <input
+                  type="number"
+                  value={vehicle.price}
+                  onChange={(e) => handleVehicleChange(index, 'price', e.target.value)}
+                  placeholder="Nhập giá xe..."
+                />
+              </div>
+              <div className="form-group">
+                <label>Giảm giá:</label>
+                <input
+                  type="number"
+                  value={vehicle.discount}
+                  onChange={(e) => handleVehicleChange(index, 'discount', e.target.value)}
+                  placeholder="Nhập giảm giá..."
+                />
+              </div>
+              <div className="form-group">
+                <label>Mô tả:</label>
+                <textarea
+                  value={vehicle.description}
+                  onChange={(e) => handleVehicleChange(index, 'description', e.target.value)}
+                  placeholder="Nhập mô tả xe..."
+                />
+              </div>
+              <div className="form-group">
+                <label>Model:</label>
+                <input
+                  type="text"
+                  value={vehicle.model}
+                  onChange={(e) => handleVehicleChange(index, 'model', e.target.value)}
+                  placeholder="Nhập model xe..."
+                />
+              </div>
+              <div className="form-group">
+                <label>Địa chỉ:</label>
+                <input
+                  type="text"
+                  value={vehicle.address}
+                  onChange={(e) => handleVehicleChange(index, 'address', e.target.value)}
+                  placeholder="Nhập địa chỉ..."
+                />
+              </div>
+              <div className="form-group">
+                <label>Biển số:</label>
+                <input
+                  type="text"
+                  value={vehicle.license}
+                  onChange={(e) => handleVehicleChange(index, 'license', e.target.value)}
+                  placeholder="Nhập biển số xe..."
+                />
+              </div>
+              <div className="form-group">
+                <label>Ngày bắt đầu:</label>
+                <input
+                  type="date"
+                  value={vehicle.startDate}
+                  onChange={(e) => handleVehicleChange(index, 'startDate', e.target.value)}
+                />
+                {errors[`startDate_${index}`] && <div className="error-message">{errors[`startDate_${index}`]}</div>}
+              </div>
+              <div className="form-group">
+                <label>Ngày kết thúc:</label>
+                <input
+                  type="date"
+                  value={vehicle.endDate}
+                  onChange={(e) => handleVehicleChange(index, 'endDate', e.target.value)}
+                />
+                {errors[`endDate_${index}`] && <div className="error-message">{errors[`endDate_${index}`]}</div>}
+              </div>
+              <div className="form-group">
+                <label>Hình ảnh:</label>
+                <button type="button" onClick={() => setShowUploadModal(true)}>
+                  Tải lên hình ảnh
+                </button>
+                {showUploadModal && (
+                  <AssetUpload onUpload={handleImageUpload} />
+                )}
+              </div>
             </div>
+          ))}
 
-            <div className="form-group">
-              <label>License:</label>
-              <input
-                type="text"
-                value={license}
-                onChange={(e) => setLicense(e.target.value)}
-                placeholder="Nhập license..."
-              />
-              {errors.license && (
-                <div className="error-message">{errors.license}</div>
-              )}
-            </div>
+          {errors.image && <div className="error-message">{errors.image}</div>}
+
+          <div className="form-group">
+            <button type="submit" className="submit-button">Đăng bài</button>
           </div>
-
-          {/* Row 5: Ngày bắt đầu và Ngày kết thúc */}
-          <div className="form-row">
-            <div className="form-group">
-              <label>Ngày bắt đầu:</label>
-              <input
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-              />
-              {errors.startDate && (
-                <div className="error-message">{errors.startDate}</div>
-              )}
-            </div>
-
-            <div className="form-group">
-              <label>Ngày kết thúc:</label>
-              <input
-                type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-              />
-              {errors.endDate && (
-                <div className="error-message">{errors.endDate}</div>
-              )}
-            </div>
-          </div>
-
-          {/* Row 6: Mô tả */}
-          <div className="form-row">
-            <div className="form-group">
-              <label>Mô tả:</label>
-              <textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Nhập mô tả..."
-              />
-              {errors.description && (
-                <div className="error-message">{errors.description}</div>
-              )}
-            </div>
-          </div>
-
-          {/* Row 7: AssetUpload */}
-          <div className="form-row">
-            <div className="form-group">
-              <label>Ảnh:</label>
-              <button type="button" onClick={handleUploadClick}>
-                Chọn ảnh
-              </button>
-              {image && <p>{image.name}</p>}
-              {errors.image && (
-                <div className="error-message">{errors.image}</div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        <div className="form-actions">
-          <button type="submit" className="submit-button">
-            Đăng bài
-          </button>
         </div>
       </form>
-
-      {showUploadModal && (
-        <AssetUpload
-          onClose={handleCloseUploadModal}
-          onUpload={handleImageUpload}
-        />
-      )}
     </div>
   );
 };
 
 export default PostPage;
-
-
-

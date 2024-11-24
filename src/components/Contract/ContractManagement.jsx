@@ -10,7 +10,7 @@ const ContractManagement = ({ role }) => {
     useEffect(() => {
         const fetchContracts = async () => {
             try {
-                const response = await fetch('localhost:8080/api/contracts');
+                const response = await fetch('localhost:8080/api/get-contract');
                 const data = await response.json();
                 setContracts(data);
             } catch (error) {

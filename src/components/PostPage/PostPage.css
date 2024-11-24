@@ -11,6 +11,9 @@
   padding: 2.5rem;
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  border: 2px solid #e1e8ed;
+  /* Đường viền phân biệt */
+  margin-bottom: 2rem;
 }
 
 h1 {
@@ -48,6 +51,11 @@ h1:after {
 
 .form-group {
   margin-bottom: 0;
+  border: 1px solid #ccc;
+  /* Đường viền mỗi form */
+  padding: 1rem;
+  border-radius: 10px;
+  background-color: #f9f9f9;
 }
 
 .form-group.full-width {
@@ -64,7 +72,8 @@ h1:after {
 
 input[type="text"],
 input[type="number"],
-textarea {
+textarea,
+select {
   width: 100%;
   padding: 0.8rem 1rem;
   border: 2px solid #e1e8ed;
@@ -76,7 +85,8 @@ textarea {
 
 input[type="text"]:focus,
 input[type="number"]:focus,
-textarea:focus {
+textarea:focus,
+select:focus {
   border-color: #472cb2;
   background: white;
   box-shadow: 0 0 0 4px rgba(71, 44, 178, 0.1);
@@ -91,23 +101,25 @@ textarea {
 .form-group.upload-section {
   grid-column: 1 / -1;
   margin-top: 1rem;
+  border: 1px dashed #cbd5e1;
+  padding: 1rem;
+  text-align: center;
+  background: #f8fafc;
+  border-radius: 10px;
 }
 
 .upload-button {
   background: #f8fafc;
-  border: 2px dashed #cbd5e1;
+  border: none;
   padding: 1.5rem;
-  border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
   width: 100%;
-  text-align: center;
   color: #64748b;
   font-weight: 500;
 }
 
 .upload-button:hover {
-  border-color: #472cb2;
   color: #472cb2;
   background: rgba(71, 44, 178, 0.05);
 }
@@ -149,125 +161,21 @@ textarea {
   box-shadow: 0 4px 12px rgba(71, 44, 178, 0.2);
 }
 
-
 .submit-button:active {
   transform: translateY(0);
 }
 
-.discount-controls {
+.date-group {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 150px;
-  margin: 0 auto;
+  justify-content: space-between;
+  gap: 2rem;
 }
 
-.discount-button {
-  border: none;
-  background-color: #472CB2;
-  color: white;
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: background-color 0.3s;
+.date-group .form-group {
+  flex: 1;
 }
 
-.discount-button:hover {
-  background-color: #3a1e8c;
-}
-
-.discount-input {
-  width: 40px;
-  text-align: center;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  padding: 5px;
-  border-radius: 5px;
-  margin: 0 10px;
-}
-
-.form-group select {
-  width: 100%;
-  padding: 8px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-top: 5px;
-  background-color: #fff;
-  color: #333;
-  cursor: pointer;
-  transition: border-color 0.3s;
-}
-
-.form-group select:focus {
-  border-color: #472CB2;
-}
-
-.form-group select option {
-  padding: 8px;
-}
-
-.error-message {
-  color: red;
-  font-size: 14px;
-  margin-top: 5px;
-}
-
-input,
-textarea,
-select {
-  padding: 10px;
-  border: 2px solid #ccc;
-  border-radius: 5px;
-  outline: none;
-  transition: all 0.3s ease;
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-  animation: rainbow-border 2s linear infinite;
-}
-
-/* Tạo hiệu ứng viền cầu vồng */
-@keyframes rainbow-border {
-  0% {
-    border-color: red;
-  }
-
-  14% {
-    border-color: orange;
-  }
-
-  28% {
-    border-color: yellow;
-  }
-
-  42% {
-    border-color: green;
-  }
-
-  57% {
-    border-color: blue;
-  }
-
-  71% {
-    border-color: indigo;
-  }
-
-  85% {
-    border-color: violet;
-  }
-
-  100% {
-    border-color: red;
-  }
-}
-
-
-
-/* Responsive */
+/* Responsive chỉnh sửa */
 @media (max-width: 768px) {
   .post-page {
     padding: 2rem 1rem;
