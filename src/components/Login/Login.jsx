@@ -118,7 +118,7 @@ const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
           localStorage.setItem("userRole", "owner");
           localStorage.setItem("userData", JSON.stringify(data.accessToken));
         } else {
-          localStorage.setItem("accessToken", data.token);
+          localStorage.setItem("accessToken", data.accessToken);
           localStorage.setItem("userRole", "customer");
           localStorage.setItem("userData", JSON.stringify(data));
         }

@@ -30,8 +30,66 @@ const SearchBar = () => {
   
   const navigate = useNavigate();
 
-  const handleSearch = () => {
-    navigate(`/CusFilterOptions?location=${selectedLocation}&dates=${selectedDates.join(',')}`);
+  const handleSearch = async () => {
+    if (!selectedLocation) {
+      alert('Vui lòng chọn địa điểm');
+      return;
+    }
+  
+    try {
+      const accessToken = localStorage.getItem('accessToken');
+      const userRole = localStorage.getItem('userRole');
+
+      if (!accessToken) {
+        alert('Vui lòng đăng nhập để tìm kiếm');
+        navigate('/');
+        return;
+      }
+  
+      const requestOptions = {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      };
+  
+      const encodedAddress = encodeURIComponent(selectedLocation);
+      const response = await fetch(
+        `http://localhost:8080/api/sorted-by-distance?address=${encodedAddress}`,
+        requestOptions
+      );
+
+      if (response.status === 401) {
+        alert('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại');
+        navigate('/');
+        return;
+      }
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      console.log('Search results:', data);
+
+      const vehiclesData = Array.isArray(data) ? data : [];
+      console.log('Processed vehicles data:', vehiclesData);
+  
+      // navigate(`/CusFilterOptions?location=${selectedLocation}&dates=${selectedDates.join(',')}`);
+      navigate('/CusFilterOptions', {
+        state: {
+          location: selectedLocation,
+          dates: selectedDates,
+          vehicles: data.vehicles  // Lấy mảng vehicles từ response
+        }
+      });
+  
+    } catch (error) {
+      console.error('Error during search:', error);
+      alert('Có lỗi xảy ra khi tìm kiếm. Vui lòng thử lại sau.');
+    }
   };
   return (
     <>
