@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { MapPin, Clock, ChevronDown } from 'lucide-react';
-import './SearchBar.css';
-import LocationModal from '../LocationModal/LocationModal';
-import TimePickerModal from '../TimePickerModal/TimePickerModal';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { MapPin, Clock, ChevronDown } from "lucide-react";
+import "./SearchBar.css";
+import LocationModal from "../LocationModal/LocationModal";
+import TimePickerModal from "../TimePickerModal/TimePickerModal";
+import { useNavigate } from "react-router-dom";
 
 const SearchBar = () => {
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
   const [isTimeModalOpen, setIsTimeModalOpen] = useState(false);
-  const [selectedLocation, setSelectedLocation] = useState('');
+  const [selectedLocation, setSelectedLocation] = useState("");
   const [selectedDates, setSelectedDates] = useState([]);
 
   const handleLocationSelect = (location) => {
@@ -19,78 +19,143 @@ const SearchBar = () => {
   const handleDateSelect = (dates) => {
     setSelectedDates(dates);
   };
-  
+
   const formatSelectedDates = () => {
-    if (selectedDates.length === 0) return 'Chọn thời gian';
+    if (selectedDates.length === 0) return "Chọn thời gian";
     if (selectedDates.length === 1) {
-      return new Date(selectedDates[0]).toLocaleDateString('vi-VN'); // Chuyển đổi chuỗi thành Date
+      return new Date(selectedDates[0]).toLocaleDateString("vi-VN");
     }
-    return `${new Date(selectedDates[0]).toLocaleDateString('vi-VN')} - ${new Date(selectedDates[selectedDates.length - 1]).toLocaleDateString('vi-VN')}`;
+    return `${new Date(selectedDates[0]).toLocaleDateString(
+      "vi-VN"
+    )} - ${new Date(selectedDates[selectedDates.length - 1]).toLocaleDateString(
+      "vi-VN"
+    )}`;
   };
-  
+
   const navigate = useNavigate();
 
   const handleSearch = async () => {
     if (!selectedLocation) {
-      alert('Vui lòng chọn địa điểm');
+      alert("Vui lòng chọn địa điểm");
       return;
     }
-  
-    try {
-      const accessToken = localStorage.getItem('accessToken');
-      const userRole = localStorage.getItem('userRole');
 
+    if (selectedDates.length === 0) {
+      alert("Vui lòng chọn thời gian");
+      return;
+    }
+
+    try {
+      const accessToken = localStorage.getItem("accessToken");
       if (!accessToken) {
-        alert('Vui lòng đăng nhập để tìm kiếm');
-        navigate('/');
+        alert("Vui lòng đăng nhập để tìm kiếm");
+        navigate("/");
         return;
       }
-  
-      const requestOptions = {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
+
+      const myHeaders = new Headers();
+      myHeaders.append("Authorization", `Bearer ${accessToken}`);
+
+      const startDate = new Date(selectedDates[0]);
+      const endDate = new Date(selectedDates[selectedDates.length - 1]);
+
+      const formattedStartDate = `${startDate.getDate()}-${(
+        startDate.getMonth() + 1
+      )
+        .toString()
+        .padStart(2, "0")}-${startDate.getFullYear()}`;
+      const formattedEndDate = `${endDate.getDate()}-${(endDate.getMonth() + 1)
+        .toString()
+        .padStart(2, "0")}-${endDate.getFullYear()}`;
+
+      if (startDate > endDate) {
+        alert("Ngày bắt đầu không thể lớn hơn ngày kết thúc");
+        return;
+      }
+
+      const timeRequestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
       };
-  
-      const encodedAddress = encodeURIComponent(selectedLocation);
-      const response = await fetch(
-        `http://localhost:8080/api/sorted-by-distance?address=${encodedAddress}`,
-        requestOptions
+
+      const timeResponse = await fetch(
+        `http://localhost:8080/api/find-booking?startDate=${formattedStartDate}&endDate=${formattedEndDate}`,
+        timeRequestOptions
       );
 
-      if (response.status === 401) {
-        alert('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại');
-        navigate('/');
-        return;
+      if (!timeResponse.ok) {
+        const errorText = await timeResponse.text();
+        throw new Error(
+          `HTTP error! status: ${timeResponse.status}, message: ${errorText}`
+        );
       }
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-  
-      const data = await response.json();
-      console.log('Search results:', data);
 
-      const vehiclesData = Array.isArray(data) ? data : [];
-      console.log('Processed vehicles data:', vehiclesData);
-  
-      // navigate(`/CusFilterOptions?location=${selectedLocation}&dates=${selectedDates.join(',')}`);
-      navigate('/CusFilterOptions', {
+      const timeData = await timeResponse.json();
+      console.log("Search results by time:", timeData);
+
+      const encodedAddress = encodeURIComponent(selectedLocation);
+      const locationRequestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
+      };
+
+      const locationResponse = await fetch(
+        `http://localhost:8080/api/sorted-by-distance?address=${encodedAddress}`,
+        locationRequestOptions
+      );
+
+      if (!locationResponse.ok) {
+        const errorText = await locationResponse.text();
+        throw new Error(
+          `HTTP error! status: ${locationResponse.status}, message: ${errorText}`
+        );
+      }
+
+      const locationData = await locationResponse.json();
+      console.log("Search results by location:", locationData);
+
+      const availableVehicles = timeData.availableVehicles;
+      const vehiclesByLocation = locationData.vehicles.map((v) => ({
+        ...v.vehicle,
+        distance: v.distance,
+      }));
+
+      const combinedResults = availableVehicles
+        .filter((vehicle) =>
+          vehiclesByLocation.some(
+            (locVehicle) => locVehicle._id === vehicle._id
+          )
+        )
+        .map((vehicle) => {
+          const locVehicle = vehiclesByLocation.find(
+            (loc) => loc._id === vehicle._id
+          );
+          return {
+            ...vehicle,
+            distance: locVehicle
+              ? locVehicle.distance
+              : { text: "0 km", value: 0 },
+          };
+        })
+        .sort((a, b) => a.distance.value - b.distance.value);
+
+      console.log("Combined results:", combinedResults);
+
+      navigate("/CusFilterOptions", {
         state: {
           location: selectedLocation,
           dates: selectedDates,
-          vehicles: data.vehicles  // Lấy mảng vehicles từ response
-        }
+          combinedResults: combinedResults,
+        },
       });
-  
     } catch (error) {
-      console.error('Error during search:', error);
-      alert('Có lỗi xảy ra khi tìm kiếm. Vui lòng thử lại sau.');
+      console.error("Error during search:", error);
+      alert(`Có lỗi xảy ra khi tìm kiếm: ${error.message}`);
     }
   };
+
   return (
     <>
       <div className="search-bar-container">
@@ -105,7 +170,7 @@ const SearchBar = () => {
                 <MapPin size={20} />
               </span>
               <span className="button-text">
-                {selectedLocation || 'Chọn địa điểm'}
+                {selectedLocation || "Chọn địa điểm"}
               </span>
               <ChevronDown size={20} color="#6b7280" />
             </div>
@@ -122,16 +187,14 @@ const SearchBar = () => {
               <span className="icon-wrapper">
                 <Clock size={20} />
               </span>
-              <span className="button-text">
-                {formatSelectedDates()}
-              </span>
+              <span className="button-text">{formatSelectedDates()}</span>
               <ChevronDown size={20} color="#6b7280" />
             </div>
           </button>
         </div>
         <button className="search-action-button" onClick={handleSearch}>
-      Tìm xe
-    </button>
+          Tìm xe
+        </button>
       </div>
 
       <LocationModal
