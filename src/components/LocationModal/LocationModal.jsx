@@ -1,20 +1,34 @@
-import React, { useState } from 'react';
-import { MapPin, X, Search } from 'lucide-react';
-import './LocationModal.css';
+import React, { useState } from "react";
+import { MapPin, X, Search } from "lucide-react";
+import "./LocationModal.css";
 
 const LocationModal = ({ isOpen, onClose, onSelectLocation }) => {
-  const [selectedLocation, setSelectedLocation] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedLocation, setSelectedLocation] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   if (!isOpen) return null;
 
+  const handleSearchInputChange = (e) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      setSelectedLocation(searchQuery);
+      onSelectLocation(searchQuery);
+      onClose();
+    }
+  };
+
   const suggestedLocations = [
-    'Hà Nội',
-    'TP. HCM',
-    'Ninh Thuận',
-    'Quảng Nam',
-    'Huế',
-    'Đà Nẵng'
+    "Hà Nội",
+    "TP. HCM",
+    "Ninh Thuận",
+    "Quảng Nam",
+    "Huế",
+    "Đà Nẵng",
   ];
 
   const handleLocationSelect = (location) => {
@@ -23,13 +37,13 @@ const LocationModal = ({ isOpen, onClose, onSelectLocation }) => {
   };
 
   const clearSelection = () => {
-    setSelectedLocation('');
-    setSearchQuery('');
+    setSelectedLocation("");
+    setSearchQuery("");
   };
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-container" onClick={e => e.stopPropagation()}>
+      <div className="modal-container" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2 className="modal-title">Địa điểm</h2>
           <button className="close-button" onClick={onClose}>
@@ -45,23 +59,26 @@ const LocationModal = ({ isOpen, onClose, onSelectLocation }) => {
               className="search-input"
               placeholder="Tìm kiếm địa điểm..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={handleSearchInputChange}
+              onKeyPress={handleKeyPress}
             />
           </div>
 
           {selectedLocation && (
             <div className="location-option selected-location">
-              <MapPin size={20} className="icon" />
-              <span>{selectedLocation}</span>
+              <div className="location-option-content">
+                <MapPin size={20} className="icon" />
+                <span>{selectedLocation}</span>
+              </div>
               <button className="remove-button" onClick={clearSelection}>
-                <X size={12} />
+                <X size={12} className="remove-icon" />
               </button>
             </div>
           )}
 
           <div
             className="location-option current-location"
-            onClick={() => handleLocationSelect('Vị trí hiện tại')}
+            onClick={() => handleLocationSelect("Vị trí hiện tại")}
           >
             <MapPin size={20} className="icon" />
             <span>Vị trí hiện tại</span>
@@ -73,7 +90,9 @@ const LocationModal = ({ isOpen, onClose, onSelectLocation }) => {
               {suggestedLocations.map((location) => (
                 <button
                   key={location}
-                  className={`vehicle-button ${selectedLocation === location ? 'selected-location' : ''}`}
+                  className={`vehicle-button ${
+                    selectedLocation === location ? "selected-location" : ""
+                  }`}
                   onClick={() => handleLocationSelect(location)}
                 >
                   <MapPin size={16} />
