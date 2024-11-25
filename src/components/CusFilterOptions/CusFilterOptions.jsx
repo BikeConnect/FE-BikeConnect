@@ -8,10 +8,9 @@ import {
   faTachometerAlt,
   faStar,
 } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "./CusFilterOptions.css";
 import xedethue from "../../assets/images/images_homePage/v994_9054.png";
-import { useLocation } from "react-router-dom";
 
 const CusFilterOptions = () => {
   const [vehicleType, setVehicleType] = useState("");
@@ -40,28 +39,25 @@ const CusFilterOptions = () => {
     : [];
 
   useEffect(() => {
-    if (state?.vehicles && Array.isArray(state.vehicles)) {
-      const transformedVehicles = state.vehicles.map((item) => {
-        const vehicleData = item.vehicle; // Lấy data từ trường vehicle
+    if (state?.combinedResults && Array.isArray(state.combinedResults)) {
+      const transformedVehicles = state.combinedResults.map((item) => {
         return {
-          id: vehicleData._id,
-          type: vehicleData.category === "Motorcycle" ? "Xe máy" : "Xe đạp",
-          brand: vehicleData.brand || "",
-          name: vehicleData.name || "",
-          rating: Number(vehicleData.rating) || 0,
-          image: vehicleData.images?.[0]?.url || xedethue,
-          location: vehicleData.address || "",
-          distance: item.distance?.text || "0km",
+          id: item._id,
+          type: item.category === "Motorcycle" ? "Xe máy" : "Xe đạp",
+          brand: item.brand || "",
+          name: item.name || "",
+          rating: Number(item.rating) || 0,
+          image: item.images?.[0]?.url || xedethue,
+          location: item.address || "",
+          distance: item.distance || "0km",
           status:
-            vehicleData.availability_status === "available"
+            item.availability_status === "available"
               ? "Có sẵn"
               : "Không có sẵn",
-          currentPrice: `${
-            vehicleData.price?.toLocaleString() || "0"
-          } VND/ngày`,
+          currentPrice: `${(item.price || 0).toLocaleString()} VND/ngày`,
           originalPrice: `${(
-            (vehicleData.price || 0) *
-            (1 + (vehicleData.discount || 0) / 100)
+            (item.price || 0) *
+            (1 + (item.discount || 0) / 100)
           ).toLocaleString()} VND`,
           reviews: 0,
         };
@@ -103,7 +99,6 @@ const CusFilterOptions = () => {
 
   const filteredVehicles = vehicles
     .filter((vehicle) => {
-      // Chuyển đổi giá trị khoảng giá thành số nguyên để so sánh
       const parsedMinPrice = minPrice
         ? parseInt(minPrice.replace(/,/g, ""))
         : 0;
@@ -177,7 +172,7 @@ const CusFilterOptions = () => {
       distance:
         typeof data.distance === "object"
           ? data.distance.text || "0km"
-          : data.distance,
+          : data.distance.text || "0km",
     };
 
     return (
@@ -245,7 +240,7 @@ const CusFilterOptions = () => {
                       />
                     ))}
                   <span className="vehicle-review-count">
-                    ({formattedData.reviews})
+                    ({formattedData.rating})
                   </span>
                 </div>
               </div>
@@ -259,9 +254,6 @@ const CusFilterOptions = () => {
   return (
     <Container className="centered-container mt-4 mb-5">
       <h1 className="my-4 text-center">Thông tin </h1>
-      {/* <h2>Thông tin tìm kiếm</h2>
-            <p>Địa điểm: {selectedLocation}</p>
-            <p>Thời gian: {selectedDates.join(' - ')}</p> */}
       <Row>
         <Col md={3} className="mb-4">
           <div className="filter-container">
