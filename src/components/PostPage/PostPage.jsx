@@ -44,11 +44,21 @@ const PostPage = () => {
     if (!updatedVehicles[currentVehicleIndex].images) {
       updatedVehicles[currentVehicleIndex].images = [];
     }
-    
-    // Thêm tất cả các ảnh đã chọn vào mảng images
-    updatedVehicles[currentVehicleIndex].images.push(...uploadedImages);
+
+    // Kiểm tra và chỉ thêm các File objects hợp lệ
+    const validImages = uploadedImages.filter((img) => img instanceof File);
+    if (validImages.length !== uploadedImages.length) {
+      console.warn("Some uploaded items are not valid image files");
+    }
+
+    updatedVehicles[currentVehicleIndex].images.push(...validImages);
     setVehicles(updatedVehicles);
     setShowUploadModal(false);
+
+    console.log(
+      "Updated vehicle images:",
+      updatedVehicles[currentVehicleIndex].images
+    );
   };
 
   const handleSubmit = async (e) => {
@@ -113,10 +123,33 @@ const PostPage = () => {
       vehicles.forEach((vehicle, index) => {
         if (vehicle.images && vehicle.images.length > 0) {
           vehicle.images.forEach((image, imageIndex) => {
-            formData.append(`vehicle${index}_images`, image, image.name);
+            if (image instanceof File) {
+              // Tạo tên file mới theo format yêu cầu của backend
+              const fileName = `vehicle${index}_images`;
+              formData.append(fileName, image);
+            }
           });
         }
       });
+
+      // Thêm logging để debug
+      console.log("FormData contents before sending:");
+      const formDataObject = {};
+      for (let [key, value] of formData.entries()) {
+        if (value instanceof File) {
+          if (!formDataObject[key]) {
+            formDataObject[key] = [];
+          }
+          formDataObject[key].push({
+            name: value.name,
+            type: value.type,
+            size: value.size,
+          });
+        } else {
+          formDataObject[key] = value;
+        }
+      }
+      console.log("FormData as object:", formDataObject);
 
       console.log("FormData being sent:", {
         quantity: quantity,
@@ -133,10 +166,16 @@ const PostPage = () => {
       });
 
       if (response.ok) {
+        const result = await response.json();
+        console.log("Upload success:", result);
         alert("Đăng bài thành công!");
       } else {
         const errorText = await response.text();
-        console.error("Lỗi khi đăng bài:", response.status, errorText);
+        console.error("Upload failed:", {
+          status: response.status,
+          statusText: response.statusText,
+          error: errorText,
+        });
         alert(`Lỗi: ${response.status} - ${errorText}`);
       }
     } catch (error) {

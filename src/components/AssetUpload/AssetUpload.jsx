@@ -27,13 +27,19 @@ const AssetUpload = ({ onClose, onUpload }) => {
           multiple
           onChange={handleFileChange}
         />
-        <div className="preview-images">
+        {/* <div className="preview-images">
           {selectedFiles.map((file, index) => (
             <div key={index} className="preview-item">
-              {/* <img src={URL.createObjectURL(file)} alt={`Preview ${index}`} /> */}
+              <img
+                src={URL.createObjectURL(file)}
+                alt={`Preview ${index}`}
+                onLoad={(e) => {
+                  URL.revokeObjectURL(e.target.src);
+                }}
+              />
             </div>
           ))}
-        </div>
+        </div> */}
         <div className="upload-actions">
           <button onClick={handleUpload} className="confirm-button">
             Upload
