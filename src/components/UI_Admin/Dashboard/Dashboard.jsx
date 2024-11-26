@@ -8,7 +8,7 @@ import './Dashboard.css';
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const Dashboard = () => {
-    const { customerCount, ownerCount, rentalRequestCount, postRequestCount } = useCustomer(); // Lấy các giá trị số lượng
+    const { customerCount, ownerCount, rentalRequestCount, postRequestCount } = useCustomer(); 
 
     const revenueData = {
         labels: ['Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10'],
