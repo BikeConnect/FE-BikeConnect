@@ -134,9 +134,9 @@ const CyclerentalGrid = () => {
               "0 VND/ngày",
             originalPrice: vehicle.discount
               ? `${(
-                  vehicle.price *
-                  (1 + vehicle.discount / 100)
-                ).toLocaleString("vi-VN")} VND`
+                vehicle.price *
+                (1 + vehicle.discount / 100)
+              ).toLocaleString("vi-VN")} VND`
               : "",
             location: vehicle.address || "Không có địa chỉ",
             status:

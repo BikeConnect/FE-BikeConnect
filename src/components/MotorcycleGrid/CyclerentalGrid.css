@@ -177,6 +177,7 @@ a {
   cursor: pointer;
   transition: background-color 0.3s, transform 0.3s;
 }
+
 .rental-prev-btn:hover,
 .rental-next-btn:hover {
   transform: scale(1.1);
@@ -186,6 +187,7 @@ a {
 .rental-next-btn:active {
   transform: scale(0.95);
 }
+
 .rental-prev-btn:hover .rental-chevron-left,
 .rental-next-btn:hover .rental-chevron-right {
   fill: #fff;
