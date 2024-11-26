@@ -6,7 +6,7 @@ const PostPage = () => {
   const [quantity, setQuantity] = useState(0);
   const [vehicles, setVehicles] = useState([]);
   const [showUploadModal, setShowUploadModal] = useState(false);
-  const [image, setImage] = useState(null);
+  const [currentVehicleIndex, setCurrentVehicleIndex] = useState(0);
   const [errors, setErrors] = useState({});
 
   const handleQuantityChange = (e) => {
@@ -39,23 +39,28 @@ const PostPage = () => {
     setVehicles(updatedVehicles);
   };
 
-  const handleImageUpload = (uploadedImage) => {
-    setImage(uploadedImage);
+  const handleImageUpload = (uploadedImages) => {
+    const updatedVehicles = [...vehicles];
+    if (!updatedVehicles[currentVehicleIndex].images) {
+      updatedVehicles[currentVehicleIndex].images = [];
+    }
+    
+    // Thêm tất cả các ảnh đã chọn vào mảng images
+    updatedVehicles[currentVehicleIndex].images.push(...uploadedImages);
+    setVehicles(updatedVehicles);
     setShowUploadModal(false);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    vehicles.forEach((vehicle, index) => {
-      console.log(`Xe ${index + 1}: endDate = ${vehicle.endDate}`);
-    });
-
     const newErrors = {};
     if (quantity <= 0) newErrors.quantity = "Số lượng không hợp lệ";
-    if (!image) newErrors.image = "Hãy upload một ảnh";
 
     vehicles.forEach((vehicle, index) => {
+      if (!vehicle.images || vehicle.images.length === 0) {
+        newErrors[`images_${index}`] = "Hãy upload ít nhất một ảnh cho xe";
+      }
       if (!vehicle.startDate) {
         newErrors[`startDate_${index}`] = "Ngày bắt đầu là bắt buộc";
       }
@@ -83,19 +88,48 @@ const PostPage = () => {
         return;
       }
 
+      // Tạo FormData
+      const formData = new FormData();
+      formData.append("quantity", quantity.toString());
+
+      // Chuyển đổi vehicles thành chuỗi JSON và thêm vào FormData
+      const vehiclesData = vehicles.map((vehicle) => ({
+        name: vehicle.name,
+        category: vehicle.category,
+        brand: vehicle.brand,
+        price: parseInt(vehicle.price),
+        discount: parseInt(vehicle.discount),
+        description: vehicle.description,
+        model: vehicle.model,
+        address: vehicle.address,
+        license: vehicle.license,
+        startDate: vehicle.startDate,
+        endDate: vehicle.endDate,
+      }));
+
+      formData.append("vehicles", JSON.stringify(vehiclesData));
+
+      // Thêm ảnh cho từng xe
+      vehicles.forEach((vehicle, index) => {
+        if (vehicle.images && vehicle.images.length > 0) {
+          vehicle.images.forEach((image, imageIndex) => {
+            formData.append(`vehicle${index}_images`, image, image.name);
+          });
+        }
+      });
+
+      console.log("FormData being sent:", {
+        quantity: quantity,
+        vehicles: vehiclesData,
+        vehicleImages: vehicles.map((v) => v.images?.length || 0),
+      });
+
       const response = await fetch("http://localhost:8080/api/post/", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
-        body: JSON.stringify({
-          quantity,
-          vehicles: vehicles.map((vehicle) => ({
-            ...vehicle,
-            images: [image.name],
-          })),
-        }),
+        body: formData,
       });
 
       if (response.ok) {
@@ -118,7 +152,7 @@ const PostPage = () => {
 
         <div className="form-container">
           <div className="form-row">
-            <div className="form-group">
+            <div className="form-group form-group-quantity">
               <label>Số lượng xe:</label>
               <input
                 type="number"
@@ -127,119 +161,175 @@ const PostPage = () => {
                 placeholder="Nhập số lượng xe..."
                 min="1"
               />
-              {errors.quantity && <div className="error-message">{errors.quantity}</div>}
+              {errors.quantity && (
+                <div className="error-message">{errors.quantity}</div>
+              )}
             </div>
           </div>
 
           {vehicles.map((vehicle, index) => (
             <div key={index} className="vehicle-form">
               <h2>Xe {index + 1}</h2>
-              <div className="form-group">
-                <label>Tên xe:</label>
-                <input
-                  type="text"
-                  value={vehicle.name}
-                  onChange={(e) => handleVehicleChange(index, 'name', e.target.value)}
-                  placeholder="Nhập tên xe..."
-                />
-              </div>
-              <div className="form-group">
-                <label>Danh mục:</label>
-                <input
-                  type="text"
-                  value={vehicle.category}
-                  onChange={(e) => handleVehicleChange(index, 'category', e.target.value)}
-                  placeholder="Nhập danh mục xe..."
-                />
-              </div>
-              <div className="form-group">
-                <label>Thương hiệu:</label>
-                <input
-                  type="text"
-                  value={vehicle.brand}
-                  onChange={(e) => handleVehicleChange(index, 'brand', e.target.value)}
-                  placeholder="Nhập thương hiệu xe..."
-                />
-              </div>
-              <div className="form-group">
-                <label>Giá:</label>
-                <input
-                  type="number"
-                  value={vehicle.price}
-                  onChange={(e) => handleVehicleChange(index, 'price', e.target.value)}
-                  placeholder="Nhập giá xe..."
-                />
-              </div>
-              <div className="form-group">
-                <label>Giảm giá:</label>
-                <input
-                  type="number"
-                  value={vehicle.discount}
-                  onChange={(e) => handleVehicleChange(index, 'discount', e.target.value)}
-                  placeholder="Nhập giảm giá..."
-                />
-              </div>
-              <div className="form-group">
-                <label>Mô tả:</label>
-                <textarea
-                  value={vehicle.description}
-                  onChange={(e) => handleVehicleChange(index, 'description', e.target.value)}
-                  placeholder="Nhập mô tả xe..."
-                />
-              </div>
-              <div className="form-group">
-                <label>Model:</label>
-                <input
-                  type="text"
-                  value={vehicle.model}
-                  onChange={(e) => handleVehicleChange(index, 'model', e.target.value)}
-                  placeholder="Nhập model xe..."
-                />
-              </div>
-              <div className="form-group">
-                <label>Địa chỉ:</label>
-                <input
-                  type="text"
-                  value={vehicle.address}
-                  onChange={(e) => handleVehicleChange(index, 'address', e.target.value)}
-                  placeholder="Nhập địa chỉ..."
-                />
-              </div>
-              <div className="form-group">
-                <label>Biển số:</label>
-                <input
-                  type="text"
-                  value={vehicle.license}
-                  onChange={(e) => handleVehicleChange(index, 'license', e.target.value)}
-                  placeholder="Nhập biển số xe..."
-                />
-              </div>
-              <div className="form-group">
-                <label>Ngày bắt đầu:</label>
-                <input
-                  type="date"
-                  value={vehicle.startDate}
-                  onChange={(e) => handleVehicleChange(index, 'startDate', e.target.value)}
-                />
-                {errors[`startDate_${index}`] && <div className="error-message">{errors[`startDate_${index}`]}</div>}
-              </div>
-              <div className="form-group">
-                <label>Ngày kết thúc:</label>
-                <input
-                  type="date"
-                  value={vehicle.endDate}
-                  onChange={(e) => handleVehicleChange(index, 'endDate', e.target.value)}
-                />
-                {errors[`endDate_${index}`] && <div className="error-message">{errors[`endDate_${index}`]}</div>}
-              </div>
-              <div className="form-group">
-                <label>Hình ảnh:</label>
-                <button type="button" onClick={() => setShowUploadModal(true)}>
-                  Tải lên hình ảnh
-                </button>
-                {showUploadModal && (
-                  <AssetUpload onUpload={handleImageUpload} />
-                )}
+              <div className="vehicle-form-content">
+                <div className="vehicle-name-category">
+                  <div className="form-group form-group-name">
+                    <label>Tên xe:</label>
+                    <input
+                      type="text"
+                      value={vehicle.name}
+                      onChange={(e) =>
+                        handleVehicleChange(index, "name", e.target.value)
+                      }
+                      placeholder="Nhập tên xe..."
+                    />
+                  </div>
+                  <div className="form-group form-group-category">
+                    <label>Danh mục:</label>
+                    <input
+                      type="text"
+                      value={vehicle.category}
+                      onChange={(e) =>
+                        handleVehicleChange(index, "category", e.target.value)
+                      }
+                      placeholder="Nhập danh mục xe..."
+                    />
+                  </div>
+                  <div className="form-group form-group-brand">
+                    <label>Thương hiệu:</label>
+                    <input
+                      type="text"
+                      value={vehicle.brand}
+                      onChange={(e) =>
+                        handleVehicleChange(index, "brand", e.target.value)
+                      }
+                      placeholder="Nhập thương hiệu xe..."
+                    />
+                  </div>
+                </div>
+                <div className="vehicle-price-discount-model">
+                  <div className="form-group form-group-price">
+                    <label>Giá:</label>
+                    <input
+                      type="number"
+                      value={vehicle.price}
+                      onChange={(e) =>
+                        handleVehicleChange(index, "price", e.target.value)
+                      }
+                      placeholder="Nhập giá xe..."
+                    />
+                  </div>
+                  <div className="form-group form-group-discount">
+                    <label>Giảm giá:</label>
+                    <input
+                      type="number"
+                      value={vehicle.discount}
+                      onChange={(e) =>
+                        handleVehicleChange(index, "discount", e.target.value)
+                      }
+                      placeholder="Nhập giảm giá..."
+                    />
+                  </div>
+                  <div className="form-group form-group-model">
+                    <label>Model:</label>
+                    <input
+                      type="text"
+                      value={vehicle.model}
+                      onChange={(e) =>
+                        handleVehicleChange(index, "model", e.target.value)
+                      }
+                      placeholder="Nhập model xe..."
+                    />
+                  </div>
+                </div>
+                <div className="form-group">
+                  <label>Mô tả:</label>
+                  <textarea
+                    value={vehicle.description}
+                    onChange={(e) =>
+                      handleVehicleChange(index, "description", e.target.value)
+                    }
+                    placeholder="Nhập mô tả xe..."
+                  />
+                </div>
+                <div className="vehicle-address-license">
+                  <div className="form-group form-group-address">
+                    <label>Địa chỉ:</label>
+                    <input
+                      type="text"
+                      value={vehicle.address}
+                      onChange={(e) =>
+                        handleVehicleChange(index, "address", e.target.value)
+                      }
+                      placeholder="Nhập địa chỉ..."
+                    />
+                  </div>
+                  <div className="form-group form-group-license">
+                    <label>Biển số:</label>
+                    <input
+                      type="text"
+                      value={vehicle.license}
+                      onChange={(e) =>
+                        handleVehicleChange(index, "license", e.target.value)
+                      }
+                      placeholder="Nhập biển số xe..."
+                    />
+                  </div>
+                </div>
+                <div className="vehicle-date-images">
+                  <div className="form-group form-group-startDate">
+                    <label>Ngày bắt đầu:</label>
+                    <input
+                      type="date"
+                      value={vehicle.startDate}
+                      onChange={(e) =>
+                        handleVehicleChange(index, "startDate", e.target.value)
+                      }
+                    />
+                    {errors[`startDate_${index}`] && (
+                      <div className="error-message">
+                        {errors[`startDate_${index}`]}
+                      </div>
+                    )}
+                  </div>
+                  <div className="form-group form-group-endDate">
+                    <label>Ngày kết thúc:</label>
+                    <input
+                      type="date"
+                      value={vehicle.endDate}
+                      onChange={(e) =>
+                        handleVehicleChange(index, "endDate", e.target.value)
+                      }
+                    />
+                    {errors[`endDate_${index}`] && (
+                      <div className="error-message">
+                        {errors[`endDate_${index}`]}
+                      </div>
+                    )}
+                  </div>
+                  <div className="form-group form-group-img">
+                    <label>Hình ảnh:</label>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setCurrentVehicleIndex(index);
+                        setShowUploadModal(true);
+                      }}
+                    >
+                      Tải lên hình ảnh
+                    </button>
+                    {vehicle.images && vehicle.images.length > 0 && (
+                      <div className="uploaded-images">
+                        <p>Số ảnh đã tải lên: {vehicle.images.length}</p>
+                      </div>
+                    )}
+                    {showUploadModal && currentVehicleIndex === index && (
+                      <AssetUpload
+                        onUpload={handleImageUpload}
+                        onClose={() => setShowUploadModal(false)}
+                      />
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           ))}
@@ -247,7 +337,9 @@ const PostPage = () => {
           {errors.image && <div className="error-message">{errors.image}</div>}
 
           <div className="form-group">
-            <button type="submit" className="submit-button">Đăng bài</button>
+            <button type="submit" className="submit-button">
+              Đăng bài
+            </button>
           </div>
         </div>
       </form>
