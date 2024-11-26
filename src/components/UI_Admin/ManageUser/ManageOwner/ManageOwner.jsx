@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import './ManageOwner.css';
 import { useCustomer } from '../../CustomerContext';
-
 const ManageOwner = () => {
     const { setOwnerCount } = useCustomer();
     const [searchTerm, setSearchTerm] = useState('');
@@ -17,19 +16,15 @@ const ManageOwner = () => {
             status: index % 2 === 0 ? 'Chưa kích hoạt' : 'Đã kích hoạt',
         }))
     );
-
     const [confirmationMessage, setConfirmationMessage] = useState('');
     const [activeOwnerId, setActiveOwnerId] = useState(null);
-
     useEffect(() => {
         setOwnerCount(owners.length);
     }, [owners, setOwnerCount]);
-
     const handleActivateClick = (id) => {
         setActiveOwnerId(id);
         setConfirmationMessage('Bạn có muốn kích hoạt tài khoản này không?');
     };
-
     const confirmActivate = () => {
         setOwners(owners.map(owner =>
             owner.id === activeOwnerId
@@ -39,28 +34,23 @@ const ManageOwner = () => {
         setConfirmationMessage('');
         setActiveOwnerId(null);
     };
-
     const handleDeleteClick = (id) => {
         setActiveOwnerId(id);
         setConfirmationMessage('Bạn có chắc muốn xóa tài khoản này?');
     };
-
     const confirmDelete = () => {
         setOwners(owners.filter(owner => owner.id !== activeOwnerId));
         setConfirmationMessage('');
         setActiveOwnerId(null);
     };
-
     const filteredOwners = owners.filter(owner =>
         owner.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
         owner.displayName.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
     const indexOfLastOwner = currentPage * ownersPerPage;
     const indexOfFirstOwner = indexOfLastOwner - ownersPerPage;
     const currentOwners = filteredOwners.slice(indexOfFirstOwner, indexOfLastOwner);
     const totalPages = Math.ceil(filteredOwners.length / ownersPerPage);
-
     return (
         <div>
             <div className="manage-owner-container">
@@ -152,5 +142,4 @@ const ManageOwner = () => {
         </div>
     );
 };
-
 export default ManageOwner;

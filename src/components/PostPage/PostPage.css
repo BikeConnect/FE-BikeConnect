@@ -1,7 +1,6 @@
 .post-page {
   min-height: 100vh;
   padding: 3rem 2rem;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
 }
 
 .post-form {
@@ -41,6 +40,7 @@ h1:after {
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  width: 100%;
 }
 
 .form-row {
@@ -49,13 +49,57 @@ h1:after {
   gap: 2rem;
 }
 
-.form-group {
+.form-group-quantity {
+  max-width: 400px;
+}
+
+.form-group-quantity,
+.vehicle-form-content {
   margin-bottom: 0;
   border: 1px solid #ccc;
-  /* Đường viền mỗi form */
   padding: 1rem;
   border-radius: 10px;
   background-color: #f9f9f9;
+}
+
+.vehicle-price-discount-model,
+.vehicle-address-license,
+.vehicle-date-images,
+.vehicle-name-category {
+  display: flex;
+  width: 100%;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.vehicle-date-images {
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.form-group-discount,
+.form-group-price,
+.form-group-model,
+.form-group-category,
+.form-group-brand,
+.form-group-name {
+  width: 50%;
+  text-align: left;
+}
+
+.form-group-address {
+  width: 70%;
+}
+
+.form-group-license {
+  width: 30%;
+}
+
+.form-group-startDate,
+.form-group-endDate,
+.form-group-img {
+  max-width: 200px;
+  text-align: start;
 }
 
 .form-group.full-width {

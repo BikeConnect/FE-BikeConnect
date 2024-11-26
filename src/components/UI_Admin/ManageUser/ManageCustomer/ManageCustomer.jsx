@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import './ManageCustomer.css';
 import { useCustomer } from '../../CustomerContext';
-
 const getRandomName = () => {
     const names = [
         'Nguyễn Văn A', 'Trần Thị B', 'Lê Văn C',
@@ -12,7 +11,6 @@ const getRandomName = () => {
     ];
     return names[Math.floor(Math.random() * names.length)];
 };
-
 const ManageCustomer = () => {
     const { setCustomerCount } = useCustomer();
     const [searchTerm, setSearchTerm] = useState('');
@@ -28,19 +26,15 @@ const ManageCustomer = () => {
             status: index % 3 === 0 ? 'Chưa kích hoạt' : 'Đã kích hoạt',
         }))
     );
-
     const [confirmationMessage, setConfirmationMessage] = useState('');
     const [activeCustomerId, setActiveCustomerId] = useState(null);
-
     useEffect(() => {
         setCustomerCount(customers.length);
     }, [customers, setCustomerCount]);
-
     const handleActivateClick = (id) => {
         setActiveCustomerId(id);
         setConfirmationMessage('Bạn có muốn kích hoạt tài khoản này không?');
     };
-
     const confirmActivate = () => {
         setCustomers(customers.map(customer =>
             customer.id === activeCustomerId
@@ -50,28 +44,23 @@ const ManageCustomer = () => {
         setConfirmationMessage('');
         setActiveCustomerId(null);
     };
-
     const handleDeleteClick = (id) => {
         setActiveCustomerId(id);
         setConfirmationMessage('Bạn có chắc xóa tài khoản khách hàng này?');
     };
-
     const confirmDelete = () => {
         setCustomers(customers.filter(customer => customer.id !== activeCustomerId));
         setConfirmationMessage('');
         setActiveCustomerId(null);
     };
-
     const filteredCustomers = customers.filter(customer =>
         customer.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
         customer.displayName.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
     const indexOfLastCustomer = currentPage * customersPerPage;
     const indexOfFirstCustomer = indexOfLastCustomer - customersPerPage;
     const currentCustomers = filteredCustomers.slice(indexOfFirstCustomer, indexOfLastCustomer);
     const totalPages = Math.ceil(filteredCustomers.length / customersPerPage);
-
     return (
         <div>
             <div className="manage-customer-container">
@@ -132,7 +121,6 @@ const ManageCustomer = () => {
                                             <FaEdit className="icon" onClick={() => handleActivateClick(customer.id)} />
                                             <FaTrash className="icon" onClick={() => handleDeleteClick(customer.id)} />
                                         </>
-
                                     )}
                                     {customer.status === 'Đã kích hoạt' && (
                                         <FaTrash className="icon" onClick={() => handleDeleteClick(customer.id)} />
@@ -166,5 +154,4 @@ const ManageCustomer = () => {
         </div>
     );
 };
-
 export default ManageCustomer;

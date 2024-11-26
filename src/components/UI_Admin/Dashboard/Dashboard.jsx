@@ -4,12 +4,9 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 import NavbarDashboard from '../NavbarDashboard/NavbarDashboard';
 import { useCustomer } from '../CustomerContext';
 import './Dashboard.css';
-
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
-
 const Dashboard = () => {
     const { customerCount, ownerCount, rentalRequestCount, postRequestCount } = useCustomer(); // Lấy các giá trị số lượng
-
     const revenueData = {
         labels: ['Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10'],
         datasets: [
@@ -22,7 +19,6 @@ const Dashboard = () => {
             },
         ],
     };
-
     return (
         <div>
             <NavbarDashboard />
@@ -54,5 +50,4 @@ const Dashboard = () => {
         </div>
     );
 };
-
 export default Dashboard;
