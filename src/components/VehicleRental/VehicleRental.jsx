@@ -1,43 +1,44 @@
-import React, { useState } from 'react';
-import './VehicleRental.css';
-import LocationModal from '../LocationModal/LocationModal';
-import TimePickerModal from '../TimePickerModal/TimePickerModal';
-import hinhanhxe1 from '../../assets/images/images_homePage/v994_8600.png';
-import hinhanhxe2 from '../../assets/images/images_homePage/v994_9054.png';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faComments } from '@fortawesome/free-solid-svg-icons';
+import React, { useState } from "react";
+import "./VehicleRental.css";
+import LocationModal from "../LocationModal/LocationModal";
+import TimePickerModal from "../TimePickerModal/TimePickerModal";
+import hinhanhxe1 from "../../assets/images/images_homePage/v994_8600.png";
+import hinhanhxe2 from "../../assets/images/images_homePage/v994_9054.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faComments } from "@fortawesome/free-solid-svg-icons";
 
 const VehicleRental = ({ bike, onOpenChat }) => {
   const [selectedMainImage, setSelectedMainImage] = useState(0);
   const [isAvailable, setIsAvailable] = useState(true);
-  const [pickupLocation, setPickupLocation] = useState('Tại cửa hàng');
-  const [dropoffLocation, setDropoffLocation] = useState('Tại cửa hàng');
+  const [pickupLocation, setPickupLocation] = useState("Tại cửa hàng");
+  const [dropoffLocation, setDropoffLocation] = useState("Tại cửa hàng");
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
   const [isTimeModalOpen, setIsTimeModalOpen] = useState(false);
   const [activeLocationField, setActiveLocationField] = useState(null);
   const [selectedDates, setSelectedDates] = useState([]);
 
-  const images = [
-    hinhanhxe1,
-    hinhanhxe2,
-    hinhanhxe1,
-    hinhanhxe1,
-    hinhanhxe1,
-  ];
+  const images = [hinhanhxe1, hinhanhxe2, hinhanhxe1, hinhanhxe1, hinhanhxe1];
 
   const handlePreviousImage = () => {
-    setSelectedMainImage((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1));
+    setSelectedMainImage((prevIndex) =>
+      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+    );
   };
 
   const handleNextImage = () => {
-    setSelectedMainImage((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
+    setSelectedMainImage((prevIndex) =>
+      prevIndex === images.length - 1 ? 0 : prevIndex + 1
+    );
   };
 
   const fees = {
     baseRate: 140000,
     insurance: 10000,
     depositFee: 145600,
-    transportationFee: pickupLocation !== 'Tại cửa hàng' || dropoffLocation !== 'Tại cửa hàng' ? 50000 : 0, // Phí vận chuyển
+    transportationFee:
+      pickupLocation !== "Tại cửa hàng" || dropoffLocation !== "Tại cửa hàng"
+        ? 50000
+        : 0, // Phí vận chuyển
   };
 
   const calculateRentalDays = () => {
@@ -55,7 +56,7 @@ const VehicleRental = ({ bike, onOpenChat }) => {
   };
 
   const handleLocationSelect = (location) => {
-    if (activeLocationField === 'pickup') {
+    if (activeLocationField === "pickup") {
       setPickupLocation(location);
     } else {
       setDropoffLocation(location);
@@ -79,25 +80,45 @@ const VehicleRental = ({ bike, onOpenChat }) => {
         <div className="col-md-6">
           <div className="image-gallery">
             <div className="main-image mb-3">
-              <img src={images[selectedMainImage]} alt="Honda SH 150 ABS" className="img-fluid" />
+              <img
+                src={images[selectedMainImage]}
+                alt="Honda SH 150 ABS"
+                className="img-fluid"
+              />
               {/* Nút Previous */}
-              <button className="image-nav-button previous-button" onClick={handlePreviousImage}>
-                &#9664;
+              <button
+                className="image-nav-button previous-button"
+                onClick={handlePreviousImage}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" className="nav-arrow-left">
+                  <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+                </svg>
               </button>
 
               {/* Nút Next */}
-              <button className="image-nav-button next-button" onClick={handleNextImage}>
-                &#9654;
+              <button
+                className="image-nav-button next-button"
+                onClick={handleNextImage}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" className="nav-arrow-right">
+                  <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
+                </svg>
               </button>
             </div>
             <div className="thumbnail-container d-flex flex-wrap gap-2">
               {images.map((image, index) => (
                 <div
                   key={index}
-                  className={`thumbnail ${selectedMainImage === index ? 'active' : ''}`}
+                  className={`thumbnail ${
+                    selectedMainImage === index ? "active" : ""
+                  }`}
                   onClick={() => setSelectedMainImage(index)}
                 >
-                  <img src={image} alt={`Thumbnail ${index + 1}`} className="img-fluid" />
+                  <img
+                    src={image}
+                    alt={`Thumbnail ${index + 1}`}
+                    className="img-fluid"
+                  />
                 </div>
               ))}
             </div>
@@ -106,63 +127,96 @@ const VehicleRental = ({ bike, onOpenChat }) => {
         <div className="col-md-6">
           <div className="rental-details p-3">
             <div className="rental-header d-flex justify-content-between align-items-center mb-3">
-              <h1 className="fs-5 fw-bold text-gray-900">Honda SH 150 ABS Đen Sần 12/2022 Siêu Lướt</h1>
-              <div className={`availability-badge ${isAvailable ? 'available' : 'unavailable'}`}>
-                {isAvailable ? 'Còn xe' : 'Hết xe'}
+              <h1 className="fs-5 fw-bold text-gray-900">
+                Honda SH 150 ABS Đen Sần 12/2022 Siêu Lướt
+              </h1>
+              <div
+                className={`availability-badge ${
+                  isAvailable ? "available" : "unavailable"
+                }`}
+              >
+                {isAvailable ? "Còn xe" : "Hết xe"}
               </div>
             </div>
 
             <div className="rental-price mb-3 d-flex align-items-baseline">
-              <span className="price text-indigo-600 text-lg font-bold">140,000 VND</span>
+              <span className="price text-indigo-600 text-lg font-bold">
+                140,000 VND
+              </span>
               <span className="duration text-gray-500 ml-2">/ngày</span>
             </div>
 
             <div className="location-selection d-flex flex-column gap-3 mb-4">
               <div className="location-field">
-                <label className="text-gray-700 text-sm mb-1">Địa điểm nhận xe</label>
+                <label className="text-gray-700 text-sm mb-1">
+                  Địa điểm nhận xe
+                </label>
                 <div className="location-options d-flex gap-2">
                   <button
-                    className={`location-option flex-1 ${pickupLocation === 'Tại cửa hàng' ? 'active' : ''}`}
-                    onClick={() => setPickupLocation('Tại cửa hàng')}
+                    className={`location-option flex-1 ${
+                      pickupLocation === "Tại cửa hàng" ? "active" : ""
+                    }`}
+                    onClick={() => setPickupLocation("Tại cửa hàng")}
                   >
                     Tại cửa hàng
                   </button>
                   <button
-                    className={`location-option flex-1 ${pickupLocation !== 'Tại cửa hàng' ? 'active' : ''}`}
-                    onClick={() => openLocationModal('pickup')}
+                    className={`location-option flex-1 ${
+                      pickupLocation !== "Tại cửa hàng" ? "active" : ""
+                    }`}
+                    onClick={() => openLocationModal("pickup")}
                   >
-                    {pickupLocation !== 'Tại cửa hàng' ? pickupLocation : 'Chọn địa điểm'}
+                    {pickupLocation !== "Tại cửa hàng"
+                      ? pickupLocation
+                      : "Chọn địa điểm"}
                   </button>
                 </div>
               </div>
 
               <div className="location-field">
-                <label className="text-gray-700 text-sm mb-1">Địa điểm trả xe</label>
+                <label className="text-gray-700 text-sm mb-1">
+                  Địa điểm trả xe
+                </label>
                 <div className="location-options d-flex gap-2">
                   <button
-                    className={`location-option flex-1 ${dropoffLocation === 'Tại cửa hàng' ? 'active' : ''}`}
-                    onClick={() => setDropoffLocation('Tại cửa hàng')}
+                    className={`location-option flex-1 ${
+                      dropoffLocation === "Tại cửa hàng" ? "active" : ""
+                    }`}
+                    onClick={() => setDropoffLocation("Tại cửa hàng")}
                   >
                     Tại cửa hàng
                   </button>
                   <button
-                    className={`location-option flex-1 ${dropoffLocation !== 'Tại cửa hàng' ? 'active' : ''}`}
-                    onClick={() => openLocationModal('dropoff')}
+                    className={`location-option flex-1 ${
+                      dropoffLocation !== "Tại cửa hàng" ? "active" : ""
+                    }`}
+                    onClick={() => openLocationModal("dropoff")}
                   >
-                    {dropoffLocation !== 'Tại cửa hàng' ? dropoffLocation : 'Chọn địa điểm'}
+                    {dropoffLocation !== "Tại cửa hàng"
+                      ? dropoffLocation
+                      : "Chọn địa điểm"}
                   </button>
                 </div>
               </div>
 
               <div className="time-selection">
-                <label className="text-gray-700 text-sm mb-1">Thời gian thuê xe</label>
-                <div className="time-input" onClick={() => setIsTimeModalOpen(true)}>
+                <label className="text-gray-700 text-sm mb-1">
+                  Thời gian thuê xe
+                </label>
+                <div
+                  className="time-input"
+                  onClick={() => setIsTimeModalOpen(true)}
+                >
                   <span>
                     {selectedDates.length > 0
                       ? selectedDates.length === 1
-                        ? new Date(selectedDates[0]).toLocaleDateString('vi-VN')
-                        : `${new Date(selectedDates[0]).toLocaleDateString('vi-VN')} đến ${new Date(selectedDates[selectedDates.length - 1]).toLocaleDateString('vi-VN')}`
-                      : 'Chọn thời gian'}
+                        ? new Date(selectedDates[0]).toLocaleDateString("vi-VN")
+                        : `${new Date(selectedDates[0]).toLocaleDateString(
+                            "vi-VN"
+                          )} đến ${new Date(
+                            selectedDates[selectedDates.length - 1]
+                          ).toLocaleDateString("vi-VN")}`
+                      : "Chọn thời gian"}
                   </span>
                 </div>
               </div>
@@ -174,16 +228,12 @@ const VehicleRental = ({ bike, onOpenChat }) => {
                 <span>{fees.baseRate.toLocaleString()} VNĐ/ngày</span>
               </div>
               <div className="fee-item d-flex justify-content-between mb-2 text-gray-700">
-                <span>Phí bảo hiểm</span>
+                <span>Giảm giá</span>
                 <span>{fees.insurance.toLocaleString()} VNĐ</span>
               </div>
               <div className="fee-item d-flex justify-content-between mb-2 text-gray-700">
                 <span>Phí đặt cọc</span>
                 <span>{fees.depositFee.toLocaleString()} VNĐ/ngày</span>
-              </div>
-              <div className="fee-item d-flex justify-content-between mb-2 text-gray-700">
-                <span>Phí vận chuyển</span>
-                <span>{fees.transportationFee.toLocaleString()} VNĐ</span>
               </div>
               <div className="fee-total d-flex justify-content-between mt-3 pt-3 border-top border-gray-300 text-gray-900 font-bold">
                 <span>Tổng thanh toán</span>
@@ -196,7 +246,7 @@ const VehicleRental = ({ bike, onOpenChat }) => {
                 Thuê xe ngay
               </button>
               <button
-                className="negotiate-button flex-1 py-2 px-3 rounded-md text-white bg-green-600 hover:bg-green-700 font-bold" 
+                className="negotiate-button flex-1 py-2 px-3 rounded-md text-white bg-green-600 hover:bg-green-700 font-bold"
                 onClick={onOpenChat} // Sử dụng toggle
               >
                 <FontAwesomeIcon icon={faComments} className="me-2" />
