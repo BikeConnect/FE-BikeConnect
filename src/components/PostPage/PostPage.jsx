@@ -98,9 +98,11 @@ const PostPage = () => {
         return;
       }
 
+      // Tạo FormData
       const formData = new FormData();
       formData.append("quantity", quantity.toString());
 
+      // Chuyển đổi vehicles thành chuỗi JSON và thêm vào FormData
       const vehiclesData = vehicles.map((vehicle) => ({
         name: vehicle.name,
         category: vehicle.category,
@@ -117,10 +119,12 @@ const PostPage = () => {
 
       formData.append("vehicles", JSON.stringify(vehiclesData));
 
+      // Thêm ảnh cho từng xe
       vehicles.forEach((vehicle, index) => {
         if (vehicle.images && vehicle.images.length > 0) {
           vehicle.images.forEach((image, imageIndex) => {
             if (image instanceof File) {
+              // Tạo tên file mới theo format yêu cầu của backend
               const fileName = `vehicle${index}_images`;
               formData.append(fileName, image);
             }
