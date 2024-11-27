@@ -14,60 +14,55 @@
   border-bottom: 1px solid #e9ecef;
 }
 
-.transaction-history-page .search-filter-container {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin: 0 0 25px 0;
-  padding: 15px;
-  background-color: #fff;
+.input-group {
   border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  height: 48px;
 }
 
-.transaction-history-page .search-box {
-  display: flex;
-  align-items: center;
-  flex: 1;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  padding: 8px 12px;
-  background: #f8f9fa;
-}
-
-.transaction-history-page .search-box input {
-  border: none;
-  background: none;
-  outline: none;
-  padding: 0 10px;
-  width: 100%;
-  font-size: 14px;
-}
-
-.transaction-history-page .search-box .search-icon {
-  color: #6c757d;
-}
-
-.transaction-history-page .status-select {
-  min-width: 180px;
-  padding: 8px 12px;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
+.input-group-text {
   background-color: #f8f9fa;
-  font-size: 14px;
-  outline: none;
+  border: 2px solid #ced4da;
+  padding: 0.5rem 1rem;
+  height: 44px;
 }
 
-/* Hover effects */
-.transaction-history-page .search-box:hover,
-.transaction-history-page .status-select:hover {
-  border-color: #adb5bd;
+.input-group .form-control {
+
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+   border: 2px solid #ced4da;
+   height: 44px;
 }
 
-/* Focus effects */
-.transaction-history-page .search-box:focus-within {
+.input-group .form-control:focus {
+  box-shadow: none;
+  border-color: #ced4da;
+}
+
+.form-select {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+  background-color: #f8f9fa;
+  height: 44px;
+  border: 2px solid #ced4da;
+}
+
+.form-select:focus {
   border-color: #80bdff;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Hover states */
+.input-group:hover .input-group-text,
+.input-group:hover .form-control {
+  border-color: #80bdff;
+}
+
+.form-select:hover {
+  border-color: #80bdff;
 }
 
 .transaction-history-page .table {

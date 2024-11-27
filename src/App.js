@@ -36,6 +36,7 @@ import ViewTransactionHistory from './components/UI_Admin/ViewTransactionHistory
 import RentalStatusTabs from './components/RentalStatusTabs/RentalStatusTabs';
 import MotorbikeReview from './components/MotorbikeReview/MotorbikeReview';
 import RentalSignup from './components/RentalSignup/RentalSignup';
+import OwnerChat from './components/OwnerChat/OwnerChat';
 
 
 function AppContent() {
@@ -114,7 +115,7 @@ function AppContent() {
         <Route path="/policies3" element={<Complaints />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/BikeDetail/:name" element={<BikeDetail />} />
-        <Route path="/chat" element={<Chat />} />
+        <Route path="/chat" element={<Chat />} /> 
         <Route path="/support" element={<Support />} />
         <Route path="/post" element={<PostPage />} />
         <Route path="/CusFilterOptions" element={<CusFilterOptions />} />
@@ -130,6 +131,8 @@ function AppContent() {
         <Route path="/rentalstatustabs" element={<RentalStatusTabs />} />
         <Route path="/motorbikereview" element={<MotorbikeReview/>} />
         <Route path="/rental-signup" element={<RentalSignup />} />
+        <Route path="/ownerchat" element={<OwnerChat />} />
+        
       </Routes >
     </div >
   );
