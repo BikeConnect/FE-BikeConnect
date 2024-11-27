@@ -25,6 +25,14 @@ const NavBar = ({ userRole, children }) => {
         <NavLink to="/changepassword" activeClassName="active">
           Đổi mật khẩu
         </NavLink>
+        <NavLink to="/rentalstatustabs" activeClassName="active">
+          Xem trạng thái xe và đánh giá
+        </NavLink>
+        <NavLink to="/paymentowner" activeClassName="active">
+          Thanh toán cho thuê xe
+        </NavLink>
+
+
       </div>
       <div className="nav-bar-content">{children}</div>
     </div>

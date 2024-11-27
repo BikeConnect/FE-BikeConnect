@@ -99,3 +99,36 @@
     background-color: #472CB2;
     color: white;
 }
+
+.document-images {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.document-section {
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    gap: 20px;
+}
+
+.document-registration,
+.document-bike {
+    width: 48%;
+}
+
+.document-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+}
+
+h3 {
+    margin-bottom: 10px;
+    color: #333;
+    font-size: 1.1rem;
+}

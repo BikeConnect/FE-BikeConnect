@@ -37,6 +37,7 @@ import RentalStatusTabs from './components/RentalStatusTabs/RentalStatusTabs';
 import MotorbikeReview from './components/MotorbikeReview/MotorbikeReview';
 import RentalSignup from './components/RentalSignup/RentalSignup';
 import OwnerChat from './components/OwnerChat/OwnerChat';
+import PaymentOwner from './components/PaymentOwner/PaymentOwner';
 
 
 function AppContent() {
@@ -132,6 +133,7 @@ function AppContent() {
         <Route path="/motorbikereview" element={<MotorbikeReview/>} />
         <Route path="/rental-signup" element={<RentalSignup />} />
         <Route path="/ownerchat" element={<OwnerChat />} />
+        <Route path="/paymentowner" element={<PaymentOwner/>} />
         
       </Routes >
     </div >

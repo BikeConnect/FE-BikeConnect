@@ -4,6 +4,7 @@ import { Clock, Store, MessageCircle, Star, Check, X, RotateCcw } from 'lucide-r
 import './RentalStatusTabs.css';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
+import NavBar from '../NavBar/NavBar';
 
 
 const RentalStatusTabs = () => {
@@ -284,6 +285,7 @@ const RentalStatusTabs = () => {
 
   return (
     <div className="rental-status-container">
+      <NavBar></NavBar>
       <div className="tabs-wrapper">
         <ul className="nav nav-tabs">
           {updateTabCounts().map((tab) => (

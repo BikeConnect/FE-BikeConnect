@@ -80,32 +80,26 @@ const ViewTransactionHistory = () => {
                 </div>
                 
                 <div className="card-body">
-                  <div className="row mb-4">
-                    <div className="col-md-8">
-                      <div className="input-group">
-                        <span className="input-group-text">
-                          <Search size={18} />
-                        </span>
-                        <input 
-                          type="text" 
-                          className="form-control"
-                          placeholder="Tìm kiếm theo tên chủ xe..."
-                          value={filter.searchName}
-                          onChange={(e) => setFilter({...filter, searchName: e.target.value})}
-                        />
-                      </div>
+                  {/* Cải thiện phần tìm kiếm */}
+                  <div className="search-filter-container">
+                    <div className="search-box">
+                      <Search size={18} className="search-icon" />
+                      <input 
+                        type="text" 
+                        placeholder="Tìm kiếm theo tên chủ xe..."
+                        value={filter.searchName}
+                        onChange={(e) => setFilter({...filter, searchName: e.target.value})}
+                      />
                     </div>
-                    <div className="col-md-4">
-                      <select 
-                        className="form-select"
-                        value={filter.status}
-                        onChange={(e) => setFilter({...filter, status: e.target.value})}
-                      >
-                        <option value="">Tất cả trạng thái</option>
-                        <option value="Đã thanh toán">Đã thanh toán</option>
-                        <option value="Đang chờ">Đang chờ</option>
-                      </select>
-                    </div>
+                    <select 
+                      className="status-select"
+                      value={filter.status}
+                      onChange={(e) => setFilter({...filter, status: e.target.value})}
+                    >
+                      <option value="">Tất cả trạng thái</option>
+                      <option value="Đã thanh toán">Đã thanh toán</option>
+                      <option value="Đang chờ">Đang chờ</option>
+                    </select>
                   </div>
 
                   {/* Bảng với đường viền đầy đủ */}

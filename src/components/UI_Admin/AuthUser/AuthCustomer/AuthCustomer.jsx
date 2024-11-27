@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaCheck, FaTrash } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaFileAlt } from 'react-icons/fa';
 import './AuthCustomer.css';
 import { useCustomer } from '../../CustomerContext';
 
@@ -63,7 +63,7 @@ const AuthCustomer = () => {
 
     return (
         <div className="auth-customer-container">
-            <h1>Quản lý yêu cầu thuê xe của khách hàng</h1>
+            <h1>Quản lý yêu cầu xác thực của khách thuê</h1>
             <div className="search-sort-container">
                 <input
                     type="text"
@@ -113,10 +113,26 @@ const AuthCustomer = () => {
                                 </span>
                             </td>
                             <td>
-                                {request.status === 'Chưa xác thực' && (
-                                    <FaCheck className="icon approve" onClick={() => handleApproveClick(request.id)} />
-                                )}
-                                <FaTrash className="icon delete" onClick={() => handleDeleteClick(request.id)} />
+                                <div className="icons">
+                                    {request.status === 'Chưa xác thực' && (
+                                        <>
+                                            <FaEdit
+                                                className="icon-edit"
+                                                onClick={() => handleApproveClick(request.id)}
+                                            />
+                                            <FaTrash
+                                                className="icon-delete"
+                                                onClick={() => handleDeleteClick(request.id)}
+                                            />
+                                        </>
+                                    )}
+                                    {request.status === 'Đã xác thực' && (
+                                        <FaTrash
+                                            className="icon-delete"
+                                            onClick={() => handleDeleteClick(request.id)}
+                                        />
+                                    )}
+                                </div>
                             </td>
                         </tr>
                     ))}
@@ -133,6 +149,7 @@ const AuthCustomer = () => {
                     </button>
                 ))}
             </div>
+
             {confirmationMessage && (
                 <div className="confirmation-modal">
                     <p>{confirmationMessage}</p>

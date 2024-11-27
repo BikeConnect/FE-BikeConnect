@@ -1,0 +1,201 @@
+.container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+  
+  .card-header {
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .card-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .card-content {
+    padding: 20px;
+  }
+  
+  .space-y-4 > * + * {
+    margin-top: 1rem;
+  }
+  
+  .border {
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .font-semibold {
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #2d3748;
+  }
+  
+  .grid {
+    display: grid;
+    gap: 16px;
+  }
+  
+  .grid-cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .grid-cols-4 {
+    grid-template-columns: repeat(4, 1fr);
+    padding: 12px;
+    align-items: center;
+  }
+  
+  input[type="text"] {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    background-color: #f8fafc;
+    color: #4a5568;
+    font-size: 0.95rem;
+  }
+  
+  input[type="text"]:read-only {
+    background-color: #edf2f7;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 6px;
+    color: #4a5568;
+    font-size: 0.9rem;
+  }
+  
+  button {
+    padding: 8px 16px;
+    background-color: #3182ce;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  button:hover {
+    background-color: #2c5282;
+  }
+  
+  .qr-image {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .qr-image img {
+    max-width: 200px;
+    height: auto;
+  }
+  
+  .bg-gray-100 {
+    background-color: #f7fafc;
+    font-weight: 600;
+  }
+  
+  /* Payment history styles */
+  .payment-history-row {
+    border-bottom: 1px solid #e2e8f0;
+  }
+  
+  .payment-history-row:last-child {
+    border-bottom: none;
+  }
+  
+  /* Status colors */
+  .status-paid {
+    color: #48bb78;
+  }
+  
+  .status-unpaid {
+    color: #e53e3e;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .grid-cols-4 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .grid-cols-2 {
+      grid-template-columns: 1fr;
+    }
+    
+    .container {
+      padding: 10px;
+    }
+    
+    .card-title {
+      font-size: 1.2rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .grid-cols-4 {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    
+    .card-content {
+      padding: 10px;
+    }
+  }
+  
+  /* Copy button specific styles */
+  .copy-button {
+    padding: 8px;
+    background-color: #edf2f7;
+    color: #4a5568;
+    border: 1px solid #e2e8f0;
+    margin-left: 8px;
+  }
+  
+  .copy-button:hover {
+    background-color: #e2e8f0;
+  }
+  
+  /* Status icon alignment */
+  .status-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  /* Bank account section specific styles */
+  .bank-info-section {
+    background-color: #f8fafc;
+    padding: 16px;
+    border-radius: 6px;
+  }
+  
+  .bank-info-grid {
+    display: grid;
+    gap: 16px;
+  }
+  
+  /* Account number container */
+  .account-number-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .account-number-input {
+    flex: 1;
+  }
+  

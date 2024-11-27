@@ -31,6 +31,7 @@
 
 .dropdown-btn:hover {
   border-color: #4f46e5;
+  color: #f0f9f0;
   /* Darker border on hover */
 }
 

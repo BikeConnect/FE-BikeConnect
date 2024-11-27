@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Star, Upload, X, Store, Clock, Check } from 'lucide-react';
 import './MotorbikeReview.css';
 import { useNavigate } from 'react-router-dom';
+import NavBar from '../NavBar/NavBar';
 
 
 const MotorbikeReview = ({ 
@@ -75,6 +76,7 @@ const MotorbikeReview = ({
 
   return (
     <div className="review-form-container">
+      <NavBar></NavBar>
       <h2 className="review-form-title">Đánh giá xe máy</h2>
 
       {/* Thông tin xe máy */}
