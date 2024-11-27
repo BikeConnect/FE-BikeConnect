@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FaEdit, FaTrash } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaFileAlt } from 'react-icons/fa';
 import './ManageCustomer.css';
 import { useCustomer } from '../../CustomerContext';
 
@@ -8,7 +8,7 @@ const getRandomName = () => {
         'Nguyễn Văn A', 'Trần Thị B', 'Lê Văn C',
         'Phạm Minh D', 'Nguyễn Thị E', 'Vũ Văn F',
         'Đặng Thị G', 'Bùi Văn H', 'Hoàng Thị I',
-        'Ngô Văn J',
+        'Ngô Văn Jack97-vì sao tinh tú',
     ];
     return names[Math.floor(Math.random() * names.length)];
 };
@@ -31,6 +31,8 @@ const ManageCustomer = () => {
 
     const [confirmationMessage, setConfirmationMessage] = useState('');
     const [activeCustomerId, setActiveCustomerId] = useState(null);
+    const [showDocuments, setShowDocuments] = useState(false);
+    const [selectedCustomerDocs, setSelectedCustomerDocs] = useState(null);
 
     useEffect(() => {
         setCustomerCount(customers.length);
@@ -71,7 +73,17 @@ const ManageCustomer = () => {
     const indexOfFirstCustomer = indexOfLastCustomer - customersPerPage;
     const currentCustomers = filteredCustomers.slice(indexOfFirstCustomer, indexOfLastCustomer);
     const totalPages = Math.ceil(filteredCustomers.length / customersPerPage);
-
+    
+    const handleViewDocuments = (customer) => {
+        setSelectedCustomerDocs({
+            frontImage: "https://dichthuatsaigon.vn/wp-content/uploads/2022/10/dich-thuat-can-cuoc-cong-dan.jpeg",
+            backImage: "https://media.vov.vn/sites/default/files/styles/large/public/2021-10/Can%20cuoc.jpg",
+            driverLicenseImage: "https://media.vov.vn/sites/default/files/styles/large/public/2021-10/Can%20cuoc.jpg", // Thêm URL ảnh bằng lái xe
+            customerName: customer.displayName
+        });
+        setShowDocuments(true);
+    };
+    
     return (
         <div>
             <div className="manage-customer-container">
@@ -110,12 +122,14 @@ const ManageCustomer = () => {
                             <th>Mật khẩu</th>
                             <th>Ngày đăng ký</th>
                             <th>Tình trạng</th>
+                            <th>Giấy tờ</th>
                             <th>Tính năng</th>
                         </tr>
                     </thead>
                     <tbody>
                         {currentCustomers.map((customer, index) => (
                             <tr key={customer.id}>
+                                
                                 <td>{index + 1 + indexOfFirstCustomer}</td>
                                 <td>{customer.displayName}</td>
                                 <td>{customer.email}</td>
@@ -127,17 +141,37 @@ const ManageCustomer = () => {
                                     </span>
                                 </td>
                                 <td>
-                                    {customer.status === 'Chưa kích hoạt' && (
-                                        <>
-                                            <FaEdit className="icon" onClick={() => handleActivateClick(customer.id)} />
-                                            <FaTrash className="icon" onClick={() => handleDeleteClick(customer.id)} />
-                                        </>
-
-                                    )}
-                                    {customer.status === 'Đã kích hoạt' && (
-                                        <FaTrash className="icon" onClick={() => handleDeleteClick(customer.id)} />
-                                    )}
+    <button 
+        className="view-docs-button"
+        onClick={() => handleViewDocuments(customer)}
+    >
+        <FaFileAlt style={{ marginRight: '8px' }} />
+        Xem giấy tờ
+    </button>
+</td>
+                                <td>
+                                    <div className="icons">
+                                        {customer.status === 'Chưa kích hoạt' && (
+                                            <>
+                                                <FaEdit
+                                                    className="icon-edit"
+                                                    onClick={() => handleActivateClick(customer.id)}
+                                                />
+                                                <FaTrash
+                                                    className="icon-delete"
+                                                    onClick={() => handleDeleteClick(customer.id)}
+                                                />
+                                            </>
+                                        )}
+                                        {customer.status === 'Đã kích hoạt' && (
+                                            <FaTrash
+                                                className="icon-deletee"
+                                                onClick={() => handleDeleteClick(customer.id)}
+                                            />
+                                        )}
+                                    </div>
                                 </td>
+                                
                             </tr>
                         ))}
                     </tbody>
@@ -162,6 +196,52 @@ const ManageCustomer = () => {
                         <button onClick={() => setConfirmationMessage('')}>Hủy</button>
                     </div>
                 )}
+
+{showDocuments && (
+    <div className="document-modal">
+        <div className="document-modal-content">
+            <h2>Giấy tờ của {selectedCustomerDocs.customerName}</h2>
+            <div className="document-images">
+                {/* Hiển thị ảnh mặt trước và mặt sau CCCD ngang hàng */}
+                <div className="document-cccd">
+                    <div className="document-front">
+                        <h3>Mặt trước CCCD</h3>
+                        <img 
+                            src={selectedCustomerDocs.frontImage} 
+                            alt="CCCD mặt trước" 
+                            className="document-image"
+                        />
+                    </div>
+                    <div className="document-back">
+                        <h3>Mặt sau CCCD</h3>
+                        <img 
+                            src={selectedCustomerDocs.backImage} 
+                            alt="CCCD mặt sau" 
+                            className="document-image"
+                        />
+                    </div>
+                </div>
+                {/* Hiển thị ảnh bằng lái xe ở dưới */}
+                <div className="document-driver-license">
+                    <h3>Bằng lái xe</h3>
+                    <img 
+                        src={selectedCustomerDocs.driverLicenseImage} 
+                        alt="Bằng lái xe" 
+                        className="document-image"
+                    />
+                </div>
+            </div>
+            <button 
+                className="close-document-modal"
+                onClick={() => setShowDocuments(false)}
+            >
+                Đóng
+            </button>
+        </div>
+    </div>
+)}
+
+
             </div>
         </div>
     );
