@@ -6,6 +6,7 @@ import hinhanhxe1 from '../../assets/images/images_homePage/v994_8600.png';
 import hinhanhxe2 from '../../assets/images/images_homePage/v994_9054.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComments } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 const VehicleRental = ({ bike, onOpenChat }) => {
   const [selectedMainImage, setSelectedMainImage] = useState(0);
@@ -195,13 +196,14 @@ const VehicleRental = ({ bike, onOpenChat }) => {
               <button className="rent-button flex-1 py-2 px-3 rounded-md text-white bg-indigo-600 hover:bg-indigo-700 font-bold">
                 Thuê xe ngay
               </button>
-              <button
+              <Link
                 className="negotiate-button flex-1 py-2 px-3 rounded-md text-white bg-green-600 hover:bg-green-700 font-bold" 
-                onClick={onOpenChat} // Sử dụng toggle
+                // onClick={onOpenChat} // Sử dụng toggle
+                to={`/user-dashboard/chat/1`}
               >
                 <FontAwesomeIcon icon={faComments} className="me-2" />
                 Chat thương lượng
-              </button>
+              </Link>
             </div>
           </div>
         </div>
