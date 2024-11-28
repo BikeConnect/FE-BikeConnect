@@ -115,10 +115,12 @@ const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
 
         if (selectedRole === "owner") {
           localStorage.setItem("accessToken", data.accessToken);
+          localStorage.setItem("isLoggedIn", "true");
           localStorage.setItem("userRole", "owner");
-          localStorage.setItem("userData", JSON.stringify(data.accessToken));
+          localStorage.setItem("userData", JSON.stringify(data));
         } else {
           localStorage.setItem("accessToken", data.token);
+          localStorage.setItem("isLoggedIn", "true");
           localStorage.setItem("userRole", "customer");
           localStorage.setItem("userData", JSON.stringify(data));
         }

@@ -24,7 +24,7 @@ h1 {
   position: relative;
 }
 
-h1:after {
+.post-form h1:after {
   content: "";
   position: absolute;
   bottom: -10px;

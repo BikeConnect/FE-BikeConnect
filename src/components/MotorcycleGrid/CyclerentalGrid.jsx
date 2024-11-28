@@ -11,13 +11,22 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import thuexemay from "../../assets/images/images_homePage/v994_8600.png";
 import thuexedap from "../../assets/images/images_homePage/v994_9104.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../../api/api";
 
 const MotorcycleCard = ({ data }) => {
+  const navigate = useNavigate();
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    navigate(`/BikeDetail/${data._id}/${data.slug}`);
+  };
+
   return (
     <Link
-      to={`/BikeDetail/${data.name}`}
       className="col-lg-3 col-md-6 col-sm-12 mb-4"
+      onClick={handleClick}
+      style={{ cursor: "pointer" }}
     >
       <div className="card rental-card">
         <div className="rental-image-wrapper">
@@ -68,75 +77,33 @@ const CyclerentalGrid = () => {
   const [error, setError] = useState(null);
   const itemsPerPage = 8;
 
-  //   const motorcycles = Array(15).fill({
-  //     name: "Yamaha Exciter",
-  //     currentPrice: "140,000 VND/ngày",
-  //     originalPrice: "180,000 VND",
-  //     location: "45 Lê Độ, Thanh Khê, Đà Nẵng",
-  //     status: "Xe mới",
-  //     distance: "3 km",
-  //     reviews: 65,
-  //     image: thuexemay,
-  //   });
-
   useEffect(() => {
     const fetchMotorcycles = async () => {
       try {
-        const myHeaders = new Headers();
-        const accessToken = localStorage.getItem("accessToken");
+        const response = await api.get("/post/vehicles", {
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        });
 
-        if (!accessToken) {
-          setError("Vui lòng đăng nhập để xem danh sách xe");
-          setLoading(false);
-          return;
-        }
-
-        myHeaders.append("Authorization", `Bearer ${accessToken}`);
-        myHeaders.append("Content-Type", "application/json");
-
-        const requestOptions = {
-          method: "GET",
-          headers: myHeaders,
-          redirect: "follow",
-        };
-
-        const response = await fetch(
-          "http://localhost:8080/api/post/vehicles",
-          requestOptions
-        );
-
-        if (response.status === 401) {
-          setError("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại");
-          localStorage.removeItem("accessToken");
-          setLoading(false);
-          return;
-        }
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const result = await response.json();
-        console.log("API Response:", result); // Debug log
-
-        const vehicles = result.data || result;
-        if (!result.metadata || !Array.isArray(result.metadata)) {
-          setError("Định dạng dữ liệu không hợp lệ");
-          setLoading(false);
-          return;
+        if (!response.data || !response.data.metadata) {
+          throw new Error("Định dạng dữ liệu không hợp lệ");
         }
 
         setMotorcycles(
-          result.metadata.map((vehicle) => ({
+          response.data.metadata.map((vehicle) => ({
+            _id: vehicle._id,
             name: vehicle.name || "Không có tên",
+            slug: vehicle.slug || "",
             currentPrice:
               `${vehicle.price?.toLocaleString("vi-VN")} VND/ngày` ||
               "0 VND/ngày",
             originalPrice: vehicle.discount
               ? `${(
-                vehicle.price *
-                (1 + vehicle.discount / 100)
-              ).toLocaleString("vi-VN")} VND`
+                  vehicle.price *
+                  (1 + vehicle.discount / 100)
+                ).toLocaleString("vi-VN")} VND`
               : "",
             location: vehicle.address || "Không có địa chỉ",
             status:
@@ -176,7 +143,7 @@ const CyclerentalGrid = () => {
 
   return (
     <div className="container-fluid rental-grid-container">
-      <div className="row mb-4">
+      <div className="row">
         <div className="col-12 text-center">
           <h1 className="rental-title">Xe cho thuê</h1>
         </div>
