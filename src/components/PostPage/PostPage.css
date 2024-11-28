@@ -11,7 +11,6 @@
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   border: 2px solid #e1e8ed;
-  /* Đường viền phân biệt */
   margin-bottom: 2rem;
 }
 
@@ -51,6 +50,29 @@ h1 {
 
 .form-group-quantity {
   max-width: 400px;
+}
+
+.quantity-input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.quantity-input-container label {
+  margin-bottom: 15px;
+  text-align: center;
+  margin-left: 400px;
+  display: inline-block;
+}
+
+.quantity-input-container input {
+  max-width: 50%;
+  margin-left: 550px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 .form-group-quantity,
@@ -166,6 +188,35 @@ textarea {
 .upload-button:hover {
   color: #472cb2;
   background: rgba(71, 44, 178, 0.05);
+}
+
+.uploaded-images {
+  margin-top: 10px;
+}
+
+.uploaded-images ul {
+  list-style: none;
+  padding: 0;
+}
+
+.uploaded-images li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.uploaded-images li button {
+  margin-left: 10px;
+  color: red;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.uploaded-images li button:hover {
+  text-decoration: underline;
 }
 
 .image-preview {
