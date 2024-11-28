@@ -1,0 +1,107 @@
+.transaction-history-page {
+  min-height: 100vh;
+  padding: 20px;
+  background-color: #f8f9fa;
+}
+
+.transaction-history-page .card {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: none;
+}
+
+.transaction-history-page .card-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.transaction-history-page .search-filter-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin: 0 0 25px 0;
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.transaction-history-page .search-box {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 8px 12px;
+  background: #f8f9fa;
+}
+
+.transaction-history-page .search-box input {
+  border: none;
+  background: none;
+  outline: none;
+  padding: 0 10px;
+  width: 100%;
+  font-size: 14px;
+}
+
+.transaction-history-page .search-box .search-icon {
+  color: #6c757d;
+}
+
+.transaction-history-page .status-select {
+  min-width: 180px;
+  padding: 8px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  background-color: #f8f9fa;
+  font-size: 14px;
+  outline: none;
+}
+
+/* Hover effects */
+.transaction-history-page .search-box:hover,
+.transaction-history-page .status-select:hover {
+  border-color: #adb5bd;
+}
+
+/* Focus effects */
+.transaction-history-page .search-box:focus-within {
+  border-color: #80bdff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.transaction-history-page .table {
+  max-width: 1200px;
+  margin: 0 auto;
+  border: 1px solid #dee2e6;
+}
+
+.transaction-history-page .table th,
+.transaction-history-page .table td {
+  padding: 12px 15px;
+  vertical-align: middle;
+  text-align: left;
+}
+
+.transaction-history-page .table th svg,
+.transaction-history-page .table td svg {
+  margin-right: 8px;
+}
+
+.badge.bg-success {
+  background-color: #198754 !important;
+}
+
+.badge.bg-warning {
+  background-color: #ffc107 !important;
+  color: #000;
+}
+
+/* Thêm style cho header của bảng */
+.table th .d-flex {
+  white-space: nowrap;
+}
+
+.table th .d-flex svg {
+  color: #6c757d;
+}

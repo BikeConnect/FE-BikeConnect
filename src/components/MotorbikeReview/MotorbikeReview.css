@@ -1,0 +1,362 @@
+.review-form-container {
+    width: 900px;
+    margin: 20px auto;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    padding: 32px;
+  }
+  
+  .review-form-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 28px;
+    color: #1f2937;
+    text-align: center;
+  }
+  
+  /* Motorbike Info Styles */
+  .motorbike-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+  
+  .motorbike-card-content {
+    padding: 20px;
+  }
+  
+  .motorbike-card-grid {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+  
+  .motorbike-image-wrapper {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .motorbike-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .motorbike-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .motorbike-header {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .motorbike-name {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    line-height: 1.2;
+  }
+  
+  .motorbike-price {
+    font-size: 18px;
+    font-weight: 500;
+    color: #472CB2;
+    margin: 0;
+    padding: 0;
+    line-height: 1.2;
+  }
+  
+  .motorbike-details {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .motorbike-detail-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #666;
+    font-size: 15px;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .motorbike-detail-item:first-child,
+  .motorbike-detail-item:nth-child(2) {
+    margin-left: 0px;
+  }
+  
+  .motorbike-detail-item h3,
+  .motorbike-detail-item p,
+  .motorbike-detail-item span {
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+  }
+  
+  .motorbike-detail-item .icon {
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Rating Section Styles */
+  .rating-section h3,
+  .form-label,
+  .media-upload-title,
+  .preview-title {
+    text-align: left;
+    margin: 0;
+    padding-left: 0;
+    font-size: 18px;
+    color: #334155;
+  }
+  
+  .rating-section {
+    margin-bottom: 28px;
+  }
+  
+  .star-rating-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .star-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    transition: transform 0.2s;
+  }
+  
+  .star-button:hover {
+    transform: scale(1.1);
+  }
+  
+  .star-filled {
+    color: #fbbf24;
+    fill: #fbbf24;
+  }
+  
+  .star-empty {
+    color: #d1d5db;
+    fill: none;
+  }
+  
+  .rating-text {
+    margin-left: 12px;
+    font-size: 16px;
+    color: #6b7280;
+  }
+  
+  /* Form Styles */
+  .review-form {
+    width: 100%;
+  }
+  
+  .form-group {
+    margin-bottom: 28px;
+    width: 100%;
+  }
+  
+  .form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  
+  .review-textarea {
+    width: 100%;
+    min-height: 150px;
+    max-height: none;
+    padding: 12px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    resize: vertical;
+    font-family: inherit;
+    font-size: 15px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    line-height: 1.5;
+  }
+  
+  .review-textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+  
+  /* Upload and Preview Styles */
+  .media-upload-section {
+    margin-bottom: 28px;
+    width: 100%;
+  }
+  
+  .media-upload {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  
+  .media-upload-title {
+    text-align: left;
+    margin-bottom: 16px;
+    font-size: 18px;
+    color: #334155;
+  }
+  
+  .upload-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .upload-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background-color: #f3f4f6;
+    border: 2px dashed #d1d5db;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .upload-button:hover {
+    background-color: #e5e7eb;
+    border-color: #9ca3af;
+  }
+  
+  .upload-icon {
+    color: #6b7280;
+  }
+  
+  .hidden-file-input {
+    display: none;
+  }
+  
+  /* Preview Styles */
+  .preview-section {
+    margin-top: 20px;
+  }
+  
+  .preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 12px;
+  }
+  
+  .preview-item {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    aspect-ratio: 16/9;
+  }
+  
+  .preview-image,
+  .preview-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .remove-preview-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .remove-preview-button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+  
+  /* Submit Button Styles */
+  .submit-review-button {
+    width: 100%;
+    background-color: #2563eb;
+    color: white;
+    padding: 14px 24px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .submit-review-button:hover {
+    background-color: #1d4ed8;
+  }
+  
+  .submit-review-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.4);
+  }
+  
+  .submit-review-button:active {
+    transform: translateY(1px);
+  }
+  
+  .icon {
+    flex-shrink: 0;
+    width: 20px;
+    color: #666;
+  }
+  
+  .check-icon-wrapper {
+    width: 100px;
+    height: 100px;
+    background-color: #f0f7ff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto;
+  }
+  
+  .thank-you-modal .modal-content {
+    padding: 30px;
+  }
+  
+  .thank-you-text {
+    color: #666;
+    font-size: 16px;
+    margin: 20px 0;
+    line-height: 1.5;
+  }
+  
+  .thank-you-modal {
+    width: 643px;
+    max-width: 90%;
+    text-align: center;
+  }
+  

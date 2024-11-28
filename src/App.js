@@ -38,6 +38,13 @@ import CreateContract from "./components/Contract/CreateContract";
 import AuthUser from "./components/UI_Admin/AuthUser/AuthUser";
 import ManageUser from "./components/UI_Admin/ManageUser/ManageUser";
 import PostListOwner from "./components/PostListOwner/PostListOwner";
+import ViewTransactionHistory from './components/UI_Admin/ViewTransactionHistory/ViewTransactionHistory';
+import RentalStatusTabs from './components/RentalStatusTabs/RentalStatusTabs';
+import MotorbikeReview from './components/MotorbikeReview/MotorbikeReview';
+import RentalSignup from './components/RentalSignup/RentalSignup';
+import OwnerChat from './components/OwnerChat/OwnerChat';
+import PaymentOwner from './components/PaymentOwner/PaymentOwner';
+
 
 function AppContent() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -70,7 +77,7 @@ function AppContent() {
 
   const Header = () => {
     if (
-      ["/dashboard", "/manageCus", "/manageOwner"].includes(location.pathname)
+      ["/dashboard", "/manageCus", "/manageOwner","valrequest",""].includes(location.pathname)
     ) {
       return null;
     }
@@ -126,8 +133,16 @@ function AppContent() {
         <Route path="/valrequest" element={<AuthUser />} />
         <Route path="/manageuser" element={<ManageUser />} />
         <Route path="/postlistowner" element={<PostListOwner />} />
-      </Routes>
-    </div>
+        <Route path="/post" element={<PostListOwner />} />
+        <Route path="/viewtransactionhis" element={<ViewTransactionHistory/>} />
+        <Route path="/rentalstatustabs" element={<RentalStatusTabs />} />
+        <Route path="/motorbikereview" element={<MotorbikeReview/>} />
+        <Route path="/rental-signup" element={<RentalSignup />} />
+        <Route path="/ownerchat" element={<OwnerChat />} />
+        <Route path="/paymentowner" element={<PaymentOwner/>} />
+        
+      </Routes >
+    </div >
   );
 }
 

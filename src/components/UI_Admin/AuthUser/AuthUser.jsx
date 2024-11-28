@@ -4,7 +4,7 @@ import AuthOwner from './AuthOwner/AuthOwner';
 import './AuthUser.css';
 import NavbarDashboard from '../NavbarDashboard/NavbarDashboard';
 
-const AuthUser = () => {
+const AuthUser = () => {    
     const [activeTab, setActiveTab] = useState('customer');
 
     return (
