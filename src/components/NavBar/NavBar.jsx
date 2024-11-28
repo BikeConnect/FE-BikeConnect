@@ -11,19 +11,27 @@ const NavBar = ({ userRole, children }) => {
           Tài khoản của tôi
         </NavLink>
         {userRole === "owner" ? (
-          <NavLink to="/rentalhistory" activeClassName="active">
-            Lịch sử cho thuê
-          </NavLink>
+          <>
+            <NavLink to="/rentalhistory" activeClassName="active">
+              Lịch sử cho thuê
+            </NavLink>
+            <NavLink to="/postlistowner" activeClassName="active">
+              Danh sách xe
+            </NavLink>
+          </>
         ) : (
           <NavLink to="/rentalhistory" activeClassName="active">
             Lịch sử thuê xe
           </NavLink>
         )}
-        <NavLink to="/postlistowner" activeClassName="active">
-          Danh sách xe
-        </NavLink>
         <NavLink to="/changepassword" activeClassName="active">
           Đổi mật khẩu
+        </NavLink>
+        <NavLink to="/rentalstatustabs" activeClassName="active">
+          Xem trạng thái xe và đánh giá
+        </NavLink>
+        <NavLink to="/paymentowner" activeClassName="active">
+          Thanh toán cho thuê xe
         </NavLink>
       </div>
       <div className="nav-bar-content">{children}</div>

@@ -40,7 +40,7 @@ const Dashboard = () => {
                     <div className="table">
                         <h2>Yêu cầu xác thực cho thuê xe</h2>
                         <p>Số lượng: {rentalRequestCount}</p>
-                    </div>
+                    </div>  
                     <div className="table">
                         <h2>Yêu cầu xác thực đăng bài</h2>
                         <p>Số lượng: {postRequestCount}</p>

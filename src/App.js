@@ -26,8 +26,6 @@ import PrinciplePage from "./components/Policy/Principle";
 import PrivacyPolicy from "./components/Policy/PrivacyPolicy";
 import Complaints from "./components/Policy/Complaints";
 import Dashboard from "./components/UI_Admin/Dashboard/Dashboard";
-import ManageCustomer from "./components/UI_Admin/ManageUser/ManageCustomer/ManageCustomer";
-import ManageOwner from "./components/UI_Admin/ManageUser/ManageOwner/ManageOwner";
 import { CustomerProvider } from "./components/UI_Admin/CustomerContext";
 import Support from "./components/Support/Support";
 import Register from "./components/Register/Register";
@@ -35,6 +33,10 @@ import PostPage from "./components/PostPage/PostPage";
 import CusFilterOptions from "./components/CusFilterOptions/CusFilterOptions";
 import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
 import ResetPassword from "./components/ResetPassword/ResetPassword";
+import ContractManagement from "./components/Contract/ContractManagement";
+import CreateContract from "./components/Contract/CreateContract";
+import AuthUser from "./components/UI_Admin/AuthUser/AuthUser";
+import ManageUser from "./components/UI_Admin/ManageUser/ManageUser";
 import PostListOwner from "./components/PostListOwner/PostListOwner";
 import UserDashboard from "./pages/CustomerDashboard";
 import { jwtDecode } from "jwt-decode";
@@ -47,6 +49,13 @@ import OwnerIndex from "./OwnerDashboard/OwnerIndex";
 import { useDispatch } from "react-redux";
 import { get_user_info } from "./store/Reducers/authReducer";
 import OwnerChatCustomer from "./OwnerDashboard/OwnerChatCustomer";
+import ViewTransactionHistory from './components/UI_Admin/ViewTransactionHistory/ViewTransactionHistory';
+import RentalStatusTabs from './components/RentalStatusTabs/RentalStatusTabs';
+import MotorbikeReview from './components/MotorbikeReview/MotorbikeReview';
+import RentalSignup from './components/RentalSignup/RentalSignup';
+import OwnerChat from './components/OwnerChat/OwnerChat';
+import PaymentOwner from './components/PaymentOwner/PaymentOwner';
+
 
 function AppContent() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -101,7 +110,7 @@ function AppContent() {
 
   const Header = () => {
     if (
-      ["/dashboard", "/manageCus", "/manageOwner"].includes(location.pathname)
+      ["/dashboard", "/manageCus", "/manageOwner","valrequest",""].includes(location.pathname)
     ) {
       return null;
     }
@@ -129,8 +138,6 @@ function AppContent() {
       <ShowNavBar userRole={userRole} />
       <Routes>
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/manageCus" element={<ManageCustomer />} />
-        <Route path="/manageOwner" element={<ManageOwner />} />
         <Route path="/" element={<HomePage />} />
         <Route path="/homepage" element={<HomePage />} />
         <Route path="/register" element={<Register />} />{" "}
@@ -146,18 +153,26 @@ function AppContent() {
         <Route path="/policies1" element={<PrinciplePage />} />
         <Route path="/policies2" element={<PrivacyPolicy />} />
         <Route path="/policies3" element={<Complaints />} />
-        <Route path="/BikeDetail/:name" element={<BikeDetail />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/BikeDetail/:name/:slug" element={<BikeDetail />} />
         {/* <Route path="/chat" element={<Chat />} /> */}
         <Route path="/support" element={<Support />} />
         <Route path="/post" element={<PostPage />} />
         <Route path="/CusFilterOptions" element={<CusFilterOptions />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password/:token" element={<ResetPassword />} />
-        <Route
-          path="/owner-reset-password/:token"
-          element={<ResetPassword />}
-        />
+        <Route path="/ForgotPassword" element={<ForgotPassword />} />
+        <Route path="/reset-password/:resetToken" element={<ResetPassword />} />
+        <Route path="/managecontract" element={<ContractManagement />} />
+        <Route path="/contract" element={<CreateContract />} />
+        <Route path="/valrequest" element={<AuthUser />} />
+        <Route path="/manageuser" element={<ManageUser />} />
         <Route path="/postlistowner" element={<PostListOwner />} />
+        <Route path="/post" element={<PostListOwner />} />
+        <Route path="/viewtransactionhis" element={<ViewTransactionHistory/>} />
+        <Route path="/rentalstatustabs" element={<RentalStatusTabs />} />
+        <Route path="/motorbikereview" element={<MotorbikeReview/>} />
+        <Route path="/rental-signup" element={<RentalSignup />} />
+        <Route path="/ownerchat" element={<OwnerChat />} />
+        <Route path="/paymentowner" element={<PaymentOwner/>} />
         <Route
           path="/user-dashboard"
           element={
@@ -183,8 +198,10 @@ function AppContent() {
           <Route path="chat" element={<OwnerChatCustomer />} />
           <Route path="chat/:customerId" element={<OwnerChatCustomer />} />
         </Route>
-      </Routes>
-    </div>
+      </Routes >
+    </div >
+  
+
   );
 }
 

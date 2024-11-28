@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaCheck, FaTrash } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaFileAlt } from 'react-icons/fa';
 import './AuthOwner.css';
 import { useCustomer } from '../../CustomerContext';
 
@@ -8,6 +8,11 @@ const AuthOwner = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [requestsPerPage, setRequestsPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
+    const [showDocuments, setShowDocuments] = useState(false);
+    const [selectedOwnerDocs, setSelectedOwnerDocs] = useState(null);
+    const [confirmationMessage, setConfirmationMessage] = useState('');
+    const [activeOwnerId, setActiveOwnerId] = useState(null);
+
     const [requests, setRequests] = useState(
         Array.from({ length: 50 }, (_, index) => ({
             id: index + 1,
@@ -23,13 +28,38 @@ const AuthOwner = () => {
     }, [requests, setPostRequestCount]);
 
     const handleApproveClick = (id) => {
+        setActiveOwnerId(id);
+        setConfirmationMessage('Bạn có chắc chắn đồng ý yêu cầu xác thực này không?');
+    };
+
+    const confirmApprove = () => {
         setRequests(requests.map(request =>
-            request.id === id ? { ...request, status: 'Đã xác thực' } : request
+            request.id === activeOwnerId
+                ? { ...request, status: 'Đã xác thực' }
+                : request
         ));
+        setConfirmationMessage('');
+        setActiveOwnerId(null);
     };
 
     const handleDeleteClick = (id) => {
-        setRequests(requests.filter(request => request.id !== id));
+        setActiveOwnerId(id);
+        setConfirmationMessage('Bạn có chắc chắn xóa yêu cầu này không?');
+    };
+
+    const confirmDelete = () => {
+        setRequests(requests.filter(request => request.id !== activeOwnerId));
+        setConfirmationMessage('');
+        setActiveOwnerId(null);
+    };
+
+    const handleViewDocuments = (owner) => {
+        setSelectedOwnerDocs({
+            registrationImage: "https://example.com/path/to/vehicle-registration.jpg",
+            bikeImage: "https://example.com/path/to/bike-image.jpg",
+            ownerName: owner.displayName
+        });
+        setShowDocuments(true);
     };
 
     const filteredRequests = requests.filter(request =>
@@ -68,6 +98,7 @@ const AuthOwner = () => {
                     <option value={40}>40</option>
                     <option value={50}>50</option>
                 </select>
+                <label className="sort-label">yêu cầu</label>
             </div>
             <table className="request-table">
                 <thead>
@@ -77,6 +108,7 @@ const AuthOwner = () => {
                         <th>Email</th>
                         <th>Ngày yêu cầu</th>
                         <th>Trạng thái</th>
+                        <th>Giấy tờ</th>
                         <th>Tính năng</th>
                     </tr>
                 </thead>
@@ -93,10 +125,35 @@ const AuthOwner = () => {
                                 </span>
                             </td>
                             <td>
-                                {request.status === 'Chưa xác thực' && (
-                                    <FaCheck className="icon approve" onClick={() => handleApproveClick(request.id)} />
-                                )}
-                                <FaTrash className="icon delete" onClick={() => handleDeleteClick(request.id)} />
+                                <button 
+                                    className="view-docs-button"
+                                    onClick={() => handleViewDocuments(request)}
+                                >
+                                    <FaFileAlt style={{ marginRight: '8px' }} />
+                                    Xem giấy tờ
+                                </button>
+                            </td>
+                            <td>
+                                <div className="icons">
+                                    {request.status === 'Chưa xác thực' && (
+                                        <>
+                                            <FaEdit
+                                                className="icon-edit"
+                                                onClick={() => handleApproveClick(request.id)}
+                                            />
+                                            <FaTrash
+                                                className="icon-delete"
+                                                onClick={() => handleDeleteClick(request.id)}
+                                            />
+                                        </>
+                                    )}
+                                    {request.status === 'Đã xác thực' && (
+                                        <FaTrash
+                                            className="icon-delete"
+                                            onClick={() => handleDeleteClick(request.id)}
+                                        />
+                                    )}
+                                </div>
                             </td>
                         </tr>
                     ))}
@@ -105,7 +162,7 @@ const AuthOwner = () => {
             <div className="pagination">
                 {Array.from({ length: totalPages }, (_, index) => (
                     <button
-                        key={index}
+                        key={index + 1}
                         onClick={() => setCurrentPage(index + 1)}
                         className={`page-button ${currentPage === index + 1 ? 'active' : ''}`}
                     >
@@ -113,6 +170,50 @@ const AuthOwner = () => {
                     </button>
                 ))}
             </div>
+
+            {confirmationMessage && (
+                <div className="confirmation-modal">
+                    <p>{confirmationMessage}</p>
+                    <button onClick={confirmationMessage.includes('đồng ý') ? confirmApprove : confirmDelete}>
+                        Xác nhận
+                    </button>
+                    <button onClick={() => setConfirmationMessage('')}>Hủy</button>
+                </div>
+            )}
+
+            {showDocuments && (
+                <div className="document-modal">
+                    <div className="document-modal-content">
+                        <h2>Giấy tờ và hình ảnh xe của {selectedOwnerDocs.ownerName}</h2>
+                        <div className="document-images">
+                            <div className="document-section">
+                                <div className="document-registration">
+                                    <h3>Giấy tờ đăng ký xe</h3>
+                                    <img 
+                                        src={selectedOwnerDocs.registrationImage} 
+                                        alt="Giấy tờ đăng ký xe" 
+                                        className="document-image"
+                                    />
+                                </div>
+                                <div className="document-bike">
+                                    <h3>Hình ảnh xe</h3>
+                                    <img 
+                                        src={selectedOwnerDocs.bikeImage} 
+                                        alt="Hình ảnh xe" 
+                                        className="document-image"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <button 
+                            className="close-document-modal"
+                            onClick={() => setShowDocuments(false)}
+                        >
+                            Đóng
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

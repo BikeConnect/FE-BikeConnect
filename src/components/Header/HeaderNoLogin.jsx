@@ -5,6 +5,7 @@ import Login from "../Login/Login";
 import Register from "../Register/Register";
 import { NavLink } from "react-router-dom";
 import Support from "../Support/Support";
+import RentalSignup from "../RentalSignup/RentalSignup";
 
 const HeaderNoLogin = ({ onLoginSuccess }) => {
   const [showLogin, setShowLogin] = useState(false);
@@ -15,6 +16,8 @@ const HeaderNoLogin = ({ onLoginSuccess }) => {
     setShowLogin(true);
     setShowRegister(false);
   };
+
+  
 
   const handleRegisterClick = () => {
     setShowRegister(true);
@@ -50,7 +53,7 @@ const HeaderNoLogin = ({ onLoginSuccess }) => {
               <NavLink to="/" className="menu-link">
                 Trang chủ
               </NavLink>
-              <NavLink to="/rentals" className="menu-link">
+              <NavLink to="/rental-signup" className="menu-link" >
                 Cho thuê xe
               </NavLink>
               <NavLink to="/guide" className="menu-link">

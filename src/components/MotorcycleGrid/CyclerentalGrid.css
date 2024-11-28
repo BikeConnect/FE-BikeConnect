@@ -1,12 +1,25 @@
 :root {
-  --primary-color: #472CB2;
+  --primary-color: #472cb2;
   --secondary-color: #aaa;
   --text-color: #666;
   --star-color: #ffc107;
 }
 
+p,
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  padding: 0;
+}
+
 .rental-grid-container {
   padding: 20px 0px;
+}
+
+.text-center .rental-title {
+  margin: 0;
 }
 
 a {
@@ -65,30 +78,29 @@ a {
 .rental-name {
   font-size: 18px;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
+  text-align: start;
 }
 
 .rental-price-section {
   display: flex;
-  flex-direction: column; /* Đặt giá hiện tại và giá cũ trên các dòng riêng */
-  align-items: start;
+  align-items: center;
   font-size: 14px;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
 .rental-current-price {
   color: var(--primary-color);
   font-weight: bold;
-  font-size: 18px;
-  margin-bottom: 4px; /* Khoảng cách giữa giá hiện tại và giá cũ */
+  font-size: 16px;
 }
 
 .rental-original-price {
   text-decoration: line-through;
   color: var(--secondary-color);
   font-size: 14px;
+  margin-left: 8px;
 }
-
 
 /* Location and icons */
 .rental-location {
@@ -96,6 +108,12 @@ a {
   color: var(--text-color);
   display: flex;
   align-items: center;
+  margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  display: inline-block;
 }
 
 .location-icon {
@@ -154,13 +172,36 @@ a {
 
 .rental-prev-btn,
 .rental-next-btn {
-  border: 3px solid var(--primary-color);
+  border: 2px solid var(--primary-color);
   color: var(--primary-color);
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.rental-prev-btn:hover,
+.rental-next-btn:hover {
+  transform: scale(1.1);
+}
+
+.rental-prev-btn:active,
+.rental-next-btn:active {
+  transform: scale(0.95);
+}
+
+.rental-prev-btn:hover .rental-chevron-left,
+.rental-next-btn:hover .rental-chevron-right {
+  fill: #fff;
+}
+
+.rental-chevron-left,
+.rental-chevron-right {
+  fill: var(--primary-color);
+  width: 9px;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .rental-image {
-      height: 150px;
+    height: 150px;
   }
 }

@@ -21,6 +21,11 @@ const NavbarDashboard = () => {
                         Xác thực yêu cầu
                     </NavLink>
                 </li>
+                <li>
+                    <NavLink to="/viewtransactionhis" className="nav-link" activeClassName="active">
+                        Lịch sử giao dịch
+                    </NavLink>
+                </li>
             </ul>
         </nav>
     );

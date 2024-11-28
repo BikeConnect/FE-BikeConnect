@@ -1,26 +1,52 @@
+/* common */
+ol, ul {
+  margin: 0;
+  padding: 0;
+}
+
 /* Container Styling */
 .container {
-    background-color: #f9f9f9;
-    max-width: 1200px;
-    padding: 0px;
-  }
-  
-  /* Common Colors */
-  .cycle-name,
-  .documents-title,
-  .location-title,
-  .owner-title,
-  .icon {
-    color: #472CB2;
-  }
-  
-  .description-title {
-    color: #472CB2;
-  }
-  
-  .document-badge {
-    background-color: #472CB2;
-    color: #ffffff;
-  }
-  
-  
+  max-width: 1200px;
+  padding: 0px;
+}
+
+/* Common Colors */
+.documents-title,
+.location-title,
+.owner-title,
+.icon {
+  color: #472cb2;
+}
+
+.booking-details-icon {
+  width: 22px;
+  height: 22px;
+  fill: #007bff;
+  color: #007bff;
+  margin-right: 10px;
+}
+
+.description-title {
+  min-width: 60px;
+  font-size: 18px;
+}
+
+.list-group-content {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+}
+
+.document-badge {
+  background-color: #472cb2;
+  color: #ffffff;
+}
+
+.list-group-description,
+.list-group-address {
+  align-items: flex-start;
+}
+
+.booking-details-icon-address {
+  margin-top: 2px;
+}

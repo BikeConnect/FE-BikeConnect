@@ -152,22 +152,20 @@ const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
             <button
               type="button"
               onClick={() => handleRoleChange("customer")}
-              className={`px-4 py-2 rounded-md ${
-                selectedRole === "customer"
+              className={`px-4 py-2 rounded-md ${selectedRole === "customer"
                   ? "bg-blue-600 text-white"
                   : "bg-gray-200 text-gray-700"
-              } transition-colors duration-200`}
+                } transition-colors duration-200`}
             >
               Người thuê
             </button>
             <button
               type="button"
               onClick={() => handleRoleChange("owner")}
-              className={`px-4 py-2 rounded-md ${
-                selectedRole === "owner"
+              className={`px-4 py-2 rounded-md ${selectedRole === "owner"
                   ? "bg-blue-600 text-white"
                   : "bg-gray-200 text-gray-700"
-              } transition-colors duration-200`}
+                } transition-colors duration-200`}
             >
               Người cho thuê
             </button>

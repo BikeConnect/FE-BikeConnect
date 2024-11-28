@@ -1,0 +1,96 @@
+.contract-management {
+    padding: 20px;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+    font-size: 24px;
+    color: #472cb2;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.search-container {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.search-input {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+.search-input:focus {
+    border-color: #472cb2;
+    box-shadow: 0 0 5px rgba(71, 44, 178, 0.5);
+}
+
+.contract-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #fff;
+}
+
+.contract-table th,
+.contract-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.contract-table th {
+    background-color: #472cb2;
+    color: white;
+}
+
+.contract-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.contract-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.action-btn {
+    padding: 6px 12px;
+    margin: 0 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+}
+
+.view-btn {
+    background-color: #007bff;
+}
+
+.edit-btn {
+    background-color: #ffc107;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+}
+
+.dispute-btn {
+    background-color: #28a745;
+}
+
+.action-btn:hover {
+    opacity: 0.8;
+}
+
+.no-data {
+    text-align: center;
+    color: #999;
+    font-style: italic;
+    padding: 20px;
+}

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { FaEdit, FaTrash } from 'react-icons/fa';
+import { FaEdit, FaTrash,FaFileAlt } from 'react-icons/fa';
 import './ManageOwner.css';
 import { useCustomer } from '../../CustomerContext';
+
+
 
 const ManageOwner = () => {
     const { setOwnerCount } = useCustomer();
@@ -20,6 +22,8 @@ const ManageOwner = () => {
 
     const [confirmationMessage, setConfirmationMessage] = useState('');
     const [activeOwnerId, setActiveOwnerId] = useState(null);
+    const [showDocuments, setShowDocuments] = useState(false);
+    const [selectedOwnerDocs, setSelectedOwnerDocs] = useState(null);
 
     useEffect(() => {
         setOwnerCount(owners.length);
@@ -61,6 +65,15 @@ const ManageOwner = () => {
     const currentOwners = filteredOwners.slice(indexOfFirstOwner, indexOfLastOwner);
     const totalPages = Math.ceil(filteredOwners.length / ownersPerPage);
 
+    const handleViewDocuments = (owner) => {
+        setSelectedOwnerDocs({
+            frontImage: "https://dichthuatsaigon.vn/wp-content/uploads/2022/10/dich-thuat-can-cuoc-cong-dan.jpeg",
+            backImage: "https://media.vov.vn/sites/default/files/styles/large/public/2021-10/Can%20cuoc.jpg",
+            ownerName: owner.displayName
+        });
+        setShowDocuments(true);
+    };
+
     return (
         <div>
             <div className="manage-owner-container">
@@ -98,6 +111,7 @@ const ManageOwner = () => {
                             <th>Email</th>
                             <th>Ngày đăng ký</th>
                             <th>Tình trạng</th>
+                            <th>Giấy tờ</th>
                             <th>Tính năng</th>
                         </tr>
                     </thead>
@@ -114,16 +128,39 @@ const ManageOwner = () => {
                                     </span>
                                 </td>
                                 <td>
-                                    {owner.status === 'Chưa kích hoạt' && (
-                                        <>
-                                            <FaEdit className="icon" onClick={() => handleActivateClick(owner.id)} />
-                                            <FaTrash className="icon" onClick={() => handleDeleteClick(owner.id)} />
-                                        </>
-                                    )}
-                                    {owner.status === 'Đã kích hoạt' && (
-                                        <FaTrash className="icon" onClick={() => handleDeleteClick(owner.id)} />
-                                    )}
-                                </td>
+    <button 
+        className="view-docs-button"
+        onClick={() => handleViewDocuments(owner)}
+    >
+        <FaFileAlt style={{ marginRight: '8px' }} />
+        Xem giấy tờ
+    </button>
+</td>
+
+<td>
+    <div className="icons">
+        {owner.status === 'Chưa kích hoạt' && (
+            <>
+                <FaEdit
+                    className="icon-edit"
+                    onClick={() => handleActivateClick(owner.id)}
+                />
+                <FaTrash
+                    className="icon-delete"
+                    onClick={() => handleDeleteClick(owner.id)}
+                />
+            </>
+        )}
+        {owner.status === 'Đã kích hoạt' && (
+            <FaTrash
+                className="icon-delete"
+                onClick={() => handleDeleteClick(owner.id)}
+            />
+        )}
+    </div>
+</td>
+
+
                             </tr>
                         ))}
                     </tbody>
@@ -146,6 +183,37 @@ const ManageOwner = () => {
                             Xác nhận
                         </button>
                         <button onClick={() => setConfirmationMessage('')}>Hủy</button>
+                    </div>
+                )}
+                {showDocuments && (
+                    <div className="document-modal">
+                        <div className="document-modal-content">
+                            <h2>Giấy tờ của {selectedOwnerDocs.ownerName}</h2>
+                            <div className="document-images">
+                                <div className="document-front">
+                                    <h3>Mặt trước CCCD</h3>
+                                    <img
+                                        src={selectedOwnerDocs.frontImage}
+                                        alt="CCCD mặt trước"
+                                        className="document-image"
+                                    />
+                                </div>
+                                <div className="document-back">
+                                    <h3>Mặt sau CCCD</h3>
+                                    <img
+                                        src={selectedOwnerDocs.backImage}
+                                        alt="CCCD mặt sau"
+                                        className="document-image"
+                                    />
+                                </div>
+                            </div>
+                            <button
+                                className="close-document-modal"
+                                onClick={() => setShowDocuments(false)}
+                            >
+                                Đóng
+                            </button>
+                        </div>
                     </div>
                 )}
             </div>

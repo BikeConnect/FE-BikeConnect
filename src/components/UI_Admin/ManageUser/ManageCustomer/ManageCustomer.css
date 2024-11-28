@@ -137,3 +137,162 @@
 .confirmation-modal button:last-child:hover {
     background-color: #c82333;
 }
+
+.icons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100px;
+}
+
+.icon-edit {
+    font-size: 24px;
+    color: #28a745;
+    cursor: pointer;
+    transition: transform 0.3s, color 0.3s;
+}
+
+.icon-edit:hover {
+    color: #218838;
+    transform: scale(1.2);
+}
+
+.icon-delete {
+    font-size: 24px;
+    color: #dc3545;
+    cursor: pointer;
+    transition: transform 0.3s, color 0.3s;
+}
+
+.icon-deletee {
+    font-size: 24px;
+    color: #dc3545;
+    cursor: pointer;
+    transition: transform 0.3s, color 0.3s;
+}
+
+.icon-delete:hover {
+    color: #c82333;
+    transform: scale(1.2);
+}
+
+.customer-table td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 8px;
+}
+
+.status {
+    display: inline-block;
+    width: 130px;
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.document-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.document-modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 800px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.document-images {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.document-front,
+.document-back {
+    width: 48%;
+}
+
+.document-image {
+    max-width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.close-document-modal {
+    margin-top: 20px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.close-document-modal:hover {
+    background-color: #c82333;
+}
+
+.view-docs-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.view-docs-button:hover {
+    background-color: #45a049;
+}
+
+.document-images {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    margin-top: 20px;
+}
+
+.document-cccd {
+    display: flex;
+    justify-content: space-between;
+    width: 80%; 
+    margin-bottom: 20px; 
+}
+
+.document-front,
+.document-back,
+.document-driver-license {
+    width: 35%; /* Kích thước mỗi ảnh */
+}
+
+.document-driver-license {
+    width: 48%; /* Đảm bảo bằng lái xe có cùng kích thước như ảnh CCCD */
+    margin-top: 20px; /* Khoảng cách giữa ảnh CCCD và ảnh bằng lái xe */
+}
+
+.document-image {
+    width: 100%; /* Ảnh sẽ chiếm hết chiều rộng của phần tử chứa */
+    height: auto; /* Giữ tỷ lệ ảnh */
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+

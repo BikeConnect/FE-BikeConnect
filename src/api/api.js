@@ -17,6 +17,8 @@ api.interceptors.request.use(
       "/customer/reset-password",
       "/auth/owner-login",
       "/customer/customer-login",
+      "/post/vehicles",
+      "/post/vehicle-detail",
     ];
 
     if (!config.url?.includes('upload-profile-image')) {
@@ -31,12 +33,15 @@ api.interceptors.request.use(
       const token = localStorage.getItem("accessToken");
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
+      } else {
+        console.warn("No token found in localStorage");
       }
     }
 
     return config;
   },
   (error) => {
+    console.error("Interceptor error:", error);
     return Promise.reject(error);
   }
 );
