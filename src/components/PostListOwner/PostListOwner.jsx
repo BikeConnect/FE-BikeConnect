@@ -18,25 +18,25 @@ const PostListOwner = () => {
         const token = localStorage.getItem("accessToken");
         console.log("=== START API CALL ===");
         console.log("Token:", token);
-  
+
         if (!token) {
           throw new Error("No access token found");
         }
-  
+
         const response = await fetch(
           "http://localhost:8080/api/post/owner-list-vehicles",
           {
             method: "GET",
             headers: {
-              "Authorization": `Bearer ${token}`,
-              "Content-Type": "application/json"
+              "Authorization": token,
+              "Content-Type": "application/json",
             },
-            credentials: "include"
+            credentials: "include",
           }
         );
 
         console.log("Response status:", response.status);
-      
+
         if (!response.ok) {
           if (response.status === 401) {
             // Token hết hạn hoặc không hợp lệ
@@ -46,10 +46,10 @@ const PostListOwner = () => {
           }
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-  
+
         const data = await response.json();
         console.log("Response data:", data);
-  
+
         if (data && data.metadata) {
           setVehicles(data.metadata);
         } else {
@@ -84,25 +84,25 @@ const PostListOwner = () => {
       if (!token) {
         throw new Error("No access token found");
       }
-  
+
       const myHeaders = new Headers();
       myHeaders.append("Authorization", `Bearer ${token}`);
       myHeaders.append("Content-Type", "application/json");
-  
+
       const requestOptions = {
         method: "DELETE",
         headers: myHeaders,
         redirect: "follow",
-        credentials: "include"
+        credentials: "include",
       };
-  
+
       const response = await fetch(
         `http://localhost:8080/api/post/vehicle/${deleteVehicleId}`,
         requestOptions
       );
-  
+
       console.log("Delete response status:", response.status);
-  
+
       if (response.ok) {
         setVehicles(vehicles.filter((v) => v._id !== deleteVehicleId));
         alert("Xóa xe thành công!");

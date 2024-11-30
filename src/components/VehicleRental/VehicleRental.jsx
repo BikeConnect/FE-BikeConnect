@@ -27,10 +27,20 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
   const [isTimeModalOpen, setIsTimeModalOpen] = useState(false);
   const [activeLocationField, setActiveLocationField] = useState(null);
   const [selectedDates, setSelectedDates] = useState([]);
+  const [vehicleAvailableDates, setVehicleAvailableDates] = useState({
+    startDate: null,
+    endDate: null,
+  });
 
   useEffect(() => {
     if (bike) {
       setBikeData(bike);
+      if (bike.startDate && bike.endDate) {
+        setVehicleAvailableDates({
+          startDate: new Date(bike.startDate),
+          endDate: new Date(bike.endDate),
+        });
+      }
       return;
     }
 
@@ -46,6 +56,17 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
           throw new Error("Không tìm thấy dữ liệu xe");
         }
         setBikeData(response.data.metadata);
+
+        // Lưu thông tin ngày cho thuê
+        if (
+          response.data.metadata.startDate &&
+          response.data.metadata.endDate
+        ) {
+          setVehicleAvailableDates({
+            startDate: new Date(response.data.metadata.startDate),
+            endDate: new Date(response.data.metadata.endDate),
+          });
+        }
       } catch (err) {
         console.error("Error fetching vehicle details:", err);
         setError("Có lỗi xảy ra khi tải thông tin xe");
@@ -114,13 +135,8 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
   const calculateTotal = () => {
     const rentalDays = calculateRentalDays();
     const baseRentalFee = fees.baseRate * rentalDays;
-
-    // Tính giảm giá
     const discountAmount = (baseRentalFee * fees.insurance) / 100;
-
-    // Tổng tiền = Giá thuê * số ngày - giảm giá
     const total = baseRentalFee - discountAmount;
-
     return Math.round(total);
   };
 
@@ -143,6 +159,79 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
     setIsTimeModalOpen(false);
   };
 
+  const handleBooking = async () => {
+    if (selectedDates.length === 0) {
+      alert("Vui lòng chọn thời gian thuê xe");
+      return;
+    }
+
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      alert("Vui lòng đăng nhập để thuê xe");
+      return;
+    }
+
+    const requestStartDate = new Date(selectedDates[0]);
+    const requestEndDate = new Date(selectedDates[selectedDates.length - 1]);
+
+    requestStartDate.setHours(0, 0, 0, 0);
+    requestEndDate.setHours(0, 0, 0, 0);
+
+    if (vehicleAvailableDates.startDate && vehicleAvailableDates.endDate) {
+      const availableStartDate = new Date(vehicleAvailableDates.startDate);
+      const availableEndDate = new Date(vehicleAvailableDates.endDate);
+      
+      availableStartDate.setHours(0, 0, 0, 0);
+      availableEndDate.setHours(0, 0, 0, 0);
+  
+      if (
+        requestStartDate < vehicleAvailableDates.startDate ||
+        requestEndDate > vehicleAvailableDates.endDate
+      ) {
+        alert(
+          `Xe chỉ cho thuê từ ${vehicleAvailableDates.startDate.toLocaleDateString(
+            "vi-VN"
+          )} đến ${vehicleAvailableDates.endDate.toLocaleDateString("vi-VN")}`
+        );
+        return;
+      }
+    }
+
+    try {
+      const startDate = new Date(selectedDates[0]).toISOString().split("T")[0];
+      const endDate = new Date(selectedDates[selectedDates.length - 1])
+        .toISOString()
+        .split("T")[0];
+
+      const response = await api.post("/create-booking", {
+        vehicleId: vehicleId,
+        startDate: startDate,
+        endDate: endDate,
+      });
+
+      console.log("Response:", response);
+
+      if (response.status === 200 || response.status === 201) {
+        alert("Đặt xe thành công!");
+      } else {
+        throw new Error("Đặt xe thất bại");
+      }
+    } catch (error) {
+      console.log("Full error object:", error);
+      console.log("Response data:", error.response?.data);
+
+      if (error.response?.status === 401) {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("userRole");
+        localStorage.removeItem("userData");
+        alert("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
+      } else {
+        alert(error.response?.data?.message || "Có lỗi xảy ra khi đặt xe");
+      }
+    }
+  };
+
   return (
     <div className="rental-container my-4">
       <div className="row">
@@ -154,7 +243,6 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
                 alt="Honda SH 150 ABS"
                 className="img-fluid booking-main-image"
               />
-              {/* Nút Previous */}
               <button
                 className="image-nav-button previous-button"
                 onClick={handlePreviousImage}
@@ -168,7 +256,6 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
                 </svg>
               </button>
 
-              {/* Nút Next */}
               <button
                 className="image-nav-button next-button"
                 onClick={handleNextImage}
@@ -204,7 +291,7 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
         <div className="col-md-6">
           <div className="rental-details p-3">
             <div className="rental-header d-flex justify-content-between align-items-center">
-              <h1 className="fs-5 fw-bold text-gray-900">{cycleData.name}</h1>
+              <h1 className="rental-detail-name">{cycleData.name}</h1>
               <div
                 className={`availability-badge ${
                   isAvailable ? "available" : "unavailable"
@@ -280,6 +367,20 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
                 <label className="text-gray-700 text-sm mb-1">
                   Thời gian thuê xe
                 </label>
+                {vehicleAvailableDates.startDate &&
+                  vehicleAvailableDates.endDate && (
+                    <div className="available-dates text-sm text-gray-500 mb-2">
+                      (Xe cho thuê từ{" "}
+                      {vehicleAvailableDates.startDate.toLocaleDateString(
+                        "vi-VN"
+                      )}
+                      đến{" "}
+                      {vehicleAvailableDates.endDate.toLocaleDateString(
+                        "vi-VN"
+                      )}
+                      )
+                    </div>
+                  )}
                 <div
                   className="time-input"
                   onClick={() => setIsTimeModalOpen(true)}
@@ -300,13 +401,13 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
             </div>
 
             <div className="fee-breakdown p-4 rounded-md bg-gray-100">
-              <div className="fee-item d-flex justify-content-between mb-2 text-gray-700">
+              <div className="fee-item">
                 <span>Đơn giá xe ({calculateRentalDays()} ngày)</span>
                 <span>
                   {(fees.baseRate * calculateRentalDays()).toLocaleString()} VNĐ
                 </span>
               </div>
-              <div className="fee-item d-flex justify-content-between mb-2 text-gray-700">
+              <div className="fee-item">
                 <span>Giảm giá ({fees.insurance}%)</span>
                 <span>
                   {(
@@ -323,12 +424,15 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
             </div>
 
             <div className="action-buttons d-flex gap-2">
-              <button className="rent-button flex-1 py-2 px-3 rounded-md text-white bg-indigo-600 hover:bg-indigo-700 font-bold">
+              <button
+                className="rent-button flex-1 py-2 px-3 rounded-md text-white bg-indigo-600 hover:bg-indigo-700 font-bold"
+                onClick={handleBooking}
+              >
                 Thuê xe ngay
               </button>
               <button
                 className="negotiate-button flex-1 py-2 px-3 rounded-md text-white bg-green-600 hover:bg-green-700 font-bold"
-                onClick={onOpenChat} // Sử dụng toggle
+                onClick={onOpenChat}
               >
                 <FontAwesomeIcon icon={faComments} className="me-2" />
                 Chat thương lượng
@@ -336,7 +440,7 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
             </div>
           </div>
           <div className="card p-4 border-0 booking-details-info">
-            <h4 className="cycle-name">Thông tin chi tiết</h4>
+            <h4 className="booking-details-title">Thông tin chi tiết</h4>
             <div className="row">
               <div className="text-start">
                 <div className="list-group">
@@ -346,7 +450,8 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
                       className="booking-details-icon"
                     />
                     <span>
-                      <strong>Hãng:</strong> {cycleData.registerDate}
+                      <strong className="booking-detail-item">Hãng:</strong>{" "}
+                      {cycleData.registerDate}
                     </span>
                   </div>
                   <div className="list-group-item border-0 list-group-content">
@@ -358,7 +463,8 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
                       <path d="M280 32c-13.3 0-24 10.7-24 24s10.7 24 24 24l57.7 0 16.4 30.3L256 192l-45.3-45.3c-12-12-28.3-18.7-45.3-18.7L64 128c-17.7 0-32 14.3-32 32l0 32 96 0c88.4 0 160 71.6 160 160c0 11-1.1 21.7-3.2 32l70.4 0c-2.1-10.3-3.2-21-3.2-32c0-52.2 25-98.6 63.7-127.8l15.4 28.6C402.4 276.3 384 312 384 352c0 70.7 57.3 128 128 128s128-57.3 128-128s-57.3-128-128-128c-13.5 0-26.5 2.1-38.7 6L418.2 128l61.8 0c17.7 0 32-14.3 32-32l0-32c0-17.7-14.3-32-32-32l-20.4 0c-7.5 0-14.7 2.6-20.5 7.4L391.7 78.9l-14-26c-7-12.9-20.5-21-35.2-21L280 32zM462.7 311.2l28.2 52.2c6.3 11.7 20.9 16 32.5 9.7s16-20.9 9.7-32.5l-28.2-52.2c2.3-.3 4.7-.4 7.1-.4c35.3 0 64 28.7 64 64s-28.7 64-64 64s-64-28.7-64-64c0-15.5 5.5-29.7 14.7-40.8zM187.3 376c-9.5 23.5-32.5 40-59.3 40c-35.3 0-64-28.7-64-64s28.7-64 64-64c26.9 0 49.9 16.5 59.3 40l66.4 0C242.5 268.8 190.5 224 128 224C57.3 224 0 281.3 0 352s57.3 128 128 128c62.5 0 114.5-44.8 125.8-104l-66.4 0zM128 384a32 32 0 1 0 0-64 32 32 0 1 0 0 64z" />
                     </svg>
                     <span>
-                      <strong>Mẫu xe:</strong> {cycleData.color}
+                      <strong className="booking-detail-item">Mẫu xe:</strong>{" "}
+                      {cycleData.color}
                     </span>
                   </div>
                   <div className="list-group-item border-0 list-group-content">
@@ -367,7 +473,8 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
                       className="booking-details-icon"
                     />
                     <span>
-                      <strong>Biển số:</strong> {cycleData.licensePlate}
+                      <strong className="booking-detail-item">Biển số:</strong>{" "}
+                      {cycleData.licensePlate}
                     </span>
                   </div>
                   <div className="list-group-item border-0 list-group-content list-group-address">
@@ -379,12 +486,13 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
                       <path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z" />
                     </svg>
                     <span>
-                      <strong>Địa chỉ:</strong> {cycleData.address}
+                      <strong className="booking-detail-item">Địa chỉ:</strong>{" "}
+                      {cycleData.address}
                     </span>
                   </div>
                   <div className="list-group-content list-group-description">
                     <h3 className="description-title">
-                      <strong>Mô tả:</strong>
+                      <strong className="booking-detail-item">Mô tả:</strong>
                     </h3>
                     <ul className="list-description-content">
                       {cycleData.description.map((desc, index) => (

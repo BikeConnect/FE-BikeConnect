@@ -3,9 +3,9 @@ import { FaBell } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 import logo from "../../assets/images/8.png";
 import "./HeaderAfterLogin.css";
-import ava from "../../assets/images/avatar_user1.png";
-import ava2 from "../../assets/images/avatar_user2.png";
-import ava3 from "../../assets/images/avatar_user3.png";
+import ava from "../../assets/images/avatar_user1.jpg";
+import ava2 from "../../assets/images/avatar_user2.jpg";
+import ava3 from "../../assets/images/avatar_user3.jpg";
 import Support from "../Support/Support";
 import Notification from "../Notification/Notification";
 
@@ -31,9 +31,15 @@ const HeaderAfterLogin = ({ onLogout, userRole }) => {
 
   const handleLogout = () => {
     if (typeof onLogout === "function") {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("userRole");
+      localStorage.removeItem("userData");
+
       onLogout();
       navigate("/");
       setShowProfile(false);
+      setShowNotification(false);
     } else {
       console.error("onLogout is not a function");
     }
@@ -43,8 +49,12 @@ const HeaderAfterLogin = ({ onLogout, userRole }) => {
     setShowSupport(true);
   };
 
-  const handleNotificationClick = () => {
-    setShowNotification(!showNotification);
+  const handleShowNotification = () => {
+    setShowNotification(true);
+  };
+
+  const handleHideNotification = () => {
+    setShowNotification(false);
   };
 
   const fakeNotifications = [
@@ -68,6 +78,20 @@ const HeaderAfterLogin = ({ onLogout, userRole }) => {
       time: "4 giờ trước",
       imageUrl: ava,
       isRead: false,
+    },
+    {
+      name: "Phạm Thị D",
+      content: "Yêu cầu thuê xe mới đã được gửi tới bạn.",
+      time: "4 giờ trước",
+      imageUrl: ava2,
+      isRead: false,
+    },
+    {
+      name: "Hoàng Anh E",
+      content: "Bạn có thông báo mới về giao dịch.",
+      time: "5 ngày trước",
+      imageUrl: ava3,
+      isRead: true,
     },
     {
       name: "Phạm Thị D",
@@ -128,7 +152,7 @@ const HeaderAfterLogin = ({ onLogout, userRole }) => {
             <div className="auth-buttons">
               <div
                 className="notification-icon"
-                onClick={handleNotificationClick}
+                onMouseEnter={handleShowNotification}
               >
                 <FaBell className="bell-icon" />
               </div>
@@ -136,6 +160,10 @@ const HeaderAfterLogin = ({ onLogout, userRole }) => {
                 <img src={ava} alt="User Avatar" className="avatar-img" />
               </div>
             </div>
+            <Notification
+              show={showNotification}
+              onClose={handleHideNotification}
+            />
           </nav>
         </div>
       </header>

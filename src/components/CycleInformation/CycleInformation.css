@@ -28,7 +28,7 @@ ol, ul {
 
 .description-title {
   min-width: 60px;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .list-group-content {
@@ -45,6 +45,7 @@ ol, ul {
 .list-group-description,
 .list-group-address {
   align-items: flex-start;
+  line-height: 1.65;
 }
 
 .booking-details-icon-address {

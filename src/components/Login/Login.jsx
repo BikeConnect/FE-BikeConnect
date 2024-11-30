@@ -107,23 +107,44 @@ const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
           email: formData.email,
           password: formData.matKhau,
         }),
+        credentials: "include",
       });
 
       if (response.ok) {
         const data = await response.json();
         console.log(`Đăng nhập ${selectedRole} thành công:`, data);
 
-        if (selectedRole === "owner") {
-          localStorage.setItem("accessToken", data.accessToken);
-          localStorage.setItem("isLoggedIn", "true");
-          localStorage.setItem("userRole", "owner");
-          localStorage.setItem("userData", JSON.stringify(data));
-        } else {
-          localStorage.setItem("accessToken", data.token);
-          localStorage.setItem("isLoggedIn", "true");
-          localStorage.setItem("userRole", "customer");
-          localStorage.setItem("userData", JSON.stringify(data));
-        }
+        // if (selectedRole === "owner") {
+        //   localStorage.setItem("accessToken", data.accessToken);
+        //   localStorage.setItem("isLoggedIn", "true");
+        //   localStorage.setItem("userRole", "owner");
+        //   localStorage.setItem("userData", JSON.stringify(data));
+        // } else {
+        //   localStorage.setItem("accessToken", data.token);
+        //   localStorage.setItem("isLoggedIn", "true");
+        //   localStorage.setItem("userRole", "customer");
+        //   localStorage.setItem("userData", JSON.stringify(data));
+        // }
+
+        // const token = selectedRole === "owner" ? data.accessToken : data.token;
+        // localStorage.setItem("accessToken", `Bearer ${token}`);
+        // localStorage.setItem("isLoggedIn", "true");
+        // localStorage.setItem("userRole", selectedRole);
+        // localStorage.setItem("userData", JSON.stringify(data));
+
+        // Cấu trúc lại userData
+        const userData = {
+          ...data,
+          id: data._id || data.id,
+          role: selectedRole,
+          token: selectedRole === "owner" ? data.accessToken : data.token,
+        };
+
+        // Lưu thông tin người dùng
+        localStorage.setItem("userData", JSON.stringify(userData));
+        localStorage.setItem("accessToken", `Bearer ${userData.token}`);
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("userRole", selectedRole);
 
         onLoginSuccess(selectedRole);
         onClose();
@@ -175,20 +196,22 @@ const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
             <button
               type="button"
               onClick={() => handleRoleChange("customer")}
-              className={`px-4 py-2 rounded-md ${selectedRole === "customer"
+              className={`px-4 py-2 rounded-md ${
+                selectedRole === "customer"
                   ? "bg-blue-600 text-white"
                   : "bg-gray-200 text-gray-700"
-                } transition-colors duration-200`}
+              } transition-colors duration-200`}
             >
               Người thuê
             </button>
             <button
               type="button"
               onClick={() => handleRoleChange("owner")}
-              className={`px-4 py-2 rounded-md ${selectedRole === "owner"
+              className={`px-4 py-2 rounded-md ${
+                selectedRole === "owner"
                   ? "bg-blue-600 text-white"
                   : "bg-gray-200 text-gray-700"
-                } transition-colors duration-200`}
+              } transition-colors duration-200`}
             >
               Người cho thuê
             </button>

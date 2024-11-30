@@ -29,6 +29,7 @@ api.interceptors.request.use(
     if (!isPublicEndpoint) {
       const token = localStorage.getItem("accessToken");
       if (token) {
+        // config.headers.Authorization = `Bearer ${token}`;
         config.headers.Authorization = `Bearer ${token}`;
       } else {
         console.warn("No token found in localStorage");
@@ -39,6 +40,23 @@ api.interceptors.request.use(
   },
   (error) => {
     console.error("Interceptor error:", error);
+    return Promise.reject(error);
+  }
+);
+
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    if (
+      error.response?.status === 401 &&
+      error.response?.data?.message === "Invalid access token"
+    ) {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("userRole");
+      localStorage.removeItem("userData");
+      window.location.href = "/";
+    }
     return Promise.reject(error);
   }
 );

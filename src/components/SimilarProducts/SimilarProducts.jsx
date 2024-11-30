@@ -46,26 +46,26 @@ const SimilarProducts = ({ products, type }) => {
     <div className="container-fluid rental-similar-container">
       <div className="row">
         <div className="col-12">
-          <h2>Sản phẩm tương tự</h2>
+          <h2 className="similar-products-title">Sản phẩm tương tự</h2>
         </div>
       </div>
       <div className="row">
         {visibleProducts.map((product, index) => (
           <div key={index} className="col-lg-3 col-md-6 col-sm-12">
-            <div className="card cycle-card">
-              <div className="image-wrapper">
+            <div className="card similar-card">
+              <figure className="image-wrapper">
                 <img
                   src={product.image || "placeholder-image.jpg"} // Thêm ảnh placeholder
                   alt={product.name || "Xe"}
-                  className="card-img-top cycle-image"
+                  className="card-img-top similar-image"
                   onError={(e) => {
                     e.target.onerror = null;
                     e.target.src = "placeholder-image.jpg"; // Fallback image
                   }}
                 />
-              </div>
+              </figure>
               <div className="card-body cycle-details">
-                <h5 className="card-title similar-cycle-name">
+                <h5 className="similar-cycle-name">
                   {product.name || "Chưa có tên"}
                 </h5>
                 <p className="card-text price-section">

@@ -59,7 +59,6 @@
   font-weight: bold;
   white-space: nowrap;
   position: relative;
-  padding-bottom: 5px;
 }
 
 .menu-link:hover {
@@ -125,6 +124,7 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .profile-dropdown {

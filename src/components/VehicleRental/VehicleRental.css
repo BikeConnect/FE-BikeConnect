@@ -1,6 +1,6 @@
 /* Định nghĩa biến root cho màu xanh chính */
 :root {
-  --primary-blue: #472CB2;
+  --primary-blue: #472cb2;
 }
 
 body {
@@ -82,7 +82,6 @@ body {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-  margin-top: 10px;
 }
 
 .thumbnail {
@@ -119,17 +118,28 @@ body {
   margin-top: 20px;
 }
 
+.booking-details-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 6px;
+}
+
+.booking-detail-item {
+  font-weight: 600;
+}
+
 .rental-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.rental-header h1 {
-  font-size: 20px;
+.rental-header .rental-detail-name {
+  font-size: 18px;
   font-weight: 600;
-  color: #1f2937;
   margin: 0;
+  color: #000;
 }
 
 .availability-badge {
@@ -263,7 +273,8 @@ body {
   margin-top: 16px;
 }
 
-.rent-button, .negotiate-button {
+.rent-button,
+.negotiate-button {
   flex: 1;
   padding: 12px;
   font-size: 16px;

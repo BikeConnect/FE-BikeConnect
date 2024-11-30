@@ -1,56 +1,71 @@
 .rental-similar-container {
-  padding: 20px;
+  padding: 28px;
   background: white;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+.similar-products-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 32px;
+}
+
 /* Card Styles */
-.cycle-card {
+.similar-card {
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
   background-color: #fff;
+  cursor: pointer;
+  overflow: hidden;
 }
 
-.cycle-card:hover {
-  transform: scale(1.03);
+.similar-card:hover {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.similar-card:hover .similar-image {
+  transform: scale(1.05);
+  transition: all 0.5s ease;
 }
 
 .image-wrapper {
   position: relative;
   height: 200px;
+  overflow: hidden;
+  border-radius: 8px;
+  margin: 16px 16px 0;
 }
 
-.cycle-image {
-  border-radius: 8px 8px 0 0;
+.similar-image {
+  border-radius: 8px;
   object-fit: cover;
   width: 100%;
   height: 200px;
 }
 
 .similar-cycle-name {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 10px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 14px;
   text-align: start;
 }
 
 .price-section {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  align-items: flex-end;
   font-size: 14px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   white-space: nowrap;
 }
 
 .current-price {
   color: var(--primary-color);
-  font-weight: bold;
-  font-size: 18px;
+  font-weight: 500;
+  font-size: 17px;
   margin-right: 8px;
 }
 
@@ -67,7 +82,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-bottom: 6px;
+  margin-bottom: 12px;
 }
 
 .location-icon {
@@ -160,7 +175,7 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .cycle-image {
+  .similar-image {
     height: 150px;
   }
 }

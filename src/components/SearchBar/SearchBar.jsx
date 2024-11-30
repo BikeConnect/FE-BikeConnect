@@ -4,6 +4,7 @@ import "./SearchBar.css";
 import LocationModal from "../LocationModal/LocationModal";
 import TimePickerModal from "../TimePickerModal/TimePickerModal";
 import { useNavigate } from "react-router-dom";
+import api from "../../api/api";
 
 const SearchBar = () => {
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
@@ -73,48 +74,25 @@ const SearchBar = () => {
         return;
       }
 
-      const timeRequestOptions = {
-        method: "GET",
-        headers: myHeaders,
-        redirect: "follow",
-      };
+      const [timeResponse, locationResponse] = await Promise.all([
+        api.get(`/find-booking`, {
+          params: {
+            startDate: formattedStartDate,
+            endDate: formattedEndDate
+          }
+        }),
+        api.get(`/sorted-by-distance`, {
+          params: {
+            address: selectedLocation
+          }
+        })
+      ]);
 
-      const timeResponse = await fetch(
-        `http://localhost:8080/api/find-booking?startDate=${formattedStartDate}&endDate=${formattedEndDate}`,
-        timeRequestOptions
-      );
+      const timeData = timeResponse.data;
+      const locationData = locationResponse.data;
 
-      if (!timeResponse.ok) {
-        const errorText = await timeResponse.text();
-        throw new Error(
-          `HTTP error! status: ${timeResponse.status}, message: ${errorText}`
-        );
-      }
-
-      const timeData = await timeResponse.json();
-      console.log("Search results by time:", timeData);
-
-      const encodedAddress = encodeURIComponent(selectedLocation);
-      const locationRequestOptions = {
-        method: "GET",
-        headers: myHeaders,
-        redirect: "follow",
-      };
-
-      const locationResponse = await fetch(
-        `http://localhost:8080/api/sorted-by-distance?address=${encodedAddress}`,
-        locationRequestOptions
-      );
-
-      if (!locationResponse.ok) {
-        const errorText = await locationResponse.text();
-        throw new Error(
-          `HTTP error! status: ${locationResponse.status}, message: ${errorText}`
-        );
-      }
-
-      const locationData = await locationResponse.json();
-      console.log("Search results by location:", locationData);
+      // console.log("Search results by time:", timeData);
+      // console.log("Search results by location:", locationData);
 
       const availableVehicles = timeData.availableVehicles;
       const vehiclesByLocation = locationData.vehicles.map((v) => ({
@@ -152,7 +130,16 @@ const SearchBar = () => {
       });
     } catch (error) {
       console.error("Error during search:", error);
-      alert(`Có lỗi xảy ra khi tìm kiếm: ${error.message}`);
+      if (error.response?.status === 401) {
+        alert("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("userRole");
+        localStorage.removeItem("userData");
+        navigate("/");
+      } else {
+        alert(`Có lỗi xảy ra khi tìm kiếm: ${error.response?.data?.message || error.message}`);
+      }
     }
   };
 
