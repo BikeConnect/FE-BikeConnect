@@ -61,10 +61,17 @@ const PostPage = () => {
     );
   };
 
+  const handleRemoveImage = (vehicleIndex, imageIndex) => {
+    const updatedVehicles = [...vehicles];
+    updatedVehicles[vehicleIndex].images.splice(imageIndex, 1);
+    setVehicles(updatedVehicles);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newErrors = {};
+    const today = new Date().toISOString().split("T")[0];
     if (quantity <= 0) newErrors.quantity = "Số lượng không hợp lệ";
 
     vehicles.forEach((vehicle, index) => {
@@ -73,7 +80,10 @@ const PostPage = () => {
       }
       if (!vehicle.startDate) {
         newErrors[`startDate_${index}`] = "Ngày bắt đầu là bắt buộc";
+      } else if (vehicle.startDate < today) {
+        newErrors[`startDate_${index}`] = "Ngày bắt đầu không được là ngày trong quá khứ";
       }
+
       if (!vehicle.endDate) {
         newErrors[`endDate_${index}`] = "Ngày kết thúc là bắt buộc";
       } else if (vehicle.startDate && vehicle.endDate) {
@@ -191,7 +201,7 @@ const PostPage = () => {
 
         <div className="form-container">
           <div className="form-row">
-            <div className="form-group form-group-quantity">
+            <div className="quantity-input-container">
               <label>Số lượng xe:</label>
               <input
                 type="number"
@@ -359,6 +369,20 @@ const PostPage = () => {
                     {vehicle.images && vehicle.images.length > 0 && (
                       <div className="uploaded-images">
                         <p>Số ảnh đã tải lên: {vehicle.images.length}</p>
+                        <ul>
+                          {vehicle.images.map((image, imgIndex) => (
+                            <li key={imgIndex}>
+                              {image.name} 
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveImage(index, imgIndex)} // Hàm để xóa ảnh
+                                style={{ marginLeft: '10px', color: 'red' }}
+                              >
+                                X 
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
                       </div>
                     )}
                     {showUploadModal && currentVehicleIndex === index && (
