@@ -2,8 +2,15 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 import { FaGoogle, FaFacebook, FaEye, FaEyeSlash } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import {
+  customer_login,
+  get_user_info,
+  owner_login,
+} from "../../store/Reducers/authReducer";
 
 const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: "",
     matKhau: "",
@@ -23,141 +30,26 @@ const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
     setThongBaoLoi("");
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   setThongBaoLoi("");
-
-  //   try {
-  //     const ownerResponse = await fetch(
-  //       "http://localhost:8080/api/auth/owner-login",
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({
-  //           email: formData.email,
-  //           password: formData.matKhau,
-  //         }),
-  //       }
-  //     );
-  //     console.log("ownerResponse:", ownerResponse);
-  //     if (ownerResponse.ok) {
-  //       const data = await ownerResponse.json();
-  //       console.log("Đăng nhập chủ xe thành công:", data.accessToken);
-  //       localStorage.setItem("accessToken", data.accessToken);
-  //       localStorage.setItem("userRole", "owner");
-  //       localStorage.setItem("userData", JSON.stringify(data.accessToken));
-  //       onLoginSuccess("owner");
-  //       onClose();
-  //       navigate("/homepage");
-  //       return;
-  //     }
-
-  //     const customerResponse = await fetch(
-  //       "http://localhost:8080/api/customer/customer-login",
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({
-  //           email: formData.email,
-  //           password: formData.matKhau,
-  //         }),
-  //       }
-  //     );
-
-  //     if (customerResponse.ok) {
-  //       const data = await customerResponse.json();
-  //       console.log("Đăng nhập khách hàng thành công:", data);
-  //       localStorage.setItem("accessToken", data.token);
-  //       localStorage.setItem("userRole", "customer");
-  //       localStorage.setItem("userData", JSON.stringify(data));
-  //       onLoginSuccess("customer");
-  //       onClose();
-  //       navigate("/homepage");
-  //       return;
-  //     }
-
-  //     setThongBaoLoi("Email hoặc mật khẩu không chính xác!");
-  //   } catch (error) {
-  //     console.error("Lỗi đăng nhập:", error);
-  //     setThongBaoLoi(
-  //       "Đã xảy ra lỗi trong quá trình đăng nhập. Vui lòng thử lại sau!"
-  //     );
-  //   }
-  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
     setThongBaoLoi("");
 
+    const loginData = {
+      email: formData.email,
+      password: formData.matKhau,
+    };
     try {
-      const endpoint =
+      await dispatch(
         selectedRole === "owner"
-          ? "http://localhost:8080/api/auth/owner-login"
-          : "http://localhost:8080/api/customer/customer-login";
-
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.matKhau,
-        }),
-        credentials: "include",
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log(`Đăng nhập ${selectedRole} thành công:`, data);
-
-        // if (selectedRole === "owner") {
-        //   localStorage.setItem("accessToken", data.accessToken);
-        //   localStorage.setItem("isLoggedIn", "true");
-        //   localStorage.setItem("userRole", "owner");
-        //   localStorage.setItem("userData", JSON.stringify(data));
-        // } else {
-        //   localStorage.setItem("accessToken", data.token);
-        //   localStorage.setItem("isLoggedIn", "true");
-        //   localStorage.setItem("userRole", "customer");
-        //   localStorage.setItem("userData", JSON.stringify(data));
-        // }
-
-        // const token = selectedRole === "owner" ? data.accessToken : data.token;
-        // localStorage.setItem("accessToken", `Bearer ${token}`);
-        // localStorage.setItem("isLoggedIn", "true");
-        // localStorage.setItem("userRole", selectedRole);
-        // localStorage.setItem("userData", JSON.stringify(data));
-
-        // Cấu trúc lại userData
-        const userData = {
-          ...data,
-          id: data._id || data.id,
-          role: selectedRole,
-          token: selectedRole === "owner" ? data.accessToken : data.token,
-        };
-
-        // Lưu thông tin người dùng
-        localStorage.setItem("userData", JSON.stringify(userData));
-        localStorage.setItem("accessToken", `Bearer ${userData.token}`);
-        localStorage.setItem("isLoggedIn", "true");
-        localStorage.setItem("userRole", selectedRole);
-
-        onLoginSuccess(selectedRole);
-        onClose();
-        navigate("/homepage");
-        return;
-      }
-
-      setThongBaoLoi("Email hoặc mật khẩu không chính xác!");
+          ? owner_login(loginData)
+          : customer_login(loginData)
+      ).unwrap();
+      await dispatch(get_user_info());
+      onLoginSuccess(selectedRole);
+      onClose();
+      navigate("/");
     } catch (error) {
-      console.error("Lỗi đăng nhập:", error);
-      setThongBaoLoi(
-        "Đã xảy ra lỗi trong quá trình đăng nhập. Vui lòng thử lại sau!"
-      );
+      setThongBaoLoi(error.error || "Email hoặc mật khẩu không chính xác!");
     }
   };
 

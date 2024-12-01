@@ -3,7 +3,6 @@ import axios from "axios";
 const api = axios.create({
   baseURL: "http://localhost:8080/api",
   headers: {
-    "Content-Type": "application/json",
     Accept: "application/json",
   },
   withCredentials: true,
@@ -21,6 +20,10 @@ api.interceptors.request.use(
       "/post/vehicles",
       "/post/vehicle-detail",
     ];
+
+    if (!config.url?.includes('upload-profile-image')) {
+      config.headers['Content-Type'] = 'application/json';
+    }
 
     const isPublicEndpoint = publicEndpoints.some((endpoint) =>
       config.url.includes(endpoint)

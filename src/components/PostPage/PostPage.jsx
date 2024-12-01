@@ -174,7 +174,7 @@ const PostPage = () => {
         },
         body: formData,
       });
-
+      console.log(response);
       if (response.ok) {
         const result = await response.json();
         console.log("Upload success:", result);

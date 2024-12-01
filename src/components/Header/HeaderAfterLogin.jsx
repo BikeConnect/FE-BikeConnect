@@ -8,6 +8,7 @@ import ava2 from "../../assets/images/avatar_user2.jpg";
 import ava3 from "../../assets/images/avatar_user3.jpg";
 import Support from "../Support/Support";
 import Notification from "../Notification/Notification";
+import { useSelector } from "react-redux";
 
 const HeaderAfterLogin = ({ onLogout, userRole }) => {
   const navigate = useNavigate();
@@ -15,12 +16,14 @@ const HeaderAfterLogin = ({ onLogout, userRole }) => {
   const [showSupport, setShowSupport] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
 
+  const { userInfo } = useSelector((state) => state.auth);
+
   const handleAvatarClick = () => {
     setShowProfile(!showProfile);
   };
 
   const handleNavigateToProfile = () => {
-    navigate("/customerprofiles");
+    navigate("/user-dashboard");
     setShowProfile(false);
   };
 
@@ -157,7 +160,11 @@ const HeaderAfterLogin = ({ onLogout, userRole }) => {
                 <FaBell className="bell-icon" />
               </div>
               <div className="user-avatar" onClick={handleAvatarClick}>
-                <img src={ava} alt="User Avatar" className="avatar-img" />
+                {(!userInfo || !userInfo.image) ? (
+                  <img src={ava} alt="User Avatar" className="avatar-img" />
+                ) : (
+                  <img src={userInfo.image} alt="User Avatar" className="avatar-img" />
+                )}
               </div>
             </div>
             <Notification
