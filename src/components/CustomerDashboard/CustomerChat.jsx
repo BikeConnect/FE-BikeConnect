@@ -1,67 +1,105 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineMessage, AiOutlinePlus } from "react-icons/ai";
 import { FaList } from "react-icons/fa";
 import { GrEmoji } from "react-icons/gr";
 import { IoSend } from "react-icons/io5";
 import { Link, useParams } from "react-router-dom";
 import avatar1 from "../../assets/images/avatar_user1.png";
-import avatar2 from "../../assets/images/avatar_user2.png";
-import avatar3 from "../../assets/images/avatar_user3.png";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  add_chat_owner,
+  customer_send_messages,
+  messageClear,
+  updateCustomerMessage,
+} from "../../store/Reducers/chatReducer";
+import { socket } from "../../util/socket";
 
 const CustomerChat = () => {
+  const dispatch = useDispatch();
   const [text, setText] = useState("");
   const [receiverMessage, setReceiverMessage] = useState("");
   const [activeOwner, setActiveOwner] = useState([]);
   const [show, setShow] = useState(false);
-  const { ownerId} = useParams();
+  const { ownerId } = useParams();
+  const { userInfo } = useSelector((state) => state.auth);
+  const { fr_messages, currentFr, my_friends, successMessage } = useSelector(
+    (state) => state.chat
+  );
+
   const scrollRef = useRef();
 
-  const mockFriends = [
-    {
-      fdId: "1",
-      name: "John Skibidi",
-      image: avatar1,
-    },
-    {
-      fdId: "2",
-      name: "Cristiano Ronaldo",
-      image: avatar2,
-    },
-    {
-      fdId: "3",
-      name: "Mike Tyson",
-      image: avatar3,
-    },
-  ];
-  const mockMessages = [
-    {
-      receiverId: "1",
-      message: "Alo bạn ơi, cho tôi thuê xe",
-      senderId: "2",
-    },
-    {
-      receiverId: "2",
-      message: "Vâng, bạn muốn thuê xe máy nào nhỉ?",
-      senderId: "1",
-    },
-    {
-      receiverId: "1",
-      message: "Bí mật",
-      senderId: "2",
-    },
-  ];
-  const mockCurrentFriend = {
-    fdId: "1",
-    name: "John Skibidi",
-    image: avatar1,
-  };
-  const mockActiveOwners = [{ ownerId: "1" }, { ownerId: "3" }];
+  useEffect(() => {
+    socket.emit("add_user", userInfo._id, userInfo);
+  }, []);
+
+  useEffect(() => {
+    if (userInfo?._id) {
+      if (ownerId) {
+        dispatch(
+          add_chat_owner({
+            ownerId,
+            customerId: userInfo._id,
+          })
+        );
+      } else {
+        dispatch(
+          add_chat_owner({
+            ownerId: "",
+            customerId: userInfo._id,
+          })
+        );
+      }
+    }
+  }, [ownerId, userInfo]);
+
   const send = () => {
-    if (text.trim()) {
-      console.log("Sending message:", text);
+    if (text) {
+      dispatch(
+        customer_send_messages({
+          customerId: userInfo._id,
+          text,
+          ownerId,
+          name: userInfo.name,
+        })
+      );
       setText("");
     }
   };
+
+  useEffect(() => {
+    socket.on("owner_message", (msg) => {
+      setReceiverMessage(msg);
+    });
+    socket.on("active_owner", (owners) => {
+      setActiveOwner(owners);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (successMessage) {
+      socket.emit("send_customer_message", fr_messages[fr_messages.length - 1]); // lay message cuoi cung
+      dispatch(messageClear());
+    }
+  }, [successMessage]);
+
+  useEffect(() => {
+    if (receiverMessage) {
+      if (
+        ownerId === receiverMessage.senderId &&
+        userInfo._id === receiverMessage.receiverId
+      ) {
+        dispatch(updateCustomerMessage(receiverMessage));
+      }
+    }
+  }, [receiverMessage]);
+
+  useEffect(() => {
+    scrollRef.current?.scrollTo({
+      top: scrollRef.current.scrollHeight,
+      behavior: "smooth",
+    });
+  }, [fr_messages]);
+
   return (
     <div className="p-3 bg-white rounded-md">
       <div className="flex w-full">
@@ -77,45 +115,45 @@ const CustomerChat = () => {
             <span>Message</span>
           </div>
           <div className="w-full flex flex-col text-slate-600 py-4 h-[400px] pr-3">
-            {mockFriends.map((f, i) => (
+            {my_friends.map((f, i) => (
               <Link
                 key={i}
                 to={`/user-dashboard/chat/${f.fdId}`}
                 className={`flex gap-2 justify-start items-center pl-2 py-[5px] rounded-md ${
-                  f.fdId === mockCurrentFriend.fdId ? "bg-[#e2e4e7]" : ""
+                  ownerId === f.fdId ? "bg-[#e2e4e7]" : ""
                 }`}
               >
                 <div className="w-[30px] h-[30px] rounded-full relative">
-                  {mockActiveOwners.some((c) => c.ownerId === f.fdId) && (
-                    <div className="w-[10px] h-[10px] rounded-full bg-green-500 absolute right-0 bottom-0"></div>
+                  {activeOwner.some((c) => c.ownerId === f.fdId) && (
+                    <div className="w-[10px] h-[10px] rounded-full bg-green-500 absolute left-7 top-6"></div>
                   )}
-                  <img src={f.image} alt="" className="rounded-full" />
+                  <img
+                    src={f.image === "" ? avatar1 : f.image}
+                    alt=""
+                    className="w-[38px] h-[38px] border-[#e04660] border-2 max-w-[38px] p-[2px] rounded-full"
+                  />
                 </div>
                 <span>{f.name}</span>
               </Link>
             ))}
           </div>
         </div>
-
         <div className="w-[calc(100%-230px)] md-lg:w-full">
-          {mockCurrentFriend ? (
+          {ownerId && currentFr ? (
             <div className="w-full h-full">
-              {/* Header */}
               <div className="flex justify-between gap-3 items-center text-slate-600 text-xl h-[50px]">
                 <div className="flex gap-2">
                   <div className="w-[30px] h-[30px] rounded-full relative">
-                    {mockActiveOwners.some(
-                      (c) => c.ownerId === mockCurrentFriend.fdId
-                    ) && (
-                      <div className="w-[10px] h-[10px] rounded-full bg-green-500 absolute right-0 bottom-0"></div>
+                    {activeOwner.some((c) => c.ownerId === currentFr.fdId) && (
+                      <div className="w-[10px] h-[10px] rounded-full bg-green-500 absolute left-7 top-6"></div>
                     )}
                     <img
-                      src={mockCurrentFriend.image}
+                      src={currentFr.image === "" ? avatar1 : currentFr.image}
                       alt=""
-                      className="rounded-full"
+                      className="w-[40px] h-[40px] border-[#e04660] border-2 max-w-[40px] p-[2px] rounded-full"
                     />
                   </div>
-                  <span>{mockCurrentFriend.name}</span>
+                  <span className="pl-2 pt-1">{currentFr.name}</span>
                 </div>
                 <div>
                   <div
@@ -126,52 +164,51 @@ const CustomerChat = () => {
                   </div>
                 </div>
               </div>
-              {/* Messages */}
               <div className="h-[400px] w-full bg-slate-100 p-3 rounded-md">
                 <div
                   className="flex flex-col w-full h-full gap-3 overflow-y-auto"
                   ref={scrollRef}
                 >
-                  {mockMessages.map((m, i) => (
-                    <div
-                      key={i}
-                      className={`w-full flex gap-2 ${
-                        m.receiverId === mockCurrentFriend.fdId
-                          ? "justify-end"
-                          : "justify-start"
-                      } items-center text-[14px]`}
-                    >
-                      {m.receiverId !== mockCurrentFriend.fdId && (
-                        <img
-                          className="w-[30px] h-[30px] rounded-full"
-                          src={mockCurrentFriend.image}
-                          alt=""
-                        />
-                      )}
-                      <div
-                        className={`p-2 text-white rounded-md ${
-                          m.receiverId === mockCurrentFriend.fdId
-                            ? "bg-cyan-500"
-                            : "bg-purple-500"
-                        }`}
-                      >
-                        <span>{m.message}</span>
-                      </div>
-                      {m.receiverId === mockCurrentFriend.fdId && (
-                        <img
-                          className="w-[30px] h-[30px] rounded-full"
-                          src={avatar1}
-                          alt=""
-                        />
-                      )}
-                    </div>
-                  ))}
+                  {fr_messages.map((m, i) => {
+                    if (currentFr?.fdId !== m.receiverId) {
+                      return (
+                        <div
+                          key={i}
+                          className="w-full flex gap-2 justify-start items-center text-[14px]"
+                        >
+                          <img
+                            className="w-[38px] h-[38px] border-[#e04660] border-2 max-w-[38px] p-[2px] rounded-full"
+                            src={currentFr.image}
+                            alt=""
+                          />
+                          <div className="p-2 text-white bg-purple-500 rounded-md">
+                            <span>{m.message}</span>
+                          </div>
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div
+                          key={i}
+                          className="w-full flex gap-2 justify-end items-center text-[14px]"
+                        >
+                          <div className="p-2 text-white rounded-md bg-cyan-500">
+                            <span>{m.message}</span>
+                          </div>
+                          <img
+                            className="w-[38px] h-[38px] border-[#e04660] border-2 max-w-[38px] p-[2px] rounded-full"
+                            src={userInfo.image}
+                            alt=""
+                          />
+                        </div>
+                      );
+                    }
+                  })}
                 </div>
               </div>
-              {/* Input Area */}
               <div className="flex items-center justify-between w-full p-2 pt-8">
                 <div className="w-[40px] h-[40px] border p-2 justify-center items-center flex rounded-full">
-                  <label className="cursor-pointer">
+                  <label className="cursor-pointer" htmlFor="">
                     <AiOutlinePlus />
                   </label>
                   <input className="hidden" type="file" />
@@ -181,10 +218,10 @@ const CustomerChat = () => {
                     value={text}
                     onChange={(e) => setText(e.target.value)}
                     type="text"
-                    placeholder="Input message"
+                    placeholder="input message"
                     className="w-full h-full p-3 rounded-full outline-none"
                   />
-                  <div className="absolute text-2xl cursor-pointer right-2 top-2">
+                  <div className="absolute text-2xl cursor-auto right-2 top-2">
                     <span>
                       <GrEmoji />
                     </span>
@@ -202,7 +239,7 @@ const CustomerChat = () => {
               onClick={() => setShow(true)}
               className="flex items-center justify-center w-full h-[250px] text-lg font-bold text-slate-600"
             >
-              <span>Select Owner</span>
+              <span>Select owner</span>
             </div>
           )}
         </div>
@@ -210,4 +247,5 @@ const CustomerChat = () => {
     </div>
   );
 };
+
 export default CustomerChat;

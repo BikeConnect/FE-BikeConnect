@@ -41,10 +41,7 @@ const CustomerIndex = () => {
     const { name, value } = e.target;
 
     if (name === "phone") {
-      // Chỉ cho phép số và bắt đầu bằng số 0
       const phoneRegex = /^[0][0-9]*$/;
-
-      // Nếu value rỗng hoặc khớp với regex thì cho phép cập nhật
       if (value === "" || phoneRegex.test(value)) {
         setFormData((prev) => ({
           ...prev,
@@ -61,8 +58,6 @@ const CustomerIndex = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Validate phone trước khi submit
     const phoneRegex = /^[0][0-9]{9}$/;
     if (!phoneRegex.test(formData.phone)) {
       alert(

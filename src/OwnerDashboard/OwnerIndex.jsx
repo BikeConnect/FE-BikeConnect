@@ -43,28 +43,6 @@ const OwnerIndex = () => {
     }
   }, [userInfo]);
 
-  // const fetchUserData = async () => {
-  //   try {
-  //     const { data } = await api.get("/get-user");
-  //     if (data.userInfo) {
-  //       setUser(data.userInfo);
-  //       setFormData({
-  //         name: data.userInfo?.name || "",
-  //         email: data.userInfo?.email || "",
-  //         phone: data.userInfo?.phone || "",
-  //         district: data.userInfo?.subInfo?.district || "",
-  //         city: data.userInfo?.subInfo?.city || "",
-  //         address: data.userInfo?.subInfo?.address || "",
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching user data:", error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchUserData();
-  // }, []);
 
   const handleEdit = () => {
     setIsEditing(!isEditing);
@@ -74,10 +52,7 @@ const OwnerIndex = () => {
     const { name, value } = e.target;
 
     if (name === "phone") {
-      // Chỉ cho phép số và bắt đầu bằng số 0
       const phoneRegex = /^[0][0-9]*$/;
-
-      // Nếu value rỗng hoặc khớp với regex thì cho phép cập nhật
       if (value === "" || phoneRegex.test(value)) {
         setFormData((prev) => ({
           ...prev,
@@ -85,7 +60,6 @@ const OwnerIndex = () => {
         }));
       }
     } else {
-      // Các trường khác không cần validate
       setFormData((prev) => ({
         ...prev,
         [name]: value,
@@ -95,9 +69,7 @@ const OwnerIndex = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Validate phone trước khi submit
-    const phoneRegex = /^[0][0-9]{9}$/; // Số điện thoại bắt đầu bằng 0 và có 10 số
+    const phoneRegex = /^[0][0-9]{9}$/; 
     if (!phoneRegex.test(formData.phone)) {
       alert(
         "Số điện thoại không hợp lệ! Vui lòng nhập số điện thoại bắt đầu bằng số 0 và có 10 chữ số"
@@ -107,20 +79,18 @@ const OwnerIndex = () => {
 
     const updateData = {
       name: formData.name,
-      phone: formData.phone.toString(), // Chuyển đổi rõ ràng sang string
+      phone: formData.phone.toString(), 
       district: formData.district,
       city: formData.city,
       address: formData.address
     };
 
-    dispatch(owner_update_profile_info(updateData))
-      .unwrap()
-      .then(() => {
-        setIsEditing(false);
-      })
-      .catch((error) => {
-        console.error('Error updating profile:', error);
-      });
+    try {
+      await dispatch(owner_update_profile_info(updateData)).unwrap();
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Error updating profile:', error);
+    }
   };
 
   const add_image = (e) => {

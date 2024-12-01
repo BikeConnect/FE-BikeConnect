@@ -30,7 +30,7 @@ const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
     setThongBaoLoi("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setThongBaoLoi("");
 
@@ -38,84 +38,20 @@ const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
       email: formData.email,
       password: formData.matKhau,
     };
-    if (selectedRole === "owner") {
-      dispatch(owner_login(loginData))
-        .unwrap()
-        .then(() => {
-          dispatch(get_user_info()).then(() => {
-            onLoginSuccess(selectedRole);
-            onClose();
-            navigate("/");
-          });
-        })
-        .catch((error) => {
-          setThongBaoLoi(error.error || "Email hoặc mật khẩu không chính xác!");
-        });
-    } else {
-      dispatch(customer_login(loginData))
-        .unwrap()
-        .then(() => {
-          dispatch(get_user_info()).then(() => {
-            onLoginSuccess(selectedRole);
-            onClose();
-            navigate("/");
-          });
-        })
-        .catch((error) => {
-          setThongBaoLoi(error.error || "Email hoặc mật khẩu không chính xác!");
-        });
+    try {
+      await dispatch(
+        selectedRole === "owner"
+          ? owner_login(loginData)
+          : customer_login(loginData)
+      ).unwrap();
+      await dispatch(get_user_info());
+      onLoginSuccess(selectedRole);
+      onClose();
+      navigate("/");
+    } catch (error) {
+      setThongBaoLoi(error.error || "Email hoặc mật khẩu không chính xác!");
     }
   };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   setThongBaoLoi("");
-
-  //   try {
-  //     const endpoint =
-  //       selectedRole === "owner"
-  //         ? "http://localhost:8080/api/auth/owner-login"
-  //         : "http://localhost:8080/api/customer/customer-login";
-
-  //     const response = await fetch(endpoint, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         email: formData.email,
-  //         password: formData.matKhau,
-  //       }),
-  //     });
-
-  //     if (response.ok) {
-  //       const data = await response.json();
-  //       console.log(`Đăng nhập ${selectedRole} thành công:`, data);
-
-  //       if (selectedRole === "owner") {
-  //         localStorage.setItem("accessToken", data.accessToken);
-  //         localStorage.setItem("userRole", "owner");
-  //         localStorage.setItem("userData", JSON.stringify(data.accessToken));
-  //       } else {
-  //         localStorage.setItem("accessToken", data.accessToken);
-  //         localStorage.setItem("userRole", "customer");
-  //         localStorage.setItem("userData", JSON.stringify(data));
-  //       }
-
-  //       onLoginSuccess(selectedRole);
-  //       onClose();
-  //       navigate("/homepage");
-  //       return;
-  //     }
-
-  //     setThongBaoLoi("Email hoặc mật khẩu không chính xác!");
-  //   } catch (error) {
-  //     console.error("Lỗi đăng nhập:", error);
-  //     setThongBaoLoi(
-  //       "Đã xảy ra lỗi trong quá trình đăng nhập. Vui lòng thử lại sau!"
-  //     );
-  //   }
-  // };
 
   const toggleMatKhau = () => {
     setHienMatKhau(!hienMatKhau);
@@ -152,20 +88,22 @@ const Login = ({ show, onClose, onRegisterClick, onLoginSuccess }) => {
             <button
               type="button"
               onClick={() => handleRoleChange("customer")}
-              className={`px-4 py-2 rounded-md ${selectedRole === "customer"
+              className={`px-4 py-2 rounded-md ${
+                selectedRole === "customer"
                   ? "bg-blue-600 text-white"
                   : "bg-gray-200 text-gray-700"
-                } transition-colors duration-200`}
+              } transition-colors duration-200`}
             >
               Người thuê
             </button>
             <button
               type="button"
               onClick={() => handleRoleChange("owner")}
-              className={`px-4 py-2 rounded-md ${selectedRole === "owner"
+              className={`px-4 py-2 rounded-md ${
+                selectedRole === "owner"
                   ? "bg-blue-600 text-white"
                   : "bg-gray-200 text-gray-700"
-                } transition-colors duration-200`}
+              } transition-colors duration-200`}
             >
               Người cho thuê
             </button>

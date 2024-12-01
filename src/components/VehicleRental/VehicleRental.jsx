@@ -90,7 +90,6 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
     insurance: bikeData.discount || 0,
   };
 
-  console.log(bikeData);
 
   const cycleData = {
     name: bikeData.name || "Không có tên",
@@ -329,8 +328,7 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
               </button>
               <Link
                 className="negotiate-button flex-1 py-2 px-3 rounded-md text-white bg-green-600 hover:bg-green-700 font-bold" 
-                // onClick={onOpenChat} // Sử dụng toggle
-                to={`/user-dashboard/chat/1`}
+                to={`/user-dashboard/chat/${bikeData.postId.ownerId}`}
               >
                 <FontAwesomeIcon icon={faComments} className="me-2" />
                 Chat thương lượng
