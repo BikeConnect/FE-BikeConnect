@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaBell } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 import logo from "../../assets/images/8.png";
@@ -14,9 +14,36 @@ const HeaderAfterLogin = ({ onLogout, userRole }) => {
   const [showProfile, setShowProfile] = useState(false);
   const [showSupport, setShowSupport] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
+  const dropdownRef = useRef(null);
+  const avatarRef = useRef(null);
 
-  const handleAvatarClick = () => {
-    setShowProfile(!showProfile);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target) &&
+        !avatarRef.current.contains(event.target)
+      ) {
+        setShowProfile(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleMouseEnter = () => {
+    setShowProfile(true);
+  };
+
+  const handleMouseLeave = () => {
+    setShowProfile(false);
+  };
+
+  const handleDropdownMouseLeave = () => {
+    setShowProfile(false);
   };
 
   const handleNavigateToProfile = () => {
@@ -55,6 +82,22 @@ const HeaderAfterLogin = ({ onLogout, userRole }) => {
 
   const handleHideNotification = () => {
     setShowNotification(false);
+  };
+
+  const handleContainerMouseLeave = (e) => {
+    const container = e.currentTarget;
+    const { left, right, top, bottom } = container.getBoundingClientRect();
+    const { clientX, clientY } = e;
+
+    if (
+      clientX < left ||
+      clientX > right ||
+      clientY < top ||
+      clientY > bottom
+    ) {
+      handleHideNotification();
+      setShowProfile(false);
+    }
   };
 
   const fakeNotifications = [
@@ -151,46 +194,53 @@ const HeaderAfterLogin = ({ onLogout, userRole }) => {
             </div>
             <div className="auth-buttons">
               <div
-                className="notification-icon"
-                onMouseEnter={handleShowNotification}
+                className="notification-container"
+                onMouseLeave={handleContainerMouseLeave}
               >
-                <FaBell className="bell-icon" />
+                <div
+                  className="notification-icon"
+                  onMouseEnter={handleShowNotification}
+                >
+                  <FaBell className="bell-icon" />
+                </div>
+                <Notification
+                  show={showNotification}
+                  onClose={handleHideNotification}
+                  notifications={fakeNotifications}
+                />
               </div>
-              <div className="user-avatar" onClick={handleAvatarClick}>
-                <img src={ava} alt="User Avatar" className="avatar-img" />
+              <div
+                className="profile-container"
+                onMouseLeave={handleContainerMouseLeave}
+              >
+                <div className="user-avatar" onMouseEnter={handleMouseEnter}>
+                  <img src={ava} alt="User Avatar" className="avatar-img" />
+                  {showProfile && (
+                    <div
+                      className="profile-dropdown"
+                      onMouseEnter={() => setShowProfile(true)}
+                    >
+                      <button
+                        onClick={handleNavigateToProfile}
+                        className="dropdown-button"
+                      >
+                        Xem Hồ Sơ
+                      </button>
+                      <button
+                        onClick={handleLogout}
+                        className="dropdown-button"
+                      >
+                        Đăng xuất
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-            <Notification
-              show={showNotification}
-              onClose={handleHideNotification}
-            />
           </nav>
         </div>
       </header>
-      {showProfile && (
-        <div className="profile-dropdown">
-          <div className="dropdown-header">
-            <button
-              className="close-button"
-              onClick={() => setShowProfile(false)}
-            >
-              ✖
-            </button>
-          </div>
-          <button onClick={handleNavigateToProfile} className="dropdown-button">
-            Xem Hồ Sơ
-          </button>
-          <button onClick={handleLogout} className="dropdown-button">
-            Đăng xuất
-          </button>
-        </div>
-      )}
       <Support show={showSupport} onClose={handleCloseModals} />
-      <Notification
-        show={showNotification}
-        onClose={handleCloseModals}
-        notifications={fakeNotifications}
-      />
     </>
   );
 };

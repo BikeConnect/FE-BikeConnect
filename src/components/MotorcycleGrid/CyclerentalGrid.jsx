@@ -10,12 +10,14 @@ import {
   faCheckCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import thuexemay from "../../assets/images/images_homePage/v994_8600.png";
-import thuexedap from "../../assets/images/images_homePage/v994_9104.png";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../api/api";
 
 const MotorcycleCard = ({ data }) => {
   const navigate = useNavigate();
+
+  console.log("data");
+  console.log(data);
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -32,15 +34,15 @@ const MotorcycleCard = ({ data }) => {
         <div className="rental-image-wrapper">
           <img
             src={data.image}
-            alt={data.name}
+            alt={data.brand}
             className="card-img-top rental-image"
           />
         </div>
         <div className="card-body rental-details">
-          <h5 className="card-title rental-name">{data.name}</h5>
+          <h5 className="rental-name">{data.brand}</h5>
           <p className="card-text rental-price-section">
             <span className="rental-current-price">{data.currentPrice}</span>
-            <span className="rental-original-price">{data.originalPrice}</span>
+            <span className="rental-original-price">{data.discount}</span>
           </p>
           <p className="card-text rental-location">
             <FontAwesomeIcon icon={faMapMarkerAlt} className="location-icon" />{" "}
@@ -80,11 +82,11 @@ const CyclerentalGrid = () => {
   useEffect(() => {
     const fetchMotorcycles = async () => {
       try {
-        const response = await api.get("/post/vehicles", {
+        const response = await api.get("/vehicles/owner-list-vehicles", {
           headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          }
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
         });
 
         if (!response.data || !response.data.metadata) {
@@ -94,17 +96,17 @@ const CyclerentalGrid = () => {
         setMotorcycles(
           response.data.metadata.map((vehicle) => ({
             _id: vehicle._id,
-            name: vehicle.name || "Không có tên",
+            brand: vehicle.brand,
             slug: vehicle.slug || "",
-            currentPrice:
+            currentPrice: vehicle.discount
+              ? `${(
+                  vehicle.price -
+                  vehicle.price * (vehicle.discount / 100)
+                ).toLocaleString("vi-VN")} VND`
+              : vehicle.price?.toLocaleString("vi-VN") || "0 VND",
+            discount:
               `${vehicle.price?.toLocaleString("vi-VN")} VND/ngày` ||
               "0 VND/ngày",
-            originalPrice: vehicle.discount
-              ? `${(
-                  vehicle.price *
-                  (1 + vehicle.discount / 100)
-                ).toLocaleString("vi-VN")} VND`
-              : "",
             location: vehicle.address || "Không có địa chỉ",
             status:
               vehicle.availability_status === "available"

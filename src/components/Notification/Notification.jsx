@@ -41,9 +41,9 @@ const Notification = ({ show, onClose }) => {
     try {
       await api.put(`/notifications/${notificationId}/mark-read`);
       // Update local state
-      setNotifications(prevNotifications =>
-        prevNotifications.map(notification =>
-          notification._id === notificationId 
+      setNotifications((prevNotifications) =>
+        prevNotifications.map((notification) =>
+          notification._id === notificationId
             ? { ...notification, isRead: true }
             : notification
         )
@@ -59,7 +59,7 @@ const Notification = ({ show, onClose }) => {
     <div
       className="notification-modal"
       onMouseEnter={() => show}
-        onMouseLeave={onClose}
+      onMouseLeave={onClose}
     >
       <div className="notification-header">
         <h2 className="notification-title">Thông báo</h2>
