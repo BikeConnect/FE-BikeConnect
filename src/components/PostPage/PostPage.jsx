@@ -123,7 +123,7 @@ const PostPage = () => {
       if (vehicle.images && vehicle.images.length > 0) {
         vehicle.images.forEach((image) => {
           if (image instanceof File) {
-            formData.append('images[]', image);
+            formData.append('images', image);
           }
         });
       }
