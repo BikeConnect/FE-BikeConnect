@@ -1,6 +1,6 @@
 .notification-modal {
-  position: fixed;
-  top: 10%;
+  position: absolute;
+  top: calc(100% + 8px);
   right: 10%;
   width: 400px;
   background-color: #fff;
@@ -19,10 +19,14 @@
   content: "";
   position: absolute;
   background-color: transparent !important;
-  top: -14px;
+  top: -24px;
   right: 0;
   width: 50%;
   height: 50%;
+}
+
+.notification-container {
+  position: relative;
 }
 
 .notification-header {

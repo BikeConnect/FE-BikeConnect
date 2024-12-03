@@ -252,7 +252,7 @@ body {
 .fee-item {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   color: #4b5563;
 }
 
@@ -267,7 +267,7 @@ body {
 }
 
 /* Nút hành động */
-.action-buttons {
+.vehicle-action-buttons {
   display: flex;
   gap: 10px;
   margin-top: 16px;

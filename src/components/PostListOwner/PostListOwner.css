@@ -17,8 +17,15 @@
 
 .icon-star,
 .icon-motorcycle {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
+}
+
+.list-item-brand-rating {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .post-list-figure {
@@ -112,7 +119,7 @@
   top: -40px;
   left: -50px;
   background-color: #fff;
-  padding: 3px 8px;
+  padding: 6px 10px;
   font-size: 16px;
   font-weight: 600;
   border-radius: 6px;
@@ -147,7 +154,7 @@
   top: -40px;
   left: 10px;
   background-color: #fff;
-  padding: 3px 8px;
+  padding: 6px 10px;
   font-size: 16px;
   font-weight: 600;
   border-radius: 6px;
@@ -172,7 +179,7 @@
 .post-list-item-content {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
   align-items: flex-start;
   padding: 0 24px 20px;
   margin-top: 18px;
@@ -199,13 +206,13 @@
 
 .post-list-item-rating {
   display: flex;
-  gap: 6px;
+  gap: 4px;
 }
 
 .post-list-item-price {
   font-size: 17px;
   font-weight: 700;
-  color: #212529;
+  color: #3b249a;
   margin-bottom: 0;
   letter-spacing: 0.4px;
 }
@@ -245,7 +252,7 @@
 }
 
 .btn-confirm {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   padding: 10px 20px;
   border: none;

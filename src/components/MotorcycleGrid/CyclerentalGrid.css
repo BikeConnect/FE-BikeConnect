@@ -19,7 +19,9 @@ h4 {
 }
 
 .text-center .rental-title {
-  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #000;
 }
 
 a {
@@ -65,10 +67,11 @@ a {
 .rental-image-wrapper {
   position: relative;
   height: 200px;
+  padding: 16px 16px 0;
 }
 
 .rental-image {
-  border-radius: 8px 8px 0 0;
+  border-radius: 8px;
   object-fit: cover;
   width: 100%;
   height: 200px;
@@ -76,9 +79,9 @@ a {
 
 /* Text and price formatting */
 .rental-name {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 8px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 12px 0;
   text-align: start;
 }
 
@@ -86,13 +89,13 @@ a {
   display: flex;
   align-items: center;
   font-size: 14px;
-  margin-bottom: 6px;
+  margin-bottom: 12px;
 }
 
 .rental-current-price {
   color: var(--primary-color);
-  font-weight: bold;
-  font-size: 16px;
+  font-weight: 500;
+  font-size: 17px;
 }
 
 .rental-original-price {
@@ -108,7 +111,7 @@ a {
   color: var(--text-color);
   display: flex;
   align-items: center;
-  margin-bottom: 6px;
+  margin-bottom: 12px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

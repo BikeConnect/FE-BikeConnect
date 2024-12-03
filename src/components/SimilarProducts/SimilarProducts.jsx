@@ -8,8 +8,10 @@ import {
   faStar,
 } from "@fortawesome/free-solid-svg-icons";
 import "./SimilarProducts.css";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const SimilarProducts = ({ products, type }) => {
+  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const itemsPerPage = 4;
 
@@ -26,6 +28,8 @@ const SimilarProducts = ({ products, type }) => {
       </div>
     );
   }
+  console.log("products");
+  console.log(products);
 
   const handlePrev = () => {
     setCurrentIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : prevIndex));
@@ -35,6 +39,21 @@ const SimilarProducts = ({ products, type }) => {
     setCurrentIndex((prevIndex) =>
       prevIndex < products.length - itemsPerPage ? prevIndex + 1 : prevIndex
     );
+  };
+
+  const handleClick = (product) => {
+    if (!product || !product._id) {
+      console.error("Invalid product data:", product);
+      return;
+    }
+
+    const slug = product.slug || product._id;
+
+    // Chuyển hướng trực tiếp mà không cần lưu vào localStorage
+    navigate(`/BikeDetail/${product._id}/${slug}`, {
+      replace: true,
+      state: { productData: product },
+    });
   };
 
   const visibleProducts = products.slice(
@@ -51,22 +70,27 @@ const SimilarProducts = ({ products, type }) => {
       </div>
       <div className="row">
         {visibleProducts.map((product, index) => (
-          <div key={index} className="col-lg-3 col-md-6 col-sm-12">
+          <div
+            key={index}
+            className="col-lg-3 col-md-6 col-sm-12"
+            onClick={() => handleClick(product)}
+            style={{ cursor: "pointer" }}
+          >
             <div className="card similar-card">
               <figure className="image-wrapper">
                 <img
-                  src={product.image || "placeholder-image.jpg"} // Thêm ảnh placeholder
+                  src={product.image || "placeholder-image.jpg"}
                   alt={product.name || "Xe"}
                   className="card-img-top similar-image"
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src = "placeholder-image.jpg"; // Fallback image
+                    e.target.src = "placeholder-image.jpg";
                   }}
                 />
               </figure>
               <div className="card-body cycle-details">
                 <h5 className="similar-cycle-name">
-                  {product.name || "Chưa có tên"}
+                  {product.brand || "Chưa có tên"}
                 </h5>
                 <p className="card-text price-section">
                   <span className="current-price">

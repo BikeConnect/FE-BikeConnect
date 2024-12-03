@@ -109,11 +109,17 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
   const fees = {
     baseRate: bikeData.price || 0,
     insurance: bikeData.discount || 0,
+    discount: bikeData.discount || 0,
+    price: bikeData.discount
+      ? `${(
+          bikeData.price -
+          bikeData.price * (bikeData.discount / 100)
+        ).toLocaleString("vi-VN")} VND`
+      : bikeData.price?.toLocaleString("vi-VN") || "0 VND",
   };
 
-
   const cycleData = {
-    name: bikeData.name || "Không có tên",
+    name: bikeData.brand || "Không có tên",
     registerDate: bikeData.model || "Không có",
     color: bikeData.brand || "Không có",
     licensePlate: bikeData.license || "Không có",
@@ -180,10 +186,10 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
     if (vehicleAvailableDates.startDate && vehicleAvailableDates.endDate) {
       const availableStartDate = new Date(vehicleAvailableDates.startDate);
       const availableEndDate = new Date(vehicleAvailableDates.endDate);
-      
+
       availableStartDate.setHours(0, 0, 0, 0);
       availableEndDate.setHours(0, 0, 0, 0);
-  
+
       if (
         requestStartDate < vehicleAvailableDates.startDate ||
         requestEndDate > vehicleAvailableDates.endDate
@@ -303,7 +309,7 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
 
             <div className="rental-price">
               <span className="price text-indigo-600 text-lg font-bold">
-                {bikeData.price?.toLocaleString()} VND
+                {fees.price?.toLocaleString()}
               </span>
               <span className="duration text-gray-500 ml-2 price-unit">
                 / ngày
@@ -335,33 +341,7 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
                       : "Chọn địa điểm"}
                   </button>
                 </div>
-              </div>
-
-              <div className="location-field">
-                <label className="text-gray-700 text-sm mb-1">
-                  Địa điểm trả xe
-                </label>
-                <div className="location-options d-flex gap-2">
-                  <button
-                    className={`location-option flex-1 ${
-                      dropoffLocation === "Tại cửa hàng" ? "active" : ""
-                    }`}
-                    onClick={() => setDropoffLocation("Tại cửa hàng")}
-                  >
-                    Tại cửa hàng
-                  </button>
-                  <button
-                    className={`location-option flex-1 ${
-                      dropoffLocation !== "Tại cửa hàng" ? "active" : ""
-                    }`}
-                    onClick={() => openLocationModal("dropoff")}
-                  >
-                    {dropoffLocation !== "Tại cửa hàng"
-                      ? dropoffLocation
-                      : "Chọn địa điểm"}
-                  </button>
-                </div>
-              </div> */}
+              </div>*/}
 
               <div className="time-selection">
                 <label className="text-gray-700 text-sm mb-1">
@@ -423,9 +403,9 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
               </div>
             </div>
 
-            <div className="action-buttons d-flex gap-2">
+            <div className="vehicle-action-buttons d-flex gap-2">
               <button
-                className="rent-button flex-1 py-2 px-3 rounded-md text-white bg-indigo-600 hover:bg-indigo-700 font-bold"
+                className="rent-button flex-1 rounded-md text-white bg-indigo-600 hover:bg-indigo-700 font-bold"
                 onClick={handleBooking}
               >
                 Thuê xe ngay
