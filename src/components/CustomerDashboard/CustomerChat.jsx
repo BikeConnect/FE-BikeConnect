@@ -4,7 +4,7 @@ import { FaList } from "react-icons/fa";
 import { GrEmoji } from "react-icons/gr";
 import { IoSend } from "react-icons/io5";
 import { Link, useParams } from "react-router-dom";
-import avatar1 from "../../assets/images/avatar_user1.png";
+import avatar1 from "../../assets/images/avatar_user1.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import {
   add_chat_owner,
@@ -104,9 +104,8 @@ const CustomerChat = () => {
     <div className="p-3 bg-white rounded-md">
       <div className="flex w-full">
         <div
-          className={`w-[230px] md-lg:absolute bg-white md-lg:h-full -left-[350px] ${
-            show ? "-left-0" : "-left-[350px]"
-          }`}
+          className={`w-[230px] md-lg:absolute bg-white md-lg:h-full -left-[350px] ${show ? "-left-0" : "-left-[350px]"
+            }`}
         >
           <div className="flex justify-center gap-3 items-center text-slate-600 text-xl h-[50px]">
             <span>
@@ -119,9 +118,8 @@ const CustomerChat = () => {
               <Link
                 key={i}
                 to={`/user-dashboard/chat/${f.fdId}`}
-                className={`flex gap-2 justify-start items-center pl-2 py-[5px] rounded-md ${
-                  ownerId === f.fdId ? "bg-[#e2e4e7]" : ""
-                }`}
+                className={`flex gap-2 justify-start items-center pl-2 py-[5px] rounded-md ${ownerId === f.fdId ? "bg-[#e2e4e7]" : ""
+                  }`}
               >
                 <div className="w-[30px] h-[30px] rounded-full relative">
                   {activeOwner.some((c) => c.ownerId === f.fdId) && (

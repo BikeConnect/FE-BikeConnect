@@ -3,68 +3,56 @@ import "./PostPage.css";
 import AssetUpload from "../AssetUpload/AssetUpload";
 
 const PostPage = () => {
-  const [quantity, setQuantity] = useState(0);
-  const [vehicles, setVehicles] = useState([]);
+  const [vehicle, setVehicle] = useState({
+    brand: "",
+    model: "",
+    price: 0,
+    discount: 0,
+    description: "",
+    address: "",
+    license: "",
+    startDate: "",
+    endDate: "",
+    images: [],
+  });
   const [showUploadModal, setShowUploadModal] = useState(false);
-  const [currentVehicleIndex, setCurrentVehicleIndex] = useState(0);
   const [errors, setErrors] = useState({});
 
-  const handleQuantityChange = (e) => {
-    const qty = parseInt(e.target.value);
-    setQuantity(qty);
-    if (qty > 0) {
-      const newVehicles = Array.from({ length: qty }, (_, index) => ({
-        name: "",
-        category: "",
-        brand: "",
-        price: 0,
-        discount: 0,
-        description: "",
-        model: "",
-        address: "",
-        license: "",
-        startDate: "",
-        endDate: "",
-        images: [],
-      }));
-      setVehicles(newVehicles);
-    } else {
-      setVehicles([]);
-    }
-  };
-
-  const handleVehicleChange = (index, field, value) => {
-    const updatedVehicles = [...vehicles];
-    updatedVehicles[index][field] = value;
-    setVehicles(updatedVehicles);
+  const handleVehicleChange = (field, value) => {
+    setVehicle((prevVehicle) => ({
+      ...prevVehicle,
+      [field]: value,
+    }));
   };
 
   const handleImageUpload = (uploadedImages) => {
-    const updatedVehicles = [...vehicles];
-    if (!updatedVehicles[currentVehicleIndex].images) {
-      updatedVehicles[currentVehicleIndex].images = [];
+    if (!uploadedImages.length) {
+      alert("Hãy chọn ít nhất một file ảnh hợp lệ.");
+      return;
     }
 
-    // Kiểm tra và chỉ thêm các File objects hợp lệ
-    const validImages = uploadedImages.filter((img) => img instanceof File);
-    if (validImages.length !== uploadedImages.length) {
-      console.warn("Some uploaded items are not valid image files");
+    // Chỉ giữ lại các tệp hình ảnh hợp lệ
+    const validImages = uploadedImages.filter((img) => img instanceof File && img.type.startsWith('image/'));
+
+    if (validImages.length === 0) {
+      alert("Hãy chọn ít nhất một file ảnh hợp lệ.");
+      return;
     }
 
-    updatedVehicles[currentVehicleIndex].images.push(...validImages);
-    setVehicles(updatedVehicles);
+    setVehicle((prevVehicle) => ({
+      ...prevVehicle,
+      images: [...prevVehicle.images, ...validImages],
+    }));
+
     setShowUploadModal(false);
-
-    console.log(
-      "Updated vehicle images:",
-      updatedVehicles[currentVehicleIndex].images
-    );
   };
 
-  const handleRemoveImage = (vehicleIndex, imageIndex) => {
-    const updatedVehicles = [...vehicles];
-    updatedVehicles[vehicleIndex].images.splice(imageIndex, 1);
-    setVehicles(updatedVehicles);
+  const handleRemoveImage = (imageIndex) => {
+    setVehicle((prevVehicle) => {
+      const updatedImages = [...prevVehicle.images];
+      updatedImages.splice(imageIndex, 1);
+      return { ...prevVehicle, images: updatedImages };
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -72,28 +60,37 @@ const PostPage = () => {
 
     const newErrors = {};
     const today = new Date().toISOString().split("T")[0];
-    if (quantity <= 0) newErrors.quantity = "Số lượng không hợp lệ";
 
-    vehicles.forEach((vehicle, index) => {
-      if (!vehicle.images || vehicle.images.length === 0) {
-        newErrors[`images_${index}`] = "Hãy upload ít nhất một ảnh cho xe";
-      }
-      if (!vehicle.startDate) {
-        newErrors[`startDate_${index}`] = "Ngày bắt đầu là bắt buộc";
-      } else if (vehicle.startDate < today) {
-        newErrors[`startDate_${index}`] = "Ngày bắt đầu không được là ngày trong quá khứ";
-      }
+    if (!vehicle.brand) {
+      newErrors.brand = "Thương hiệu không được để trống";
+    }
 
-      if (!vehicle.endDate) {
-        newErrors[`endDate_${index}`] = "Ngày kết thúc là bắt buộc";
-      } else if (vehicle.startDate && vehicle.endDate) {
-        const start = new Date(vehicle.startDate);
-        const end = new Date(vehicle.endDate);
-        if (start > end) {
-          newErrors[`endDate_${index}`] = "Ngày kết thúc phải sau ngày bắt đầu";
-        }
+    if (!vehicle.model) {
+      newErrors.model = "Model không được để trống";
+    }
+
+    if (vehicle.price <= 0) {
+      newErrors.price = "Giá phải lớn hơn 0";
+    }
+
+    if (!vehicle.images || vehicle.images.length === 0) {
+      newErrors.images = "Hãy upload ít nhất một ảnh cho xe";
+    }
+    if (!vehicle.startDate) {
+      newErrors.startDate = "Ngày bắt đầu là bắt buộc";
+    } else if (vehicle.startDate < today) {
+      newErrors.startDate = "Ngày bắt đầu không được là ngày trong quá khứ";
+    }
+
+    if (!vehicle.endDate) {
+      newErrors.endDate = "Ngày kết thúc là bắt buộc";
+    } else if (vehicle.startDate && vehicle.endDate) {
+      const start = new Date(vehicle.startDate);
+      const end = new Date(vehicle.endDate);
+      if (start > end) {
+        newErrors.endDate = "Ngày kết thúc phải sau ngày bắt đầu";
       }
-    });
+    }
 
     setErrors(newErrors);
 
@@ -108,73 +105,37 @@ const PostPage = () => {
         return;
       }
 
-      // Tạo FormData
       const formData = new FormData();
-      formData.append("quantity", quantity.toString());
 
-      // Chuyển đổi vehicles thành chuỗi JSON và thêm vào FormData
-      const vehiclesData = vehicles.map((vehicle) => ({
-        name: vehicle.name,
-        category: vehicle.category,
+      const vehicleData = {
         brand: vehicle.brand,
+        model: vehicle.model,
         price: parseInt(vehicle.price),
         discount: parseInt(vehicle.discount),
         description: vehicle.description,
-        model: vehicle.model,
         address: vehicle.address,
         license: vehicle.license,
         startDate: vehicle.startDate,
         endDate: vehicle.endDate,
-      }));
+      };
+      formData.append("vehicle", JSON.stringify(vehicleData));
 
-      formData.append("vehicles", JSON.stringify(vehiclesData));
-
-      // Thêm ảnh cho từng xe
-      vehicles.forEach((vehicle, index) => {
-        if (vehicle.images && vehicle.images.length > 0) {
-          vehicle.images.forEach((image, imageIndex) => {
-            if (image instanceof File) {
-              // Tạo tên file mới theo format yêu cầu của backend
-              const fileName = `vehicle${index}_images`;
-              formData.append(fileName, image);
-            }
-          });
-        }
-      });
-
-      // Thêm logging để debug
-      console.log("FormData contents before sending:");
-      const formDataObject = {};
-      for (let [key, value] of formData.entries()) {
-        if (value instanceof File) {
-          if (!formDataObject[key]) {
-            formDataObject[key] = [];
+      if (vehicle.images && vehicle.images.length > 0) {
+        vehicle.images.forEach((image) => {
+          if (image instanceof File) {
+            formData.append('images[]', image);
           }
-          formDataObject[key].push({
-            name: value.name,
-            type: value.type,
-            size: value.size,
-          });
-        } else {
-          formDataObject[key] = value;
-        }
+        });
       }
-      console.log("FormData as object:", formDataObject);
 
-      console.log("FormData being sent:", {
-        quantity: quantity,
-        vehicles: vehiclesData,
-        vehicleImages: vehicles.map((v) => v.images?.length || 0),
-      });
-
-      const response = await fetch("http://localhost:8080/api/post/", {
+      const response = await fetch("http://localhost:8080/api/vehicles/create-vehicle", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
         body: formData,
       });
-      console.log(response);
+
       if (response.ok) {
         const result = await response.json();
         console.log("Upload success:", result);
@@ -200,212 +161,151 @@ const PostPage = () => {
         <h1>Đăng Bài</h1>
 
         <div className="form-container">
-          <div className="form-row">
-            <div className="quantity-input-container">
-              <label>Số lượng xe:</label>
-              <input
-                type="number"
-                value={quantity}
-                onChange={handleQuantityChange}
-                placeholder="Nhập số lượng xe..."
-                min="1"
-              />
-              {errors.quantity && (
-                <div className="error-message">{errors.quantity}</div>
-              )}
-            </div>
-          </div>
-
-          {vehicles.map((vehicle, index) => (
-            <div key={index} className="vehicle-form">
-              <h2>Xe {index + 1}</h2>
-              <div className="vehicle-form-content">
-                <div className="vehicle-name-category">
-                  <div className="form-group form-group-name">
-                    <label>Tên xe:</label>
-                    <input
-                      type="text"
-                      value={vehicle.name}
-                      onChange={(e) =>
-                        handleVehicleChange(index, "name", e.target.value)
-                      }
-                      placeholder="Nhập tên xe..."
-                    />
-                  </div>
-                  <div className="form-group form-group-category">
-                    <label>Danh mục:</label>
-                    <input
-                      type="text"
-                      value={vehicle.category}
-                      onChange={(e) =>
-                        handleVehicleChange(index, "category", e.target.value)
-                      }
-                      placeholder="Nhập danh mục xe..."
-                    />
-                  </div>
-                  <div className="form-group form-group-brand">
-                    <label>Thương hiệu:</label>
-                    <input
-                      type="text"
-                      value={vehicle.brand}
-                      onChange={(e) =>
-                        handleVehicleChange(index, "brand", e.target.value)
-                      }
-                      placeholder="Nhập thương hiệu xe..."
-                    />
-                  </div>
-                </div>
-                <div className="vehicle-price-discount-model">
-                  <div className="form-group form-group-price">
-                    <label>Giá:</label>
-                    <input
-                      type="number"
-                      value={vehicle.price}
-                      onChange={(e) =>
-                        handleVehicleChange(index, "price", e.target.value)
-                      }
-                      placeholder="Nhập giá xe..."
-                    />
-                  </div>
-                  <div className="form-group form-group-discount">
-                    <label>Giảm giá:</label>
-                    <input
-                      type="number"
-                      value={vehicle.discount}
-                      onChange={(e) =>
-                        handleVehicleChange(index, "discount", e.target.value)
-                      }
-                      placeholder="Nhập giảm giá..."
-                    />
-                  </div>
-                  <div className="form-group form-group-model">
-                    <label>Model:</label>
-                    <input
-                      type="text"
-                      value={vehicle.model}
-                      onChange={(e) =>
-                        handleVehicleChange(index, "model", e.target.value)
-                      }
-                      placeholder="Nhập model xe..."
-                    />
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label>Mô tả:</label>
-                  <textarea
-                    value={vehicle.description}
-                    onChange={(e) =>
-                      handleVehicleChange(index, "description", e.target.value)
-                    }
-                    placeholder="Nhập mô tả xe..."
+          <div className="vehicle-form">
+            <div className="vehicle-form-content">
+              {/* Row 1: Biển số, Địa chỉ */}
+              <div className="vehicle-address-license">
+                <div className="form-group form-group-license">
+                  <label>Biển số:</label>
+                  <input
+                    type="text"
+                    value={vehicle.license}
+                    onChange={(e) => handleVehicleChange("license", e.target.value)}
+                    placeholder="Nhập biển số xe..."
                   />
                 </div>
-                <div className="vehicle-address-license">
-                  <div className="form-group form-group-address">
-                    <label>Địa chỉ:</label>
-                    <input
-                      type="text"
-                      value={vehicle.address}
-                      onChange={(e) =>
-                        handleVehicleChange(index, "address", e.target.value)
-                      }
-                      placeholder="Nhập địa chỉ..."
-                    />
-                  </div>
-                  <div className="form-group form-group-license">
-                    <label>Biển số:</label>
-                    <input
-                      type="text"
-                      value={vehicle.license}
-                      onChange={(e) =>
-                        handleVehicleChange(index, "license", e.target.value)
-                      }
-                      placeholder="Nhập biển số xe..."
-                    />
-                  </div>
+                <div className="form-group form-group-address">
+                  <label>Địa chỉ:</label>
+                  <input
+                    type="text"
+                    value={vehicle.address}
+                    onChange={(e) => handleVehicleChange("address", e.target.value)}
+                    placeholder="Nhập địa chỉ..."
+                  />
                 </div>
-                <div className="vehicle-date-images">
-                  <div className="form-group form-group-startDate">
-                    <label>Ngày bắt đầu:</label>
-                    <input
-                      type="date"
-                      value={vehicle.startDate}
-                      onChange={(e) =>
-                        handleVehicleChange(index, "startDate", e.target.value)
-                      }
-                    />
-                    {errors[`startDate_${index}`] && (
-                      <div className="error-message">
-                        {errors[`startDate_${index}`]}
+              </div>
+
+              {/* Row 2: Thương hiệu, Model */}
+              <div className="vehicle-brand-model">
+                <div className="form-group form-group-brand">
+                  <label>Thương hiệu:</label>
+                  <input
+                    type="text"
+                    value={vehicle.brand}
+                    onChange={(e) => handleVehicleChange("brand", e.target.value)}
+                    placeholder="Nhập thương hiệu xe..."
+                  />
+                </div>
+                <div className="form-group form-group-model">
+                  <label>Model:</label>
+                  <input
+                    type="text"
+                    value={vehicle.model}
+                    onChange={(e) => handleVehicleChange("model", e.target.value)}
+                    placeholder="Nhập model xe..."
+                  />
+                </div>
+              </div>
+
+              {/* Row 3: Giá, Giảm Giá */}
+              <div className="vehicle-price-discount">
+                <div className="form-group form-group-price">
+                  <label>Giá:</label>
+                  <input
+                    type="number"
+                    value={vehicle.price}
+                    onChange={(e) => handleVehicleChange("price", e.target.value)}
+                    placeholder="Nhập giá xe..."
+                  />
+                </div>
+                <div className="form-group form-group-discount">
+                  <label>Giảm giá:</label>
+                  <input
+                    type="number"
+                    value={vehicle.discount}
+                    onChange={(e) => handleVehicleChange("discount", e.target.value)}
+                    placeholder="Nhập giảm giá..."
+                  />
+                </div>
+              </div>
+
+              {/* Row 4: Mô tả */}
+              <div className="form-group">
+                <label>Mô tả:</label>
+                <textarea
+                  value={vehicle.description}
+                  onChange={(e) => handleVehicleChange("description", e.target.value)}
+                  placeholder="Nhập mô tả xe..."
+                />
+              </div>
+
+              {/* Row 5: Ngày bắt đầu, Ngày kết thúc */}
+              <div className="vehicle-date">
+                <div className="form-group form-group-startDate">
+                  <label>Ngày bắt đầu:</label>
+                  <input
+                    type="date"
+                    value={vehicle.startDate}
+                    onChange={(e) => handleVehicleChange("startDate", e.target.value)}
+                  />
+                  {errors.startDate && <div className="error-message">{errors.startDate}</div>}
+                </div>
+                <div className="form-group form-group-endDate">
+                  <label>Ngày kết thúc:</label>
+                  <input
+                    type="date"
+                    value={vehicle.endDate}
+                    onChange={(e) => handleVehicleChange("endDate", e.target.value)}
+                  />
+                  {errors.endDate && <div className="error-message">{errors.endDate}</div>}
+                </div>
+              </div>
+
+              {/* Row 6: AssetUpload */}
+              <div className="form-group form-group-img">
+                <label>Hình ảnh:</label>
+                <button
+                  type="button"
+                  onClick={() => setShowUploadModal(true)}
+                >
+                  Tải lên hình ảnh
+                </button>
+                <div className="image-preview">
+                  {vehicle.images.length > 0 ? (
+                    vehicle.images.map((image, imageIndex) => (
+                      <div key={imageIndex} className="image-item">
+                        <img src={URL.createObjectURL(image)} alt={`Image ${imageIndex}`} />
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveImage(imageIndex)}
+                        >
+                          X
+                        </button>
                       </div>
-                    )}
-                  </div>
-                  <div className="form-group form-group-endDate">
-                    <label>Ngày kết thúc:</label>
-                    <input
-                      type="date"
-                      value={vehicle.endDate}
-                      onChange={(e) =>
-                        handleVehicleChange(index, "endDate", e.target.value)
-                      }
-                    />
-                    {errors[`endDate_${index}`] && (
-                      <div className="error-message">
-                        {errors[`endDate_${index}`]}
-                      </div>
-                    )}
-                  </div>
-                  <div className="form-group form-group-img">
-                    <label>Hình ảnh:</label>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setCurrentVehicleIndex(index);
-                        setShowUploadModal(true);
-                      }}
-                    >
-                      Tải lên hình ảnh
-                    </button>
-                    {vehicle.images && vehicle.images.length > 0 && (
-                      <div className="uploaded-images">
-                        <p>Số ảnh đã tải lên: {vehicle.images.length}</p>
-                        <ul>
-                          {vehicle.images.map((image, imgIndex) => (
-                            <li key={imgIndex}>
-                              {image.name} 
-                              <button
-                                type="button"
-                                onClick={() => handleRemoveImage(index, imgIndex)} // Hàm để xóa ảnh
-                                style={{ marginLeft: '10px', color: 'red' }}
-                              >
-                                X 
-                              </button>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                    {showUploadModal && currentVehicleIndex === index && (
-                      <AssetUpload
-                        onUpload={handleImageUpload}
-                        onClose={() => setShowUploadModal(false)}
-                      />
-                    )}
-                  </div>
+                    ))
+                  ) : (
+                    <div>Chưa có hình ảnh nào</div>
+                  )}
                 </div>
               </div>
             </div>
-          ))}
 
-          {errors.image && <div className="error-message">{errors.image}</div>}
-
-          <div className="form-group">
-            <button type="submit" className="submit-button">
-              Đăng bài
-            </button>
+            {/* Submit button */}
+            <div className="form-group form-group-submit">
+              <button type="submit" className="submit-button">
+                Đăng bài
+              </button>
+            </div>
           </div>
         </div>
       </form>
+
+      {showUploadModal && (
+        <AssetUpload
+          onClose={() => setShowUploadModal(false)}
+          onUpload={handleImageUpload}
+        />
+      )}
     </div>
   );
 };
