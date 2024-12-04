@@ -12,7 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useLocation } from "react-router-dom";
 import api from "../../api/api";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
   const location = useLocation();
@@ -411,8 +411,8 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
                 Thuê xe ngay
               </button>
               <Link
-                className="negotiate-button flex-1 py-2 px-3 rounded-md text-white bg-green-600 hover:bg-green-700 font-bold" 
-                to={`/user-dashboard/chat/${bikeData.postId.ownerId}`}
+                className="negotiate-button flex-1 py-2 px-3 rounded-md text-white bg-green-600 hover:bg-green-700 font-bold"
+                to={`/user-dashboard/chat/${bikeData.ownerId._id}`}
               >
                 <FontAwesomeIcon icon={faComments} className="me-2" />
                 Chat thương lượng

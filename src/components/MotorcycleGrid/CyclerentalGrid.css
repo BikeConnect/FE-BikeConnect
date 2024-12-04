@@ -113,6 +113,7 @@ a {
   align-items: center;
   margin-bottom: 12px;
   white-space: nowrap;
+  text-align: left;
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
