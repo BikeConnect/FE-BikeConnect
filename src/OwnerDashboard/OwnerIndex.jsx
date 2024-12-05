@@ -7,7 +7,7 @@ import {
   FaUser,
 } from "react-icons/fa";
 import { MdVerified } from "react-icons/md";
-import logo from "../assets/images/avatar_user1.png";
+import logo from "../assets/images/avatar_user1.jpg";
 import { FadeLoader } from "react-spinners";
 import { useDispatch, useSelector } from "react-redux";
 import {

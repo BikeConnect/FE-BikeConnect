@@ -4,7 +4,7 @@ import { FaList } from "react-icons/fa";
 import { GrEmoji } from "react-icons/gr";
 import { IoSend } from "react-icons/io5";
 import { Link, useParams } from "react-router-dom";
-import avatar1 from "../../assets/images/avatar_user1.png";
+import avatar1 from "../../assets/images/avatar_user1.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import {
   add_chat_owner,

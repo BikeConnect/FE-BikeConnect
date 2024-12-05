@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { FaList } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 import { IoCloseCircle, IoSend } from "react-icons/io5";
-import avatar1 from "../assets/images/avatar_user1.png";
+import avatar1 from "../assets/images/avatar_user1.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import {
   get_customer_message,
