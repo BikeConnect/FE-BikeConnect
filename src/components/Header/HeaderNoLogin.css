@@ -19,12 +19,12 @@
 }
 
 .header-container {
-    width: 1200px;
-    height: 80px;
-    padding: 0;
-    margin: 0 auto; 
-    position: relative; 
-    min-width: 600px;
+  width: 1200px;
+  height: 80px;
+  padding-top: 12px;
+  margin: 0 auto;
+  position: relative;
+  min-width: 600px;
 }
 
 .nav {
@@ -146,7 +146,7 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    position: relative; 
+    position: relative;
   }
 
   .logo {

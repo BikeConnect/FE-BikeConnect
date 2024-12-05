@@ -17,12 +17,12 @@ api.interceptors.request.use(
       "/customer/reset-password",
       "/auth/owner-login",
       "/customer/customer-login",
-      "/post/vehicles",
-      "/post/vehicle-detail",
+      "/vehicles/owner-list-vehicles",
+      "/vehicles/vehicle-detail",
     ];
 
-    if (!config.url?.includes('upload-profile-image')) {
-      config.headers['Content-Type'] = 'application/json';
+    if (!config.url?.includes("upload-profile-image")) {
+      config.headers["Content-Type"] = "application/json";
     }
 
     const isPublicEndpoint = publicEndpoints.some((endpoint) =>

@@ -16,23 +16,32 @@ const BikeDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isChatOpen, setIsChatOpen] = useState(false);
+
   console.log("bikeData");
   console.log(bikeData);
 
   useEffect(() => {
     const fetchBikeAndSimilarProducts = async () => {
       try {
-        // Fetch bike details với ID
-        const bikeResponse = await api.get(`/post/vehicle-detail/${vehicleId}`);
+        setBikeData(null);
+        setSimilarProducts([]);
+        setError(null);
+        setLoading(true);
+
+        const bikeResponse = await api.get(`/vehicles/vehicle-detail/${vehicleId}`);
         if (bikeResponse.data && bikeResponse.data.metadata) {
-          setBikeData(bikeResponse.data.metadata);
-          if (slug !== bikeResponse.data.metadata.slug) {
-            console.warn("Slug mismatch");
-          }
+          const bikeDetails = bikeResponse.data.metadata;
+          setBikeData({
+            ...bikeDetails,
+            slug: bikeDetails.slug || vehicleId,
+            currentPrice: bikeDetails.discount
+              ? `${(bikeDetails.price - bikeDetails.price * (bikeDetails.discount / 100)).toLocaleString("vi-VN")} VND`
+              : bikeDetails.price?.toLocaleString("vi-VN") || "0 VND",
+          });
         }
 
         // Fetch similar products
-        const similarResponse = await api.get("/post/vehicles");
+        const similarResponse = await api.get("/vehicles/owner-list-vehicles");
         if (similarResponse.data && similarResponse.data.metadata) {
           const otherVehicles = similarResponse.data.metadata.filter(
             (vehicle) => vehicle._id !== vehicleId
@@ -40,21 +49,27 @@ const BikeDetail = () => {
 
           const formattedProducts = otherVehicles.map((vehicle) => ({
             _id: vehicle._id,
-            name: vehicle.name || "Không có tên",
-            currentPrice: `${vehicle.price?.toLocaleString("vi-VN")} VND/ngày`,
-            originalPrice: vehicle.discount
+            slug: vehicle.slug || vehicle._id,
+            brand: vehicle.brand,
+            currentPrice: vehicle.discount
               ? `${(
-                  vehicle.price *
-                  (1 + vehicle.discount / 100)
+                  vehicle.price -
+                  vehicle.price * (vehicle.discount / 100)
                 ).toLocaleString("vi-VN")} VND`
-              : "",
+              : vehicle.price?.toLocaleString("vi-VN") || "0 VND",
+            discount:
+              `${vehicle.price?.toLocaleString("vi-VN")} VND/ngày` ||
+              "0 VND/ngày",
             location: vehicle.address || "Không có địa chỉ",
             status:
               vehicle.availability_status === "available"
                 ? "Có sẵn"
                 : "Đã thuê",
-            reviews: vehicle.rating || 0,
             image: vehicle.images?.[0]?.url || thuexemay,
+            category: vehicle.category,
+            availability_status: vehicle.availability_status,
+            images: vehicle.images,
+            rating: vehicle.rating || 0,
           }));
           setSimilarProducts(formattedProducts);
         }
@@ -69,7 +84,7 @@ const BikeDetail = () => {
     if (vehicleId) {
       fetchBikeAndSimilarProducts();
     }
-  }, [vehicleId]);
+  }, [vehicleId, slug]);
 
   const handleToggleChat = () => {
     setIsChatOpen((prev) => !prev);

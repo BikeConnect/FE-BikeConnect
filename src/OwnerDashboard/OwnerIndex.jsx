@@ -69,7 +69,7 @@ const OwnerIndex = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const phoneRegex = /^[0][0-9]{9}$/; 
+    const phoneRegex = /^[0][0-9]{9}$/;
     if (!phoneRegex.test(formData.phone)) {
       alert(
         "Số điện thoại không hợp lệ! Vui lòng nhập số điện thoại bắt đầu bằng số 0 và có 10 chữ số"
@@ -79,7 +79,7 @@ const OwnerIndex = () => {
 
     const updateData = {
       name: formData.name,
-      phone: formData.phone.toString(), 
+      phone: formData.phone.toString(),
       district: formData.district,
       city: formData.city,
       address: formData.address

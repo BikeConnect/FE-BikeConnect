@@ -47,18 +47,18 @@ const OwnerChatCustomer = () => {
   }, []);
 
 
-useEffect(() => {
-  socket.on('active_customer',(customers) => {
-    dispatch(updateCustomer(customers));
-  })
-  socket.on('active_owner',(owners) => {
-    dispatch(updateOwners(owners));
-  })
-}, []);
+  useEffect(() => {
+    socket.on('active_customer', (customers) => {
+      dispatch(updateCustomer(customers));
+    })
+    socket.on('active_owner', (owners) => {
+      dispatch(updateOwners(owners));
+    })
+  }, []);
 
-useEffect(() => {
-  initializeChat();
-},[userInfo, customerId])
+  useEffect(() => {
+    initializeChat();
+  }, [userInfo, customerId])
 
   useEffect(() => {
     dispatch(get_customers(userInfo._id));
@@ -125,9 +125,8 @@ useEffect(() => {
       <div className="w-full px-4 py-4 bg-white rounded-md h-[calc(100vh-140px)]">
         <div className="relative flex w-full h-full">
           <div
-            className={`w-[280px] h-full absolute z-10 ${
-              show ? "-left-[16px]" : "-left-[336px]"
-            } md:left-0 md:relative transition-all`}
+            className={`w-[280px] h-full absolute z-10 ${show ? "-left-[16px]" : "-left-[336px]"
+              } md:left-0 md:relative transition-all`}
           >
             <div className="w-full h-[calc(100vh-177px)] bg-[#e5e3e5] md:bg-transparent overflow-y-auto">
               <div className="flex items-center justify-between p-4 text-xl md:p-0 md:px-3 md:pb-3 ">
@@ -201,7 +200,7 @@ useEffect(() => {
                         <div
                           className="flex items-center justify-start w-full"
                           key={i}
-                          
+
                         >
                           <div className="flex items-start justify-start max-w-full gap-2 py-2 md:px-3 lg:max-w-[85%]">
                             <div>
