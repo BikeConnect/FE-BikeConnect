@@ -79,7 +79,7 @@ const CyclerentalGrid = () => {
   useEffect(() => {
     const fetchMotorcycles = async () => {
       try {
-        const response = await api.get("/vehicles/owner-list-vehicles", {
+        const response = await api.get("/vehicles/list-vehicles", {
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",

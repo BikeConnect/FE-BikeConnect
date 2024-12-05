@@ -17,7 +17,7 @@ api.interceptors.request.use(
       "/customer/reset-password",
       "/auth/owner-login",
       "/customer/customer-login",
-      "/vehicles/owner-list-vehicles",
+      "/vehicles/list-vehicles",
       "/vehicles/vehicle-detail",
     ];
 
