@@ -15,7 +15,6 @@ import api from "../../api/api";
 
 const MotorcycleCard = ({ data }) => {
   const navigate = useNavigate();
-
   const handleClick = (e) => {
     e.preventDefault();
     navigate(`/BikeDetail/${data._id}/${data.slug}`);

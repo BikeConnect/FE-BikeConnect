@@ -17,7 +17,7 @@ const HeaderAfterLogin = ({ onLogout, userRole }) => {
   const [showNotification, setShowNotification] = useState(false);
   const dropdownRef = useRef(null);
   const avatarRef = useRef(null);
-
+  const { userInfo } = useSelector((state) => state.auth);
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -215,7 +215,7 @@ const HeaderAfterLogin = ({ onLogout, userRole }) => {
                 onMouseLeave={handleContainerMouseLeave}
               >
                 <div className="user-avatar" onMouseEnter={handleMouseEnter}>
-                  <img src={ava} alt="User Avatar" className="avatar-img" />
+                  <img src={userInfo.image} alt="User Avatar" className="avatar-img" />
                   {showProfile && (
                     <div
                       className="profile-dropdown"
