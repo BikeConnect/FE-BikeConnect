@@ -45,24 +45,23 @@ import CustomerChangePassword from "./components/CustomerDashboard/CustomerChang
 import CustomerChat from "./components/CustomerDashboard/CustomerChat";
 import CustomerIndex from "./components/CustomerDashboard/CustomerIndex";
 import OwnerDashboard from "./pages/OwnerDashboard";
-import OwnerIndex from "./OwnerDashboard/OwnerIndex";
+import OwnerIndex from "./components/OwnerDashboard/OwnerIndex";
 import { useDispatch } from "react-redux";
 import { get_user_info } from "./store/Reducers/authReducer";
-import OwnerChatCustomer from "./OwnerDashboard/OwnerChatCustomer";
-import ViewTransactionHistory from './components/UI_Admin/ViewTransactionHistory/ViewTransactionHistory';
-import RentalStatusTabs from './components/RentalStatusTabs/RentalStatusTabs';
-import MotorbikeReview from './components/MotorbikeReview/MotorbikeReview';
-import RentalSignup from './components/RentalSignup/RentalSignup';
-import OwnerChat from './components/OwnerChat/OwnerChat';
-import PaymentOwner from './components/PaymentOwner/PaymentOwner';
-
+import OwnerChatCustomer from "./components/OwnerDashboard/OwnerChatCustomer";
+import ViewTransactionHistory from "./components/UI_Admin/ViewTransactionHistory/ViewTransactionHistory";
+import RentalStatusTabs from "./components/RentalStatusTabs/RentalStatusTabs";
+import MotorbikeReview from "./components/MotorbikeReview/MotorbikeReview";
+import RentalSignup from "./components/RentalSignup/RentalSignup";
+import OwnerChat from "./components/OwnerChat/OwnerChat";
+import PaymentOwner from "./components/PaymentOwner/PaymentOwner";
+import OwnerRequestBike from "./components/OwnerDashboard/OwnerRequestBike";
 
 function AppContent() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState("");
   const location = useLocation();
   const dispatch = useDispatch();
-  
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -110,7 +109,9 @@ function AppContent() {
 
   const Header = () => {
     if (
-      ["/dashboard", "/manageCus", "/manageOwner","valrequest",""].includes(location.pathname)
+      ["/dashboard", "/manageCus", "/manageOwner", "valrequest", ""].includes(
+        location.pathname
+      )
     ) {
       return null;
     }
@@ -167,12 +168,15 @@ function AppContent() {
         <Route path="/manageuser" element={<ManageUser />} />
         <Route path="/postlistowner" element={<PostListOwner />} />
         <Route path="/post" element={<PostListOwner />} />
-        <Route path="/viewtransactionhis" element={<ViewTransactionHistory/>} />
+        <Route
+          path="/viewtransactionhis"
+          element={<ViewTransactionHistory />}
+        />
         <Route path="/rentalstatustabs" element={<RentalStatusTabs />} />
-        <Route path="/motorbikereview" element={<MotorbikeReview/>} />
+        <Route path="/motorbikereview" element={<MotorbikeReview />} />
         <Route path="/rental-signup" element={<RentalSignup />} />
         <Route path="/ownerchat" element={<OwnerChat />} />
-        <Route path="/paymentowner" element={<PaymentOwner/>} />
+        <Route path="/paymentowner" element={<PaymentOwner />} />
         <Route
           path="/user-dashboard"
           element={
@@ -197,11 +201,10 @@ function AppContent() {
           <Route path="" element={<OwnerIndex />} />
           <Route path="chat" element={<OwnerChatCustomer />} />
           <Route path="chat/:customerId" element={<OwnerChatCustomer />} />
+          <Route path="rent-bike-request" element={<OwnerRequestBike />} />
         </Route>
-      </Routes >
-    </div >
-  
-
+      </Routes>
+    </div>
   );
 }
 

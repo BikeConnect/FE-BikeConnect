@@ -6,6 +6,7 @@ import { TbPassword } from "react-icons/tb";
 import { FaHistory, FaList } from "react-icons/fa";
 import { IoMdChatboxes } from "react-icons/io";
 import { GoHomeFill } from "react-icons/go";
+import { FaMotorcycle } from "react-icons/fa6";
 
 const OwnerDashboard = ({ onLogout }) => {
   const [showFilter, setShowFilter] = useState(false);
@@ -47,7 +48,14 @@ const OwnerDashboard = ({ onLogout }) => {
                     Thông tin cá nhân
                   </Link>
                 </li>
-
+                <li className="flex items-center justify-start gap-2 py-3">
+                  <span className="text-xl">
+                    <FaMotorcycle />
+                  </span>
+                  <Link className="block" to="/owner-dashboard/rent-bike-request">
+                    Yêu cầu thuê xe
+                  </Link>
+                </li>
                 <li className="flex items-center justify-start gap-2 py-3">
                   <span className="text-xl">
                     <IoMdChatboxes />
@@ -60,15 +68,15 @@ const OwnerDashboard = ({ onLogout }) => {
                   <span className="text-xl">
                     <FaHistory />
                   </span>
-                  <Link className="block" to="/dashboard/chat">
-                    Lịch sử thuê xe
+                  <Link className="block" to="/owner-dashboard/rent-bike-history">
+                    Lịch sử cho thuê xe
                   </Link>
                 </li>
                 <li className="flex items-center justify-start gap-2 py-3">
                   <span className="text-xl">
                     <TbPassword />
                   </span>
-                  <Link className="block" to="/user-dashboard/change-password">
+                  <Link className="block" to="/owner-dashboard/change-password">
                     Đổi mật khẩu
                   </Link>
                 </li>

@@ -7,13 +7,13 @@ import {
   FaUser,
 } from "react-icons/fa";
 import { MdVerified } from "react-icons/md";
-import logo from "../assets/images/avatar_user1.jpg"
+import logo from "../../assets/images/avatar_user1.jpg";
 import { FadeLoader } from "react-spinners";
 import { useDispatch, useSelector } from "react-redux";
 import {
   owner_upload_profile_image,
   owner_update_profile_info,
-} from "../store/Reducers/authReducer";
+} from "../../store/Reducers/authReducer";
 
 const OwnerIndex = () => {
   const dispatch = useDispatch();
@@ -42,7 +42,6 @@ const OwnerIndex = () => {
       });
     }
   }, [userInfo]);
-
 
   const handleEdit = () => {
     setIsEditing(!isEditing);
@@ -82,14 +81,14 @@ const OwnerIndex = () => {
       phone: formData.phone.toString(),
       district: formData.district,
       city: formData.city,
-      address: formData.address
+      address: formData.address,
     };
 
     try {
       await dispatch(owner_update_profile_info(updateData)).unwrap();
       setIsEditing(false);
     } catch (error) {
-      console.error('Error updating profile:', error);
+      console.error("Error updating profile:", error);
     }
   };
 
