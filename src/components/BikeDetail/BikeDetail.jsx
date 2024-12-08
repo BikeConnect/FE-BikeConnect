@@ -31,8 +31,15 @@ const BikeDetail = () => {
         const bikeResponse = await api.get(`/vehicles/vehicle-detail/${vehicleId}`);
         if (bikeResponse.data && bikeResponse.data.metadata) {
           const bikeDetails = bikeResponse.data.metadata;
+          const ownerIdValue = bikeDetails.ownerId ? 
+            (typeof bikeDetails.ownerId === "string"
+              ? bikeDetails.ownerId
+              : bikeDetails.ownerId._id)
+            : null;
+
           setBikeData({
             ...bikeDetails,
+            ownerId: ownerIdValue,
             slug: bikeDetails.slug || vehicleId,
             currentPrice: bikeDetails.discount
               ? `${(bikeDetails.price - bikeDetails.price * (bikeDetails.discount / 100)).toLocaleString("vi-VN")} VND`
@@ -41,7 +48,7 @@ const BikeDetail = () => {
         }
 
         // Fetch similar products
-        const similarResponse = await api.get("/vehicles/owner-list-vehicles");
+        const similarResponse = await api.get("/vehicles/list-vehicles");
         if (similarResponse.data && similarResponse.data.metadata) {
           const otherVehicles = similarResponse.data.metadata.filter(
             (vehicle) => vehicle._id !== vehicleId

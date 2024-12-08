@@ -238,6 +238,12 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
     }
   };
 
+  if (!bikeData) {
+    return <div>Loading...</div>;
+  }
+
+  let ownerId = bikeData.ownerId || null;
+
   return (
     <div className="rental-container my-4">
       <div className="row">
@@ -412,7 +418,7 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
               </button>
               <Link
                 className="negotiate-button flex-1 py-2 px-3 rounded-md text-white bg-green-600 hover:bg-green-700 font-bold"
-                to={`/user-dashboard/chat/${bikeData.ownerId._id}`}
+                to={`/user-dashboard/chat/${ownerId}`}
               >
                 <FontAwesomeIcon icon={faComments} className="me-2" />
                 Chat thương lượng

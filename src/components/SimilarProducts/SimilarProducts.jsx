@@ -49,11 +49,8 @@ const SimilarProducts = ({ products, type }) => {
 
     const slug = product.slug || product._id;
 
-    // Chuyển hướng trực tiếp mà không cần lưu vào localStorage
-    navigate(`/BikeDetail/${product._id}/${slug}`, {
-      replace: true,
-      state: { productData: product },
-    });
+    // Reload trang để tải lại dữ liệu mới
+    window.location.href = `/BikeDetail/${product._id}/${slug}`;
   };
 
   const visibleProducts = products.slice(
