@@ -52,6 +52,7 @@ import RentalSignup from "./components/RentalSignup/RentalSignup";
 import OwnerChat from "./components/OwnerChat/OwnerChat";
 import PaymentOwner from "./components/PaymentOwner/PaymentOwner";
 import OwnerRequestBike from "./components/OwnerDashboard/OwnerRequestBike";
+import UpdatePage from "./components/UpdatePage/UpdatePage";
 import OwnerHistoryRent from "./components/OwnerDashboard/OwnerHistoryRent";
 import OwnerChangePassword from "./components/OwnerDashboard/OwnerChangePassword";
 import OwnerChatAdmin from "./components/OwnerDashboard/OwnerChatAdmin";
@@ -82,16 +83,16 @@ function AppContent() {
     }
   }, [dispatch]);
 
-  const ShowNavBar = () => {
-    const displayNavPaths = [
-      "/customerprofiles",
-      "/changepassword",
-      "/rentalhistory",
-    ];
-    return displayNavPaths.includes(location.pathname) ? (
-      <NavBar userRole={userRole} />
-    ) : null;
-  };
+  // const ShowNavBar = () => {
+  //   const displayNavPaths = [
+  //     "/customerprofiles",
+  //     "/changepassword",
+  //     "/rentalhistory",
+  //   ];
+  //   // return displayNavPaths.includes(location.pathname) ? (
+  //   //   <NavBar userRole={userRole} />
+  //   // ) : null;
+  // };
 
   const handleLogin = (role) => {
     setUserRole(role);
@@ -127,7 +128,7 @@ function AppContent() {
   return (
     <div className="App">
       <Header />
-      <ShowNavBar userRole={userRole} />
+      {/* <ShowNavBar userRole={userRole} /> */}
       <Routes>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/" element={<HomePage />} />
@@ -192,10 +193,15 @@ function AppContent() {
           <Route path="chat/:customerId" element={<OwnerChatCustomer />} />
           <Route path="chat-admin" element={<OwnerChatAdmin />} />
           <Route path="rent-bike-request" element={<OwnerRequestBike />} />
+          <Route path="postlistowner" element={<PostListOwner />} />
+        
           <Route path="rent-bike-history" element={<OwnerHistoryRent />} />
           <Route path="change-password" element={<OwnerChangePassword />} />
           <Route path="list-vehicles" element={<OwnerListVehicles />} />
         </Route>
+
+        <Route path="UpdatePage" element={<UpdatePage />} />
+        
       </Routes>
     </div>
   );

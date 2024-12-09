@@ -213,11 +213,11 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
   let ownerId = bikeData.ownerId || null;
 
   return (
-    <div className="rental-container my-4">
+    <div className="my-4 rental-container">
       <div className="row">
         <div className="col-md-6">
           <div className="image-gallery">
-            <div className="main-image mb-3">
+            <div className="mb-3 main-image">
               <img
                 src={images[selectedMainImage]}
                 alt="Honda SH 150 ABS"
@@ -249,7 +249,7 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
                 </svg>
               </button>
             </div>
-            <div className="thumbnail-container d-flex flex-wrap gap-2">
+            <div className="flex-wrap gap-2 thumbnail-container d-flex">
               {images.map((image, index) => (
                 <div
                   key={index}
@@ -269,7 +269,7 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
           </div>
         </div>
         <div className="col-md-6">
-          <div className="rental-details p-3">
+          <div className="p-3 rental-details">
             <div className="rental-header d-flex justify-content-between align-items-center">
               <h1 className="rental-detail-name">{cycleData.name}</h1>
               <div
@@ -282,20 +282,20 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
             </div>
 
             <div className="rental-price">
-              <span className="price text-indigo-600 text-lg font-bold">
+              <span className="text-lg font-bold text-indigo-600 price">
                 {fees.price?.toLocaleString()}
               </span>
-              <span className="duration text-gray-500 ml-2 price-unit">
+              <span className="ml-2 text-gray-500 duration price-unit">
                 / ngày
               </span>
             </div>
 
-            <div className="location-selection d-flex flex-column gap-3">
+            <div className="gap-3 location-selection d-flex flex-column">
               {/* <div className="location-field">
-                <label className="text-gray-700 text-sm mb-1">
+                <label className="mb-1 text-sm text-gray-700">
                   Địa điểm nhận xe
                 </label>
-                <div className="location-options d-flex gap-2">
+                <div className="gap-2 location-options d-flex">
                   <button
                     className={`location-option flex-1 ${
                       pickupLocation === "Tại cửa hàng" ? "active" : ""
@@ -318,12 +318,12 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
               </div>*/}
 
               <div className="time-selection">
-                <label className="text-gray-700 text-sm mb-1">
+                <label className="mb-1 text-sm text-gray-700">
                   Thời gian thuê xe
                 </label>
                 {vehicleAvailableDates.startDate &&
                   vehicleAvailableDates.endDate && (
-                    <div className="available-dates text-sm text-gray-500 mb-2">
+                    <div className="mb-2 text-sm text-gray-500 available-dates">
                       (Xe cho thuê từ{" "}
                       {vehicleAvailableDates.startDate.toLocaleDateString(
                         "vi-VN"
@@ -354,7 +354,7 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
               </div>
             </div>
 
-            <div className="fee-breakdown p-4 rounded-md bg-gray-100">
+            <div className="p-4 bg-gray-100 rounded-md fee-breakdown">
               <div className="fee-item">
                 <span>Đơn giá xe ({calculateRentalDays()} ngày)</span>
                 <span>
@@ -371,21 +371,21 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
                   VNĐ
                 </span>
               </div>
-              <div className="fee-total d-flex justify-content-between mt-3 pt-3 border-top border-gray-300 text-gray-900 font-bold">
+              <div className="pt-3 mt-3 font-bold text-gray-900 border-gray-300 fee-total d-flex justify-content-between border-top">
                 <span>Tổng thanh toán</span>
                 <span>{calculateTotal().toLocaleString()} VNĐ</span>
               </div>
             </div>
 
-            <div className="vehicle-action-buttons d-flex gap-2">
+            <div className="gap-2 vehicle-action-buttons d-flex">
               <button
-                className="rent-button flex-1 rounded-md text-white bg-indigo-600 hover:bg-indigo-700 font-bold"
+                className="flex-1 font-bold text-white bg-indigo-600 rounded-md rent-button hover:bg-indigo-700"
                 onClick={handleBooking}
               >
                 Thuê xe ngay
               </button>
               <Link
-                className="negotiate-button flex-1 py-2 px-3 rounded-md text-white bg-green-600 hover:bg-green-700 font-bold"
+                className="flex-1 px-3 py-2 font-bold text-white bg-green-600 rounded-md negotiate-button hover:bg-green-700"
                 to={`/user-dashboard/chat/${ownerId}`}
               >
                 <FontAwesomeIcon icon={faComments} className="me-2" />
@@ -393,12 +393,12 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
               </Link>
             </div>
           </div>
-          <div className="card p-4 border-0 booking-details-info">
+          <div className="p-4 border-0 card booking-details-info">
             <h4 className="booking-details-title">Thông tin chi tiết</h4>
             <div className="row">
               <div className="text-start">
                 <div className="list-group">
-                  <div className="list-group-item border-0 list-group-content">
+                  <div className="border-0 list-group-item list-group-content">
                     <FontAwesomeIcon
                       icon={faIdCard}
                       className="booking-details-icon"
@@ -408,7 +408,7 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
                       {cycleData.registerDate}
                     </span>
                   </div>
-                  <div className="list-group-item border-0 list-group-content">
+                  <div className="border-0 list-group-item list-group-content">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 640 512"
@@ -421,7 +421,7 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
                       {cycleData.color}
                     </span>
                   </div>
-                  <div className="list-group-item border-0 list-group-content">
+                  <div className="border-0 list-group-item list-group-content">
                     <FontAwesomeIcon
                       icon={faClipboardCheck}
                       className="booking-details-icon"
@@ -431,7 +431,7 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
                       {cycleData.licensePlate}
                     </span>
                   </div>
-                  <div className="list-group-item border-0 list-group-content list-group-address">
+                  <div className="border-0 list-group-item list-group-content list-group-address">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 384 512"

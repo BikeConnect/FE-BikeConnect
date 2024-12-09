@@ -48,6 +48,7 @@ const OwnerDashboard = ({ onLogout }) => {
   return (
     <div>
       <div className="mt-2 bg-slate-200">
+      <div className="max-w-[1200px] mx-auto">
         <div className="w-[90%] mx-auto md-lg:block hidden">
           <div>
             <button
@@ -116,6 +117,15 @@ const OwnerDashboard = ({ onLogout }) => {
                     Chat với Admin
                   </Link>
                 </li>
+
+                <li className="flex items-center justify-start gap-2 py-3">
+                  <span className="text-xl">
+                    <FaMotorcycle /> 
+                  </span>
+                  <Link className="block" to="/owner-dashboard/postlistowner">
+                    Danh sách xe
+                  </Link>
+                </li>
                 <li className="flex items-center justify-start gap-2 py-3">
                   <span className="text-xl">
                     <FaHistory />
@@ -151,7 +161,7 @@ const OwnerDashboard = ({ onLogout }) => {
           </div>
         </div>
       </div>
-
+      </div>
       <Footer />
     </div>
   );
