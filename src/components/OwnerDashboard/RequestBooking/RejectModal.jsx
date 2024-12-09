@@ -1,17 +1,15 @@
 import React, { useState } from 'react'
 import { IoCloseCircle } from "react-icons/io5";
 
-const RejectModal = ({ onClose, setRejectReason, onConfirm }) => {
+const RejectModal = ({ onClose, onConfirm }) => {
     const [localReason, setLocalReason] = useState("");
 
     const handleChange = (e) => {
-      const value = e.target.value;
-      setLocalReason(value);
+      setLocalReason(e.target.value);
     };
 
     const handleConfirm = () => {
-      setRejectReason(localReason);
-      onConfirm();
+      onConfirm(localReason);
     };
 
     return (

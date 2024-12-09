@@ -54,7 +54,6 @@ export const owner_upload_profile_image = createAsyncThunk(
       const { data } = await api.post("/owner/upload-profile-image", image, {
         withCredentials: true,
       });
-      // console.log(data);
       return fulfillWithValue(data);
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -69,7 +68,6 @@ export const customer_upload_profile_image = createAsyncThunk(
       const { data } = await api.post("/customer/upload-profile-image", image, {
         withCredentials: true,
       });
-      // console.log(data);
       return fulfillWithValue(data);
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -124,6 +122,14 @@ export const authReducer = createSlice({
     setUserRole: (state, action) => {
       state.userRole = action.payload;
     },
+    customerLogout: (state, _) => {
+      state.userInfo = "";
+      state.token = "";
+    },  
+    ownerLogout: (state, _) => {
+      state.userInfo = "";
+      state.token = "";
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -208,5 +214,5 @@ export const authReducer = createSlice({
   },
 });
 
-export const { messageClear, setUserRole } = authReducer.actions;
+export const { messageClear, setUserRole,customerLogout, ownerLogout } = authReducer.actions;
 export default authReducer.reducer;

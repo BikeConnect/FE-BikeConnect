@@ -92,6 +92,7 @@ const CyclerentalGrid = () => {
         setMotorcycles(
           response.data.metadata.map((vehicle) => ({
             _id: vehicle._id,
+            ownerId: vehicle.ownerId || null,
             brand: vehicle.brand,
             slug: vehicle.slug || "",
             currentPrice: vehicle.discount

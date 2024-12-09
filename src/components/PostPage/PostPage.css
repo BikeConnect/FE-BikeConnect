@@ -293,3 +293,40 @@ textarea {
     font-size: 2rem;
   }
 }
+
+.date-picker-container {
+  margin: 10px 0;
+}
+
+.custom-calendar {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.selected-day {
+  background-color: #4CAF50 !important;
+  color: white !important;
+  border-radius: 50%;
+}
+
+.selected-dates-info {
+  margin-top: 10px;
+  color: #666;
+  font-size: 0.9em;
+}
+
+.react-datepicker {
+  font-family: inherit;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.react-datepicker__day--selected {
+  background-color: #4CAF50;
+}
+
+.react-datepicker__day:hover {
+  background-color: #e8f5e9;
+}

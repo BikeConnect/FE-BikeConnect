@@ -49,16 +49,14 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   (response) => response,
-  async (error) => {
-    if (
-      error.response?.status === 401 &&
-      error.response?.data?.message === "Invalid access token"
-    ) {
+  (error) => {
+    if (error.response?.status === 401) {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("isLoggedIn");
       localStorage.removeItem("userRole");
       localStorage.removeItem("userData");
-      window.location.href = "/";
+      
+      window.location.href = '/';
     }
     return Promise.reject(error);
   }

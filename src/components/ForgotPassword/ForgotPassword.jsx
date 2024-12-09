@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-// import "./ForgotPassword.css"; // Make sure this CSS file existsil
-// import VerifyEmail from "../VerifyEmail/VerifyEmail";
 import api from "../../api/api";
 
 const ForgotPassword = () => {
@@ -44,11 +42,11 @@ const ForgotPassword = () => {
       <div className="relative bg-white rounded-lg p-8 max-w-md mx-4">
         <button
           onClick={() =>
-            navigate("/login", {
+            navigate("/", {
               state: { userRole: isOwner ? "owner" : "customer" },
             })
           }
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl font-bold"
+          className="absolute top-4 right-4 text-white hover:text-gray-700 text-2xl font-bold"
         >
           x
         </button>

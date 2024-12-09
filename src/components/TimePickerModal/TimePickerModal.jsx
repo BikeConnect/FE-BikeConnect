@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import './TimePickerModal.css';
+import moment from 'moment';
 
-const TimePickerModal = ({ isOpen, onClose, onSelectDates }) => {
+const TimePickerModal = ({ isOpen, onClose, onSelectDates, availableDates }) => {
   const [selectedDates, setSelectedDates] = useState(new Set());
   const [currentDate, setCurrentDate] = useState(new Date());
   const [rangeStart, setRangeStart] = useState(null);
@@ -114,6 +115,12 @@ const TimePickerModal = ({ isOpen, onClose, onSelectDates }) => {
 
   const weekDays = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
 
+  const isDateAvailable = (date) => {
+    return availableDates.some(availableDate => 
+      moment(availableDate).startOf('day').isSame(moment(date).startOf('day'))
+    );
+  };
+
   return (
     <div className="time-modal-overlay" onClick={onClose}>
       <div className="time-modal-container" onClick={(e) => e.stopPropagation()}>
@@ -165,6 +172,7 @@ const TimePickerModal = ({ isOpen, onClose, onSelectDates }) => {
                     ].filter(Boolean).join(' ') : 'disabled'}`}
                     onClick={() => date && !isPastDay && handleDateClick(date)}
                     onMouseEnter={() => handleDateHover(date)}
+                    disabled={!isDateAvailable(date)}
                   >
                     {date ? date.getDate() : ''}
                   </div>
@@ -192,6 +200,7 @@ const TimePickerModal = ({ isOpen, onClose, onSelectDates }) => {
                     ].filter(Boolean).join(' ') : 'disabled'}`}
                     onClick={() => date && handleDateClick(date)}
                     onMouseEnter={() => handleDateHover(date)}
+                    disabled={!isDateAvailable(date)}
                   >
                     {date ? date.getDate() : ''}
                   </div>

@@ -5,7 +5,6 @@ import {
   Route,
   Routes,
   useLocation,
-  Navigate,
 } from "react-router-dom";
 import HomePage from "./components/HomePage/HomePage";
 import RegisterOwner from "./components/RegisterOwner/RegisterOwner";
@@ -13,20 +12,17 @@ import HeaderAfterLogin from "./components/Header/HeaderAfterLogin";
 import HeaderNoLogin from "./components/Header/HeaderNoLogin";
 import NavBar from "./components/NavBar/NavBar";
 import CustomerProfile from "./components/Profile/CustomerProfile";
-// import ChangePassword from "./components/ChangePassword/ChangePassword";
 import RentalHistory from "./components/RentalHistory/RentalHistory";
 import VehicleRental from "./components/VehicleRental/VehicleRental";
 import Guide from "./components/Guide/Guide";
 import BookingGuide from "./components/Guide/BookingGuide.";
 import PaymentGuide from "./components/Guide/PaymentGuide";
 import BikeDetail from "./components/BikeDetail/BikeDetail";
-// import Chat from "./components/Chat/Chat";
 import Policy from "./components/Policy/Policy";
 import PrinciplePage from "./components/Policy/Principle";
 import PrivacyPolicy from "./components/Policy/PrivacyPolicy";
 import Complaints from "./components/Policy/Complaints";
 import Dashboard from "./components/UI_Admin/Dashboard/Dashboard";
-import { CustomerProvider } from "./components/UI_Admin/CustomerContext";
 import Support from "./components/Support/Support";
 import Register from "./components/Register/Register";
 import PostPage from "./components/PostPage/PostPage";
@@ -56,6 +52,10 @@ import RentalSignup from "./components/RentalSignup/RentalSignup";
 import OwnerChat from "./components/OwnerChat/OwnerChat";
 import PaymentOwner from "./components/PaymentOwner/PaymentOwner";
 import OwnerRequestBike from "./components/OwnerDashboard/OwnerRequestBike";
+import OwnerHistoryRent from "./components/OwnerDashboard/OwnerHistoryRent";
+import OwnerChangePassword from "./components/OwnerDashboard/OwnerChangePassword";
+import OwnerChatAdmin from "./components/OwnerDashboard/OwnerChatAdmin";
+import OwnerListVehicles from "./components/OwnerDashboard/OwnerListVehicles";
 
 function AppContent() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -123,15 +123,6 @@ function AppContent() {
     );
   };
 
-  // useEffect(() => {
-  //   const loggedIn = localStorage.getItem("isLoggedIn") === "true";
-  //   const savedUserRole = localStorage.getItem("userRole");
-
-  //   if (loggedIn && savedUserRole) {
-  //     setIsLoggedIn(true);
-  //     setUserRole(savedUserRole);
-  //   }
-  // }, []);
 
   return (
     <div className="App">
@@ -144,7 +135,6 @@ function AppContent() {
         <Route path="/register" element={<Register />} />{" "}
         <Route path="/register-owner" element={<RegisterOwner />} />
         <Route path="/customerprofiles" element={<CustomerProfile />} />
-        {/* <Route path="/changepassword" element={<ChangePassword />} /> */}
         <Route path="/rentalhistory" element={<RentalHistory />} />
         <Route path="/vehiclerental" element={<VehicleRental />} />
         <Route path="/guide" element={<Guide />} />
@@ -156,12 +146,11 @@ function AppContent() {
         <Route path="/policies3" element={<Complaints />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/BikeDetail/:name/:slug" element={<BikeDetail />} />
-        {/* <Route path="/chat" element={<Chat />} /> */}
         <Route path="/support" element={<Support />} />
         <Route path="/post" element={<PostPage />} />
         <Route path="/CusFilterOptions" element={<CusFilterOptions />} />
-        <Route path="/ForgotPassword" element={<ForgotPassword />} />
-        <Route path="/reset-password/:resetToken" element={<ResetPassword />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="/managecontract" element={<ContractManagement />} />
         <Route path="/contract" element={<CreateContract />} />
         <Route path="/valrequest" element={<AuthUser />} />
@@ -201,7 +190,11 @@ function AppContent() {
           <Route path="" element={<OwnerIndex />} />
           <Route path="chat" element={<OwnerChatCustomer />} />
           <Route path="chat/:customerId" element={<OwnerChatCustomer />} />
+          <Route path="chat-admin" element={<OwnerChatAdmin />} />
           <Route path="rent-bike-request" element={<OwnerRequestBike />} />
+          <Route path="rent-bike-history" element={<OwnerHistoryRent />} />
+          <Route path="change-password" element={<OwnerChangePassword />} />
+          <Route path="list-vehicles" element={<OwnerListVehicles />} />
         </Route>
       </Routes>
     </div>
@@ -211,9 +204,7 @@ function AppContent() {
 function App() {
   return (
     <Router>
-      {/* <CustomerProvider> */}
       <AppContent />
-      {/* </CustomerProvider> */}
     </Router>
   );
 }

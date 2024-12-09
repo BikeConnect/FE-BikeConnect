@@ -10,37 +10,56 @@ import ContractTerms from "./RequestBooking/ContractTerms";
 const OwnerRequestBike = () => {
   const [bookingRequests, setBookingRequests] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    totalPages: 1,
+    totalItems: 0,
+    itemsPerPage: 5,
+    hasNextPage: false,
+    hasPrevPage: false
+  });
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showRejectModal, setShowRejectModal] = useState(false);
-  const [rejectReason, setRejectReason] = useState("");
   const [selectedContractId, setSelectedContractId] = useState(null);
   const [showTermsModal, setShowTermsModal] = useState(false);
   const [selectedContractForTerms, setSelectedContractForTerms] =
     useState(null);
 
-  const fetchBookingRequests = async () => {
+  const fetchBookingRequests = async (page) => {
     try {
-      const response = await api.get("/owner/get-customer-booking-request");
+      setLoading(true);
+      const response = await api.get(`/owner/get-customer-booking-request?page=${page}`);
       setBookingRequests(response.data.bookings);
-      setLoading(false);
-      console.log(response.data.bookings);
+      setPagination(response.data.pagination);
     } catch (error) {
+      toast.error("Đã có lỗi xảy ra!");
+    } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchBookingRequests();
-  }, []);
+    fetchBookingRequests(currentPage);
+  }, [currentPage]);
+
+  useEffect(() => {
+    if (bookingRequests.length === 0 && currentPage > 1) {
+      setCurrentPage(1);
+    }
+  }, [bookingRequests]);
 
   const handleAccept = async () => {
     try {
       await api.put(`/confirm-contract/${selectedContractForTerms._id}`, {
         isConfirmed: true,
       });
-      const response = await api.get("/owner/get-customer-booking-request");
-      setBookingRequests(response.data.bookings);
+      
+      setBookingRequests(prevRequests => 
+        prevRequests.filter(booking => booking._id !== selectedContractForTerms._id)
+      );
+      
       setShowTermsModal(false);
       setSelectedContractForTerms(null);
       toast.success("Đã chấp nhận yêu cầu thuê xe thành công!");
@@ -54,21 +73,32 @@ const OwnerRequestBike = () => {
     setShowRejectModal(true);
   };
 
-  const handleConfirmReject = async () => {
+  const handleConfirmReject = async (rejectReason) => {
     try {
-      await api.put(`/confirm-contract/${selectedContractId}`, {
+      const response = await api.put(`/confirm-contract/${selectedContractId}`, {
         isConfirmed: false,
         rejectReason: rejectReason,
       });
-      const response = await api.get("/owner/get-customer-booking-request");
-      setBookingRequests(response.data.bookings);
-      toast.success("Đã từ chối yêu cầu thuê xe!");
-      setShowRejectModal(false);
-      setRejectReason("");
-      setSelectedContractId(null);
+      
+      if (response.status === 200) {
+        setBookingRequests(prevRequests => 
+          prevRequests.filter(booking => booking._id !== selectedContractId)
+        );
+        
+        if (bookingRequests.length === 1 && currentPage > 1) {
+          setCurrentPage(1);
+        } else {
+          fetchBookingRequests(currentPage);
+        }
+        
+        toast.success("Đã từ chối yêu cầu thuê xe thành công!");
+      }
     } catch (error) {
       console.error("Error rejecting contract:", error);
       toast.error("Có lỗi xảy ra khi từ chối yêu cầu!");
+    } finally {
+      setShowRejectModal(false);
+      setSelectedContractId(null);
     }
   };
 
@@ -81,6 +111,18 @@ const OwnerRequestBike = () => {
     setSelectedContractForTerms(booking);
     console.log("Selected booking for terms:", booking);
     setShowTermsModal(true);
+  };
+
+  const handleNextPage = () => {
+    if (pagination.hasNextPage) {
+      setCurrentPage(prev => prev + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (pagination.hasPrevPage) {
+      setCurrentPage(prev => prev - 1);
+    }
   };
 
   if (loading) {
@@ -192,11 +234,8 @@ const OwnerRequestBike = () => {
 
       {showRejectModal && (
         <RejectModal
-          rejectReason={rejectReason}
-          setRejectReason={setRejectReason}
           onClose={() => {
             setShowRejectModal(false);
-            setRejectReason("");
             setSelectedContractId(null);
           }}
           onConfirm={handleConfirmReject}
@@ -212,6 +251,38 @@ const OwnerRequestBike = () => {
           }}
           onAccept={handleAccept}
         />
+      )}
+
+      {bookingRequests.length > 0 && (
+        <div className="mt-6 flex justify-center items-center gap-4">
+          <button
+            onClick={handlePrevPage}
+            disabled={!pagination.hasPrevPage}
+            className={`px-4 py-2 rounded-md ${
+              pagination.hasPrevPage
+                ? "bg-blue-500 text-white hover:bg-blue-600"
+                : "bg-gray-200 text-gray-500 cursor-not-allowed"
+            }`}
+          >
+            Trang trước
+          </button>
+          
+          <span className="text-gray-600">
+            Trang {pagination.currentPage} / {pagination.totalPages}
+          </span>
+          
+          <button
+            onClick={handleNextPage}
+            disabled={!pagination.hasNextPage}
+            className={`px-4 py-2 rounded-md ${
+              pagination.hasNextPage
+                ? "bg-blue-500 text-white hover:bg-blue-600"
+                : "bg-gray-200 text-gray-500 cursor-not-allowed"
+            }`}
+          >
+            Trang sau
+          </button>
+        </div>
       )}
     </div>
   );

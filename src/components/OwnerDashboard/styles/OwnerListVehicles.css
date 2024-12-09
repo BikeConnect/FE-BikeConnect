@@ -1,0 +1,68 @@
+.custom-calendar {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+  }
+  
+  .selected-day {
+    background-color: #4CAF50 !important;
+    color: white !important;
+    border-radius: 50%;
+  }
+  
+  .react-datepicker {
+    font-family: inherit;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+  }
+  
+  .react-datepicker__day--selected {
+    background-color: #4CAF50;
+  }
+  
+  .react-datepicker__day:hover {
+    background-color: #e8f5e9;
+  }
+
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+
+  .modal-content {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    max-width: 32rem;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    z-index: 10000;
+  }
+
+  .modal-content::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .modal-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  .modal-content::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+  }
+
+  .modal-content::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }

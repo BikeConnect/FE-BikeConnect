@@ -10,12 +10,10 @@ import {
   faIdCard,
   faClipboardCheck,
 } from "@fortawesome/free-solid-svg-icons";
-import { useLocation } from "react-router-dom";
 import api from "../../api/api";
 import { Link } from "react-router-dom";
 
 const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
-  const location = useLocation();
   const [bikeData, setBikeData] = useState(bike || null);
   const [loading, setLoading] = useState(!bike);
   const [error, setError] = useState(null);
@@ -32,6 +30,7 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
     startDate: null,
     endDate: null,
   });
+  const [availableDates, setAvailableDates] = useState([]);
 
   useEffect(() => {
     if (bike) {
@@ -41,6 +40,9 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
           startDate: new Date(bike.startDate),
           endDate: new Date(bike.endDate),
         });
+      }
+      if (bike.availableDates) {
+        setAvailableDates(bike.availableDates.map(date => new Date(date)));
       }
       return;
     }
@@ -155,11 +157,6 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
     setIsLocationModalOpen(false);
   };
 
-  const openLocationModal = (field) => {
-    setActiveLocationField(field);
-    setIsLocationModalOpen(true);
-  };
-
   const handleDateSelect = (dates) => {
     setSelectedDates(dates);
     setIsTimeModalOpen(false);
@@ -177,32 +174,6 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
       return;
     }
 
-    const requestStartDate = new Date(selectedDates[0]);
-    const requestEndDate = new Date(selectedDates[selectedDates.length - 1]);
-
-    requestStartDate.setHours(0, 0, 0, 0);
-    requestEndDate.setHours(0, 0, 0, 0);
-
-    if (vehicleAvailableDates.startDate && vehicleAvailableDates.endDate) {
-      const availableStartDate = new Date(vehicleAvailableDates.startDate);
-      const availableEndDate = new Date(vehicleAvailableDates.endDate);
-
-      availableStartDate.setHours(0, 0, 0, 0);
-      availableEndDate.setHours(0, 0, 0, 0);
-
-      if (
-        requestStartDate < vehicleAvailableDates.startDate ||
-        requestEndDate > vehicleAvailableDates.endDate
-      ) {
-        alert(
-          `Xe chỉ cho thuê từ ${vehicleAvailableDates.startDate.toLocaleDateString(
-            "vi-VN"
-          )} đến ${vehicleAvailableDates.endDate.toLocaleDateString("vi-VN")}`
-        );
-        return;
-      }
-    }
-
     try {
       const startDate = new Date(selectedDates[0]).toISOString().split("T")[0];
       const endDate = new Date(selectedDates[selectedDates.length - 1])
@@ -214,8 +185,6 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
         startDate: startDate,
         endDate: endDate,
       });
-
-      console.log("Response:", response);
 
       if (response.status === 200 || response.status === 201) {
         alert("Đặt xe thành công!");
@@ -237,6 +206,11 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
       }
     }
   };
+
+  if (!bikeData) {
+    return <div>Loading...</div>;
+  }
+  let ownerId = bikeData.ownerId || null;
 
   return (
     <div className="rental-container my-4">
@@ -303,7 +277,7 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
                   isAvailable ? "available" : "unavailable"
                 }`}
               >
-                {isAvailable ? "Còn xe" : "Hết xe"}
+                {isAvailable ? "Còn xe" : "Đã cho thuê"}
               </div>
             </div>
 
@@ -353,7 +327,7 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
                       (Xe cho thuê từ{" "}
                       {vehicleAvailableDates.startDate.toLocaleDateString(
                         "vi-VN"
-                      )}
+                      )}{" "}
                       đến{" "}
                       {vehicleAvailableDates.endDate.toLocaleDateString(
                         "vi-VN"
@@ -412,7 +386,7 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
               </button>
               <Link
                 className="negotiate-button flex-1 py-2 px-3 rounded-md text-white bg-green-600 hover:bg-green-700 font-bold"
-                to={`/user-dashboard/chat/${bikeData.ownerId._id}`}
+                to={`/user-dashboard/chat/${ownerId}`}
               >
                 <FontAwesomeIcon icon={faComments} className="me-2" />
                 Chat thương lượng
@@ -500,6 +474,7 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
         isOpen={isTimeModalOpen}
         onClose={() => setIsTimeModalOpen(false)}
         onSelectDates={handleDateSelect}
+        availableDates={availableDates}
       />
     </div>
   );

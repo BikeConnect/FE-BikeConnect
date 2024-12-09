@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./PostPage.css";
 import AssetUpload from "../AssetUpload/AssetUpload";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const PostPage = () => {
   const [vehicle, setVehicle] = useState({
@@ -14,9 +16,19 @@ const PostPage = () => {
     startDate: "",
     endDate: "",
     images: [],
+    availableDates: [],
   });
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [errors, setErrors] = useState({});
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [selectedDates, setSelectedDates] = useState([]);
+
+  useEffect(() => {
+    if (vehicle.startDate && vehicle.endDate) {
+      setSelectedDates([]);
+      setVehicle(prev => ({...prev, availableDates: []}));
+    }
+  }, [vehicle.startDate, vehicle.endDate]);
 
   const handleVehicleChange = (field, value) => {
     setVehicle((prevVehicle) => ({
@@ -53,6 +65,28 @@ const PostPage = () => {
       updatedImages.splice(imageIndex, 1);
       return { ...prevVehicle, images: updatedImages };
     });
+  };
+
+  const handleDateSelect = (date) => {
+    const newDate = new Date(date.setHours(0, 0, 0, 0));
+    
+    if (selectedDates.some(d => d.getTime() === newDate.getTime())) {
+      const newSelectedDates = selectedDates.filter(
+        d => d.getTime() !== newDate.getTime()
+      );
+      setSelectedDates(newSelectedDates);
+      setVehicle(prev => ({
+        ...prev,
+        availableDates: newSelectedDates
+      }));
+    } else {
+      const newSelectedDates = [...selectedDates, newDate];
+      setSelectedDates(newSelectedDates);
+      setVehicle(prev => ({
+        ...prev,
+        availableDates: newSelectedDates
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -92,6 +126,10 @@ const PostPage = () => {
       }
     }
 
+    if (!vehicle.availableDates || vehicle.availableDates.length === 0) {
+      newErrors.availableDates = "Vui lòng chọn ít nhất một ngày cho thuê";
+    }
+
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length > 0) {
@@ -117,6 +155,9 @@ const PostPage = () => {
         license: vehicle.license,
         startDate: vehicle.startDate,
         endDate: vehicle.endDate,
+        availableDates: vehicle.availableDates.map(date => 
+          new Date(date).toISOString()
+        ),
       };
       formData.append("vehicle", JSON.stringify(vehicleData));
 
@@ -260,6 +301,35 @@ const PostPage = () => {
                   {errors.endDate && <div className="error-message">{errors.endDate}</div>}
                 </div>
               </div>
+
+              {vehicle.startDate && vehicle.endDate && (
+                <div className="form-group">
+                  <label>Chọn ngày cho thuê:</label>
+                  <div className="date-picker-container">
+                    <DatePicker
+                      inline
+                      minDate={new Date(vehicle.startDate)}
+                      maxDate={new Date(vehicle.endDate)}
+                      selected={null}
+                      onChange={handleDateSelect}
+                      highlightDates={selectedDates}
+                      dateFormat="dd/MM/yyyy"
+                      calendarClassName="custom-calendar"
+                      dayClassName={date =>
+                        selectedDates.some(d => d.getTime() === date.getTime())
+                          ? "selected-day"
+                          : undefined
+                      }
+                    />
+                  </div>
+                  {errors.availableDates && (
+                    <div className="error-message">{errors.availableDates}</div>
+                  )}
+                  <div className="selected-dates-info">
+                    Đã chọn: {selectedDates.length} ngày
+                  </div>
+                </div>
+              )}
 
               {/* Row 6: AssetUpload */}
               <div className="form-group form-group-img">

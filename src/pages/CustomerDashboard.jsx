@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import Footer from "../components/Footer/Footer";
-import HeaderAfterLogin from "../components/Header/HeaderAfterLogin";
 import { IoLogOutSharp } from "react-icons/io5";
 import { TbPassword } from "react-icons/tb";
 import { IoMdChatboxes } from "react-icons/io";
@@ -19,7 +18,6 @@ const UserDashboard = ({onLogout}) => {
   };
   return (
     <div>
-      {/* <HeaderAfterLogin /> */}
       <div className="mt-2 bg-slate-200">
         <div className="w-[90%] mx-auto md-lg:block hidden">
           <div>
@@ -61,7 +59,7 @@ const UserDashboard = ({onLogout}) => {
                   <span className="text-xl">
                     <FaRegHeart />
                   </span>
-                  <Link className="block" to="/user-dashboard/chat">
+                  <Link className="block" to="/user-dashboard/fav-bike">
                     Xe yêu thích
                   </Link>
                 </li>
@@ -69,7 +67,7 @@ const UserDashboard = ({onLogout}) => {
                   <span className="text-xl">
                     <FaHistory />
                   </span>
-                  <Link className="block" to="/dashboard/chat">
+                  <Link className="block" to="/user-dashboard/rent-bike-history">
                     Lịch sử thuê xe
                   </Link>
                 </li>
@@ -77,7 +75,7 @@ const UserDashboard = ({onLogout}) => {
                   <span className="text-xl">
                     <FaMotorcycle />
                   </span>
-                  <Link className="block" to="/dashboard/chat">
+                  <Link className="block" to="/user-dashboard/register-bike">
                     Đăng kí cho thuê
                   </Link>
                 </li>

@@ -1,16 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Footer from "../components/Footer/Footer";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { IoLogOutSharp } from "react-icons/io5";
 import { TbPassword } from "react-icons/tb";
 import { FaHistory, FaList } from "react-icons/fa";
-import { IoMdChatboxes } from "react-icons/io";
+import { IoIosChatbubbles, IoMdChatboxes } from "react-icons/io";
 import { GoHomeFill } from "react-icons/go";
 import { FaMotorcycle } from "react-icons/fa6";
+import { BiSolidGrid } from "react-icons/bi";
+import { MdWarning } from 'react-icons/md';
+import api from "../api/api";
 
 const OwnerDashboard = ({ onLogout }) => {
   const [showFilter, setShowFilter] = useState(false);
+  const [hasExpiredVehicles, setHasExpiredVehicles] = useState(false);
+  const [expiredCount, setExpiredCount] = useState(0);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkExpiredVehicles = async () => {
+      try {
+        const response = await api.get('/owner/get-owner-vehicles');
+        const vehicles = response.data.metadata;
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        const expiredVehicles = vehicles.filter(vehicle => {
+          const endDate = new Date(vehicle.endDate);
+          return endDate < today;
+        });
+        
+        setHasExpiredVehicles(expiredVehicles.length > 0);
+        setExpiredCount(expiredVehicles.length);
+      } catch (error) {
+        console.error('Error checking expired vehicles:', error);
+      }
+    };
+
+    checkExpiredVehicles();
+  }, []);
 
   const logout = () => {
     localStorage.removeItem("accessToken");
@@ -19,7 +47,6 @@ const OwnerDashboard = ({ onLogout }) => {
   };
   return (
     <div>
-      {/* <HeaderAfterLogin /> */}
       <div className="mt-2 bg-slate-200">
         <div className="w-[90%] mx-auto md-lg:block hidden">
           <div>
@@ -48,6 +75,23 @@ const OwnerDashboard = ({ onLogout }) => {
                     Thông tin cá nhân
                   </Link>
                 </li>
+                <li className="flex items-center justify-start gap-2 py-3 relative">
+                  <span className="text-xl">
+                    <BiSolidGrid />
+                  </span>
+                  <Link className="block" to="/owner-dashboard/list-vehicles">
+                    Xe của tôi
+                  </Link>
+                  {hasExpiredVehicles && (
+                    <span 
+                      className="text-red-500 flex items-center gap-1 ml-2" 
+                      title={`Có ${expiredCount} xe đã hết hạn cho thuê`}
+                    >
+                      <MdWarning className="text-lg" />
+                      <span className="text-xs">Hết hạn ({expiredCount})</span>
+                    </span>
+                  )}
+                </li>
                 <li className="flex items-center justify-start gap-2 py-3">
                   <span className="text-xl">
                     <FaMotorcycle />
@@ -61,7 +105,15 @@ const OwnerDashboard = ({ onLogout }) => {
                     <IoMdChatboxes />
                   </span>
                   <Link className="block" to="/owner-dashboard/chat">
-                    Chat
+                    Chat với khách hàng
+                  </Link>
+                </li>
+                <li className="flex items-center justify-start gap-2 py-3">
+                  <span className="text-xl">
+                    <IoIosChatbubbles  />
+                  </span>
+                  <Link className="block" to="/owner-dashboard/chat-admin">
+                    Chat với Admin
                   </Link>
                 </li>
                 <li className="flex items-center justify-start gap-2 py-3">
