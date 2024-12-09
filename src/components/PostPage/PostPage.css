@@ -66,7 +66,7 @@ h1 {
 
 .quantity-input-container label {
   margin-bottom: 15px;
-  text-align: center;
+  text-align: start;
   margin-left: 400px;
   display: inline-block;
 }
@@ -80,22 +80,26 @@ h1 {
 }
 
 .form-group-quantity,
-.vehicle-form-content {
-  margin-bottom: 0;
-  border: 1px solid #ccc;
-  padding: 1rem;
-  border-radius: 10px;
-  background-color: #f9f9f9;
-}
-
-.vehicle-price-discount-model,
-.vehicle-address-license,
-.vehicle-date-images,
-.vehicle-name-category {
+.vehicle-brand-model {
   display: flex;
   width: 100%;
   gap: 10px;
   margin-bottom: 20px;
+}
+
+.vehicle-price-discount {
+  display: flex;
+  width: 100%;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.form-group-brand,
+.form-group-model,
+.form-group-price,
+.form-group-discount {
+  width: 50%;
+  text-align: left;
 }
 
 .vehicle-date-images {
@@ -139,7 +143,6 @@ h1 {
   font-weight: 500;
   font-size: 0.95rem;
 }
-
 input[type="text"],
 input[type="number"],
 textarea,
@@ -224,16 +227,55 @@ textarea {
 }
 
 .image-preview {
+  display: flex;
+  flex-wrap: nowrap;
+  width: 1080px;
+  gap: 15px;
+  overflow-x: auto;
   margin-top: 1rem;
-  text-align: center;
+  padding: 10px;
+  min-height: 200px;
 }
 
-.image-preview img {
-  max-width: 300px;
-  max-height: 300px;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  object-fit: cover;
+.image-item {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.image-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background-color: #f5f5f5;
+  padding: 8px;
+}
+
+.image-item button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 25px;
+  height: 25px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: red;
+  font-size: 14px;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.image-item button:hover {
+  background: rgba(255, 0, 0, 0.1);
 }
 
 .submit-button {

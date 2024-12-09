@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import "./PostPage.css";
+import React, { useState, useEffect } from "react";
+import "./UpdatePage.css";
 import AssetUpload from "../AssetUpload/AssetUpload";
 
-const PostPage = () => {
+const UpdatePage = () => {
   const [vehicle, setVehicle] = useState({
     brand: "",
     model: "",
@@ -14,9 +14,55 @@ const PostPage = () => {
     startDate: "",
     endDate: "",
     images: [],
+    existingImages: [], // To store existing images from the server
   });
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Fetch vehicle details for update
+    const fetchVehicleDetails = async () => {
+      try {
+        const accessToken = localStorage.getItem("accessToken");
+        const vehicleId = new URLSearchParams(window.location.search).get('id');
+
+        if (!accessToken || !vehicleId) {
+          alert("Vui lòng đăng nhập và chọn xe để cập nhật");
+          return;
+        }
+
+        const response = await fetch(`http://localhost:8080/api/vehicles/${vehicleId}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setVehicle({
+            ...data,
+            images: [], // Reset local images
+            existingImages: data.images || [], // Store existing images
+            startDate: data.startDate ? data.startDate.split('T')[0] : '',
+            endDate: data.endDate ? data.endDate.split('T')[0] : '',
+          });
+        } else {
+          const errorText = await response.text();
+          alert(`Lỗi: ${response.status} - ${errorText}`);
+        }
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Lỗi khi tải chi tiết xe:", error);
+        alert("Đã có lỗi xảy ra. Vui lòng thử lại sau.");
+        setIsLoading(false);
+      }
+    };
+
+    fetchVehicleDetails();
+  }, []);
 
   const handleVehicleChange = (field, value) => {
     setVehicle((prevVehicle) => ({
@@ -31,7 +77,6 @@ const PostPage = () => {
       return;
     }
 
-    // Chỉ giữ lại các tệp hình ảnh hợp lệ
     const validImages = uploadedImages.filter((img) => img instanceof File && img.type.startsWith('image/'));
 
     if (validImages.length === 0) {
@@ -47,11 +92,17 @@ const PostPage = () => {
     setShowUploadModal(false);
   };
 
-  const handleRemoveImage = (imageIndex) => {
+  const handleRemoveImage = (imageIndex, isExisting) => {
     setVehicle((prevVehicle) => {
-      const updatedImages = [...prevVehicle.images];
-      updatedImages.splice(imageIndex, 1);
-      return { ...prevVehicle, images: updatedImages };
+      if (isExisting) {
+        const updatedExistingImages = [...prevVehicle.existingImages];
+        updatedExistingImages.splice(imageIndex, 1);
+        return { ...prevVehicle, existingImages: updatedExistingImages };
+      } else {
+        const updatedImages = [...prevVehicle.images];
+        updatedImages.splice(imageIndex, 1);
+        return { ...prevVehicle, images: updatedImages };
+      }
     });
   };
 
@@ -61,21 +112,15 @@ const PostPage = () => {
     const newErrors = {};
     const today = new Date().toISOString().split("T")[0];
 
-    if (!vehicle.brand) {
-      newErrors.brand = "Thương hiệu không được để trống";
-    }
-
-    if (!vehicle.model) {
-      newErrors.model = "Model không được để trống";
-    }
-
-    if (vehicle.price <= 0) {
-      newErrors.price = "Giá phải lớn hơn 0";
-    }
-
-    if (!vehicle.images || vehicle.images.length === 0) {
+    // Validation logic (similar to PostPage)
+    if (!vehicle.brand) newErrors.brand = "Thương hiệu không được để trống";
+    if (!vehicle.model) newErrors.model = "Model không được để trống";
+    if (vehicle.price <= 0) newErrors.price = "Giá phải lớn hơn 0";
+    
+    if (!vehicle.images.length && !vehicle.existingImages.length) {
       newErrors.images = "Hãy upload ít nhất một ảnh cho xe";
     }
+
     if (!vehicle.startDate) {
       newErrors.startDate = "Ngày bắt đầu là bắt buộc";
     } else if (vehicle.startDate < today) {
@@ -100,14 +145,17 @@ const PostPage = () => {
 
     try {
       const accessToken = localStorage.getItem("accessToken");
-      if (!accessToken) {
-        alert("Vui lòng đăng nhập để đăng bài");
+      const vehicleId = new URLSearchParams(window.location.search).get('id');
+
+      if (!accessToken || !vehicleId) {
+        alert("Vui lòng đăng nhập và chọn xe để cập nhật");
         return;
       }
 
       const formData = new FormData();
 
       const vehicleData = {
+        id: vehicleId,
         brand: vehicle.brand,
         model: vehicle.model,
         price: parseInt(vehicle.price),
@@ -117,9 +165,11 @@ const PostPage = () => {
         license: vehicle.license,
         startDate: vehicle.startDate,
         endDate: vehicle.endDate,
+        existingImages: vehicle.existingImages.map(img => img.id || img), // For existing image IDs
       };
       formData.append("vehicle", JSON.stringify(vehicleData));
 
+      // Add new images
       if (vehicle.images && vehicle.images.length > 0) {
         vehicle.images.forEach((image) => {
           if (image instanceof File) {
@@ -128,8 +178,8 @@ const PostPage = () => {
         });
       }
 
-      const response = await fetch("http://localhost:8080/api/vehicles/create-vehicle", {
-        method: "POST",
+      const response = await fetch(`http://localhost:8080/api/vehicles/update-vehicle/${vehicleId}`, {
+        method: "PUT",
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -138,11 +188,11 @@ const PostPage = () => {
 
       if (response.ok) {
         const result = await response.json();
-        console.log("Upload success:", result);
-        alert("Đăng bài thành công!");
+        console.log("Cập nhật thành công:", result);
+        alert("Cập nhật xe thành công!");
       } else {
         const errorText = await response.text();
-        console.error("Upload failed:", {
+        console.error("Cập nhật thất bại:", {
           status: response.status,
           statusText: response.statusText,
           error: errorText,
@@ -150,15 +200,19 @@ const PostPage = () => {
         alert(`Lỗi: ${response.status} - ${errorText}`);
       }
     } catch (error) {
-      console.error("Lỗi khi đăng bài:", error);
+      console.error("Lỗi khi cập nhật xe:", error);
       alert("Đã có lỗi xảy ra. Vui lòng thử lại sau.");
     }
   };
 
+  if (isLoading) {
+    return <div>Đang tải thông tin xe...</div>;
+  }
+
   return (
-    <div className="post-page">
-      <form className="post-form" onSubmit={handleSubmit}>
-        <h1>Đăng Bài</h1>
+    <div className="update-page">
+      <form className="update-form" onSubmit={handleSubmit}>
+        <h1>Cập Nhật Xe</h1>
 
         <div className="form-container">
           <div className="vehicle-form">
@@ -168,7 +222,7 @@ const PostPage = () => {
                 <div className="form-group form-group-license">
                   <label>Biển số:</label>
                   <input
-                    class="custom-input"
+                    className="custom-input"
                     type="text"
                     value={vehicle.license}
                     onChange={(e) => handleVehicleChange("license", e.target.value)}
@@ -178,7 +232,7 @@ const PostPage = () => {
                 <div className="form-group form-group-address">
                   <label>Địa chỉ:</label>
                   <input
-                    class="custom-input"
+                    className="custom-input"
                     type="text"
                     value={vehicle.address}
                     onChange={(e) => handleVehicleChange("address", e.target.value)}
@@ -192,22 +246,24 @@ const PostPage = () => {
                 <div className="form-group form-group-brand">
                   <label>Thương hiệu:</label>
                   <input
-                    class="custom-input"
+                    className="custom-input"
                     type="text"
                     value={vehicle.brand}
                     onChange={(e) => handleVehicleChange("brand", e.target.value)}
                     placeholder="Nhập thương hiệu xe..."
                   />
+                  {errors.brand && <div className="error-message">{errors.brand}</div>}
                 </div>
                 <div className="form-group form-group-model">
                   <label>Model:</label>
                   <input
-                    class="custom-input"
+                    className="custom-input"
                     type="text"
                     value={vehicle.model}
                     onChange={(e) => handleVehicleChange("model", e.target.value)}
                     placeholder="Nhập model xe..."
                   />
+                  {errors.model && <div className="error-message">{errors.model}</div>}
                 </div>
               </div>
 
@@ -216,17 +272,18 @@ const PostPage = () => {
                 <div className="form-group form-group-price">
                   <label>Giá:</label>
                   <input
-                    class="custom-input"
+                    className="custom-input"
                     type="number"
                     value={vehicle.price}
                     onChange={(e) => handleVehicleChange("price", e.target.value)}
                     placeholder="Nhập giá xe..."
                   />
+                  {errors.price && <div className="error-message">{errors.price}</div>}
                 </div>
                 <div className="form-group form-group-discount">
                   <label>Giảm giá:</label>
                   <input
-                    class="custom-input"
+                    className="custom-input"
                     type="number"
                     value={vehicle.discount}
                     onChange={(e) => handleVehicleChange("discount", e.target.value)}
@@ -239,7 +296,7 @@ const PostPage = () => {
               <div className="form-group">
                 <label>Mô tả:</label>
                 <textarea
-                  class="custom-input"
+                  className="custom-input"
                   value={vehicle.description}
                   onChange={(e) => handleVehicleChange("description", e.target.value)}
                   placeholder="Nhập mô tả xe..."
@@ -268,29 +325,47 @@ const PostPage = () => {
                 </div>
               </div>
 
-              {/* Row 6: AssetUpload */}
+              {/* Row 6: Hình ảnh */}
               <div className="form-group form-group-img">
                 <label>Hình ảnh:</label>
                 <button
                   type="button"
                   onClick={() => setShowUploadModal(true)}
                 >
-                  Tải lên hình ảnh
+                  Tải lên hình ảnh mới
                 </button>
+                {errors.images && <div className="error-message">{errors.images}</div>}
                 <div className="image-preview">
-                  {vehicle.images.length > 0 ? (
-                    vehicle.images.map((image, imageIndex) => (
-                      <div key={imageIndex} className="image-item">
-                        <img src={URL.createObjectURL(image)} alt={`Image ${imageIndex}`} />
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveImage(imageIndex)}
-                        >
-                          X
-                        </button>
-                      </div>
-                    ))
-                  ) : (
+                  {/* Existing Images */}
+                  {vehicle.existingImages.map((image, imageIndex) => (
+                    <div key={`existing-${imageIndex}`} className="image-item">
+                      <img 
+                        src={image.url || image} 
+                        alt={`Existing Image ${imageIndex}`} 
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveImage(imageIndex, true)}
+                      >
+                        X
+                      </button>
+                    </div>
+                  ))}
+
+                  {/* New Uploaded Images */}
+                  {vehicle.images.map((image, imageIndex) => (
+                    <div key={`new-${imageIndex}`} className="image-item">
+                      <img src={URL.createObjectURL(image)} alt={`New Image ${imageIndex}`} />
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveImage(imageIndex, false)}
+                      >
+                        X
+                      </button>
+                    </div>
+                  ))}
+
+                  {vehicle.existingImages.length === 0 && vehicle.images.length === 0 && (
                     <div>Chưa có hình ảnh nào</div>
                   )}
                 </div>
@@ -300,7 +375,7 @@ const PostPage = () => {
             {/* Submit button */}
             <div className="form-group form-group-submit">
               <button type="submit" className="submit-button">
-                Đăng bài
+                Cập Nhật Xe
               </button>
             </div>
           </div>
@@ -317,4 +392,4 @@ const PostPage = () => {
   );
 };
 
-export default PostPage;
+export default UpdatePage;

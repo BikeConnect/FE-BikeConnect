@@ -56,6 +56,7 @@ import RentalSignup from "./components/RentalSignup/RentalSignup";
 import OwnerChat from "./components/OwnerChat/OwnerChat";
 import PaymentOwner from "./components/PaymentOwner/PaymentOwner";
 import OwnerRequestBike from "./components/OwnerDashboard/OwnerRequestBike";
+import UpdatePage from "./components/UpdatePage/UpdatePage";
 
 function AppContent() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -82,16 +83,16 @@ function AppContent() {
     }
   }, [dispatch]);
 
-  const ShowNavBar = () => {
-    const displayNavPaths = [
-      "/customerprofiles",
-      "/changepassword",
-      "/rentalhistory",
-    ];
-    return displayNavPaths.includes(location.pathname) ? (
-      <NavBar userRole={userRole} />
-    ) : null;
-  };
+  // const ShowNavBar = () => {
+  //   const displayNavPaths = [
+  //     "/customerprofiles",
+  //     "/changepassword",
+  //     "/rentalhistory",
+  //   ];
+  //   // return displayNavPaths.includes(location.pathname) ? (
+  //   //   <NavBar userRole={userRole} />
+  //   // ) : null;
+  // };
 
   const handleLogin = (role) => {
     setUserRole(role);
@@ -136,7 +137,7 @@ function AppContent() {
   return (
     <div className="App">
       <Header />
-      <ShowNavBar userRole={userRole} />
+      {/* <ShowNavBar userRole={userRole} /> */}
       <Routes>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/" element={<HomePage />} />
@@ -202,7 +203,12 @@ function AppContent() {
           <Route path="chat" element={<OwnerChatCustomer />} />
           <Route path="chat/:customerId" element={<OwnerChatCustomer />} />
           <Route path="rent-bike-request" element={<OwnerRequestBike />} />
+          <Route path="postlistowner" element={<PostListOwner />} />
+        
         </Route>
+
+        <Route path="UpdatePage" element={<UpdatePage />} />
+        
       </Routes>
     </div>
   );
