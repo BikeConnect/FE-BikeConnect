@@ -80,7 +80,7 @@ const SearchBar = () => {
             startDate: formattedStartDate,
             endDate: formattedEndDate
           }
-        }),
+        }), 
         api.get(`/sorted-by-distance`, {
           params: {
             address: selectedLocation

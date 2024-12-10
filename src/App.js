@@ -166,7 +166,7 @@ function AppContent() {
         <Route path="/motorbikereview" element={<MotorbikeReview />} />
         <Route path="/rental-signup" element={<RentalSignup />} />
         <Route path="/ownerchat" element={<OwnerChat />} />
-        <Route path="/paymentowner" element={<PaymentOwner />} />
+        
         <Route
           path="/user-dashboard"
           element={
@@ -198,6 +198,7 @@ function AppContent() {
           <Route path="rent-bike-history" element={<OwnerHistoryRent />} />
           <Route path="change-password" element={<OwnerChangePassword />} />
           <Route path="list-vehicles" element={<OwnerListVehicles />} />
+          <Route path="paymentowner" element={<PaymentOwner />} />
         </Route>
 
         <Route path="UpdatePage" element={<UpdatePage />} />

@@ -10,9 +10,10 @@
   max-width: 1200px;
   margin: auto;
   border-radius: 20px;
-  margin-top: 20px;
+  margin-top: 10px;
   opacity: inherit;
   margin-bottom: 40px; 
+  height:390px;
 }
 
 /* Thêm lớp overlay để tạo hiệu ứng mờ */
@@ -36,8 +37,9 @@
   padding: 20px;
 }
 
-.title {
-  font-size: 86px;
+.titleName {
+  font-size: 76px;
+  
   margin: 20px 0;
   color: white; /* Đổi màu chữ thành màu trắng */
   width: 100%;
