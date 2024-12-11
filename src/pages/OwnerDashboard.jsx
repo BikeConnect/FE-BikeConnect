@@ -8,7 +8,7 @@ import { IoIosChatbubbles, IoMdChatboxes } from "react-icons/io";
 import { GoHomeFill } from "react-icons/go";
 import { FaMotorcycle } from "react-icons/fa6";
 import { BiSolidGrid } from "react-icons/bi";
-import { MdWarning } from 'react-icons/md';
+import { MdPayments, MdWarning } from 'react-icons/md';
 import api from "../api/api";
 
 const OwnerDashboard = ({ onLogout }) => {
@@ -117,15 +117,6 @@ const OwnerDashboard = ({ onLogout }) => {
                     Chat với Admin
                   </Link>
                 </li>
-
-                {/* <li className="flex items-center justify-start gap-2 py-3">
-                  <span className="text-xl">
-                    <FaMotorcycle /> 
-                  </span>
-                  <Link className="block" to="/owner-dashboard/postlistowner">
-                    Danh sách xe
-                  </Link>
-                </li> */}
                 <li className="flex items-center justify-start gap-2 py-3">
                   <span className="text-xl">
                     <FaHistory />
@@ -137,7 +128,7 @@ const OwnerDashboard = ({ onLogout }) => {
 
                 <li className="flex items-center justify-start gap-2 py-3">
                   <span className="text-xl">
-                    <FaHistory />
+                  <MdPayments />
                   </span>
                   <Link className="block" to="/owner-dashboard/paymentowner">
                     Thanh toán đăng xe
