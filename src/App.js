@@ -58,6 +58,7 @@ import OwnerChangePassword from "./components/OwnerDashboard/OwnerChangePassword
 import OwnerChatAdmin from "./components/OwnerDashboard/OwnerChatAdmin";
 import OwnerListVehicles from "./components/OwnerDashboard/OwnerListVehicles";
 
+
 function AppContent() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState("");
@@ -162,7 +163,7 @@ function AppContent() {
           path="/viewtransactionhis"
           element={<ViewTransactionHistory />}
         />
-        <Route path="/rentalstatustabs" element={<RentalStatusTabs />} />
+       
         <Route path="/motorbikereview" element={<MotorbikeReview />} />
         <Route path="/rental-signup" element={<RentalSignup />} />
         <Route path="/ownerchat" element={<OwnerChat />} />
@@ -179,6 +180,7 @@ function AppContent() {
           <Route path="chat" element={<CustomerChat />} />
           <Route path="chat/:ownerId" element={<CustomerChat />} />
           <Route path="change-password" element={<CustomerChangePassword />} />
+          <Route path="rentalstatustabs" element={<RentalStatusTabs />} />
         </Route>
         <Route
           path="/owner-dashboard"

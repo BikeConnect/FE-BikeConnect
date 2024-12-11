@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Star, Upload, X, Store, Clock, Check } from 'lucide-react';
 import './MotorbikeReview.css';
 import { useNavigate } from 'react-router-dom';
-import NavBar from '../NavBar/NavBar';
+import image from '../../assets/images/images_homePage/v994_8600.png';
 
 
 const MotorbikeReview = ({ 
@@ -70,13 +70,13 @@ const MotorbikeReview = ({
     
     // Sau 3 giây, chuyển về trang RentalStatusTabs
     setTimeout(() => {
-      navigate('/RentalStatusTabs');
+      navigate('/user-dashboard/rentalstatustabs');
     }, 3000);
   };
 
   return (
     <div className="review-form-container">
-      <NavBar></NavBar>
+ 
       <h2 className="review-form-title">Đánh giá xe máy</h2>
 
       {/* Thông tin xe máy */}
@@ -85,7 +85,8 @@ const MotorbikeReview = ({
           <div className="motorbike-card-grid">
             <div className="motorbike-image-wrapper">
               <img
-                src={motorcycleData.image}
+                // src={motorcycleData.image}
+                src={image}
                 alt={motorcycleData.name}
                 className="motorbike-image"
               />
@@ -154,7 +155,7 @@ const MotorbikeReview = ({
           <div className="media-upload">
             <h3 className="media-upload-title">Tải ảnh và video</h3>
             <div className="upload-buttons">
-              <label className="upload-button">
+              <label className="upload-buttonn">
                 <Upload className="upload-icon" />
                 <span>Tải ảnh lên</span>
                 <input
@@ -165,7 +166,7 @@ const MotorbikeReview = ({
                   onChange={handleImageUpload}
                 />
               </label>
-              <label className="upload-button">
+              <label className="upload-buttonn">
                 <Upload className="upload-icon" />
                 <span>Tải video lên</span>
                 <input
@@ -229,11 +230,12 @@ const MotorbikeReview = ({
                       Your browser does not support the video tag.
                     </video>
                     <button
+                       
                       type="button"
                       className="remove-preview-button"
                       onClick={() => removeVideo(index)}
                     >
-                      <X size={16} />
+                      
                     </button>
                   </div>
                 ))}

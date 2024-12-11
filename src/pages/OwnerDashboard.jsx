@@ -48,7 +48,7 @@ const OwnerDashboard = ({ onLogout }) => {
   return (
     <div>
       <div className="mt-2 bg-slate-200">
-      <div className="max-w-[1200px] mx-auto">
+      <div className="max-w">
         <div className="w-[90%] mx-auto md-lg:block hidden">
           <div>
             <button

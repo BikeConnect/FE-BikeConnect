@@ -28,7 +28,7 @@ const RentalSignup = () => {
           <p>Bạn muốn cho thuê xe của mình, hãy hợp tác với chúng tôi.</p>
         </Col>
         <Col md={4} className="text-md-end text-center">
-          <Button className="signup-button" onClick={handleShowLogin}>
+          <Button className="btn-primary-custom" onClick={handleShowLogin}>
             Đăng nhập hoặc tạo tài khoản
             <ArrowRight size={16} />
           </Button>

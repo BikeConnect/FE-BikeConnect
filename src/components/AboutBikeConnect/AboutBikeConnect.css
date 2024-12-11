@@ -1,7 +1,7 @@
-.bike-connect-info {
+.about-bike-container {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start; /* Align the content at the top */
+    align-items: flex-start;
     padding: 20px;
     background-color: #f0f9ff;
     border-radius: 16px;
@@ -9,31 +9,31 @@
     margin: 50px 0px;
 }
 
-.bike-connect-text {
-    max-width: 55%; /* Adjusted width for more text space */
-    margin-top: 0px; /* Ensure it's at the top */
+.about-bike-text {
+    max-width: 55%;
+    margin-top: 0px;
     padding: 0px 30px;
 }
 
-.bike-connect-title {
+.about-bike-title {
     font-size: 3rem;
     font-weight: 700;
     color: #000000;
     margin-bottom: 30px;
-    margin-top: 55px;
+    /* margin-top: 55px; */
 }
 
-.bike-connect-description {
+.about-bike-description {
     font-size: 1.2rem;
     color: #4b5563;
     line-height: 1.75;
 }
 
-.bike-connect-image {
-    max-width: 40%; /* Adjusted to occupy more space */
+.about-bike-image {
+    max-width: 40%;
 }
 
-.bike-connect-img {
+.about-bike-img {
     width: 100%;
     height: auto;
     border-radius: 12px;

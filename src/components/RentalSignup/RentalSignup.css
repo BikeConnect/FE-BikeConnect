@@ -27,8 +27,8 @@
   margin: 0;
 }
 
-.signup-button {
-  background-color:#472CB2;
+.btn-primary-custom {
+  background-color: #472CB2;
   border: none;
   padding: 12px 24px;
   border-radius: 8px;
@@ -37,9 +37,14 @@
   gap: 8px;
   font-size: 16px;
   white-space: nowrap;
+  color: #fff;
+  transition: background-color 0.3s;
 }
 
-
+.btn-primary-custom:hover {
+  background-color: #3a2391;
+  color: #fff;
+}
 
 @media (max-width: 768px) {
   .rental-content {
@@ -55,8 +60,8 @@
     font-size: 14px;
   }
 
-  .signup-button {
+  .btn-primary-custom {
     width: 100%;
     justify-content: center;
   }
-} 
+}

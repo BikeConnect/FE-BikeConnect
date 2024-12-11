@@ -4,7 +4,7 @@ import { Clock, Store, MessageCircle, Star, Check, X, RotateCcw } from 'lucide-r
 import './RentalStatusTabs.css';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import NavBar from '../NavBar/NavBar';
+import image from '../../assets/images/images_homePage/v994_8600.png';
 
 
 const RentalStatusTabs = () => {
@@ -195,8 +195,8 @@ const RentalStatusTabs = () => {
     const actions = {
 
       'completed': [
-        { label: 'Xem cửa hàng', icon: <Store size={20} />, variant: 'outline' },
-        { label: 'Liên hệ chủ xe', icon: <MessageCircle size={20} />, variant: 'outline' },
+        { label: 'Xem cửa hàng', icon: <Store size={20} />, variant: 'outlinee' },
+        { label: 'Liên hệ chủ xe', icon: <MessageCircle size={20} />, variant: 'outlinee' },
         {
           label: 'Đặt lại xe',
           icon: <RotateCcw size={20} />,
@@ -206,8 +206,8 @@ const RentalStatusTabs = () => {
       ],
       
       'pending-confirm': [
-        { label: 'Xem cửa hàng', icon: <Store size={20} />, variant: 'outline' },
-        { label: 'Liên hệ chủ xe', icon: <MessageCircle size={20} />, variant: 'outline' },
+        { label: 'Xem cửa hàng', icon: <Store size={20} />, variant: 'outlinee' },
+        { label: 'Liên hệ chủ xe', icon: <MessageCircle size={20} />, variant: 'outlinee' },
         { 
           label: 'Hủy đặt xe', 
           icon: <X size={20} />, 
@@ -216,8 +216,8 @@ const RentalStatusTabs = () => {
         }
       ],
       'receiving': [
-        { label: 'Xem cửa hàng', icon: <Store size={20} />, variant: 'outline' },
-        { label: 'Liên hệ chủ xe', icon: <MessageCircle size={20} />, variant: 'outline' },
+        { label: 'Xem cửa hàng', icon: <Store size={20} />, variant: 'outlinee' },
+        { label: 'Liên hệ chủ xe', icon: <MessageCircle size={20} />, variant: 'outlinee' },
         { 
           label: 'Xác nhận nhận xe', 
           icon: <Check size={20} />, 
@@ -226,8 +226,8 @@ const RentalStatusTabs = () => {
         }
       ],
       'returning': [
-        { label: 'Xem cửa hàng', icon: <Store size={20} />, variant: 'outline' },
-        { label: 'Liên hệ chủ xe', icon: <MessageCircle size={20} />, variant: 'outline' },
+        { label: 'Xem cửa hàng', icon: <Store size={20} />, variant: 'outlinee' },
+        { label: 'Liên hệ chủ xe', icon: <MessageCircle size={20} />, variant: 'outlinee' },
         { 
           label: 'Xác nhận trả xe', 
           icon: <Check size={20} />, 
@@ -236,8 +236,8 @@ const RentalStatusTabs = () => {
         }
       ],
       'rating': [
-        { label: 'Xem cửa hàng', icon: <Store size={20} />, variant: 'outline' },
-        { label: 'Liên hệ chủ xe', icon: <MessageCircle size={20} />, variant: 'outline' },
+        { label: 'Xem cửa hàng', icon: <Store size={20} />, variant: 'outlinee' },
+        { label: 'Liên hệ chủ xe', icon: <MessageCircle size={20} />, variant: 'outlinee' },
         { 
           label: isReviewed ? 'Hoàn thành đánh giá' : 'Đánh giá ngay', 
           icon: <Star size={20} />, 
@@ -252,8 +252,8 @@ const RentalStatusTabs = () => {
         }
       ],
       'cancelled': [
-        { label: 'Xem cửa hàng', icon: <Store size={20} />, variant: 'outline' },
-        { label: 'Liên hệ chủ xe', icon: <MessageCircle size={20} />, variant: 'outline' },
+        { label: 'Xem cửa hàng', icon: <Store size={20} />, variant: 'outlinee' },
+        { label: 'Liên hệ chủ xe', icon: <MessageCircle size={20} />, variant: 'outlinee' },
         { 
           label: 'Đặt lại xe', 
           icon: <RotateCcw size={20} />, 
@@ -285,7 +285,6 @@ const RentalStatusTabs = () => {
 
   return (
     <div className="rental-status-container">
-      <NavBar></NavBar>
       <div className="tabs-wrapper">
         <ul className="nav nav-tabs">
           {updateTabCounts().map((tab) => (
@@ -311,7 +310,8 @@ const RentalStatusTabs = () => {
               <div className="motorcycle-grid">
                 <div className="image-container">
                   <img 
-                    src={motorcycle.image} 
+                  //  src={motorcycle.image} 
+                    src={image} 
                     alt={motorcycle.name} 
                     className="motorcycle-image"
                   />
