@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { CheckCircle, AlertCircle } from 'lucide-react';
 import './PaymentOwner.css';
-import NavBar from '../NavBar/NavBar';
+// import NavBar from '../NavBar/NavBar';
 
 const PaymentOwner = () => {
   const [bankAccount] = useState({
@@ -35,7 +35,7 @@ const PaymentOwner = () => {
 
   return (
     <div className="container">
-      <NavBar></NavBar>
+      {/* <NavBar></NavBar> */}
       <div className="card">
         <div className="card-header">
           <h2 className="card-title">Thanh Toán Thuê Xe - Chuyển Khoản Ngân Hàng</h2>

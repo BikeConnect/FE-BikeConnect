@@ -134,6 +134,15 @@ const OwnerDashboard = ({ onLogout }) => {
                     Lịch sử cho thuê xe
                   </Link>
                 </li>
+
+                <li className="flex items-center justify-start gap-2 py-3">
+                  <span className="text-xl">
+                    <FaHistory />
+                  </span>
+                  <Link className="block" to="/owner-dashboard/paymentowner">
+                    Thanh toán đăng xe
+                  </Link>
+                </li>
                 <li className="flex items-center justify-start gap-2 py-3">
                   <span className="text-xl">
                     <TbPassword />

@@ -309,35 +309,7 @@ const PostPage = () => {
                 </div>
               </div>
 
-              {vehicle.startDate && vehicle.endDate && (
-                <div className="form-group">
-                  <label>Chọn ngày cho thuê:</label>
-                  <div className="date-picker-container">
-                    <DatePicker
-                      inline
-                      minDate={new Date(vehicle.startDate)}
-                      maxDate={new Date(vehicle.endDate)}
-                      selected={null}
-                      onChange={handleDateSelect}
-                      highlightDates={selectedDates}
-                      dateFormat="dd/MM/yyyy"
-                      calendarClassName="custom-calendar"
-                      dayClassName={date =>
-                        selectedDates.some(d => d.getTime() === date.getTime())
-                          ? "selected-day"
-                          : undefined
-                      }
-                    />
-                  </div>
-                  {errors.availableDates && (
-                    <div className="error-message">{errors.availableDates}</div>
-                  )}
-                  <div className="selected-dates-info">
-                    Đã chọn: {selectedDates.length} ngày
-                  </div>
-                </div>
-              )}
-
+           
               {/* Row 6: AssetUpload */}
               <div className="form-group form-group-img">
                 <label>Hình ảnh:</label>

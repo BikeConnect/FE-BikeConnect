@@ -11,7 +11,7 @@ const NameService = () => {
   return (
     <div className="service-name">
       <div className="title-container">
-        <h1 className="title">Cộng Đồng Những Người Thuê Và Cho Thuê Xe</h1>
+        <h1 className="titleName">Cộng Đồng Những Người Thuê Và Cho Thuê Xe</h1>
       </div>
     </div>
   );

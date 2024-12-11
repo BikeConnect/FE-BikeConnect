@@ -16,7 +16,7 @@ const HomePage = () => {
         <div className="page-wrapper">
             <NameService />
             <main className="main-content">
-                <div className="container">
+                <div className="main-container">
                     <SearchBar />
                     <AboutBikeConnect />
                     <CyclerentalGrid />
