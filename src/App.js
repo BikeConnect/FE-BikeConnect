@@ -10,7 +10,6 @@ import HomePage from "./components/HomePage/HomePage";
 import RegisterOwner from "./components/RegisterOwner/RegisterOwner";
 import HeaderAfterLogin from "./components/Header/HeaderAfterLogin";
 import HeaderNoLogin from "./components/Header/HeaderNoLogin";
-import NavBar from "./components/NavBar/NavBar";
 import CustomerProfile from "./components/Profile/CustomerProfile";
 import RentalHistory from "./components/RentalHistory/RentalHistory";
 import VehicleRental from "./components/VehicleRental/VehicleRental";

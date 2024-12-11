@@ -118,14 +118,14 @@ const OwnerDashboard = ({ onLogout }) => {
                   </Link>
                 </li>
 
-                <li className="flex items-center justify-start gap-2 py-3">
+                {/* <li className="flex items-center justify-start gap-2 py-3">
                   <span className="text-xl">
                     <FaMotorcycle /> 
                   </span>
                   <Link className="block" to="/owner-dashboard/postlistowner">
                     Danh sách xe
                   </Link>
-                </li>
+                </li> */}
                 <li className="flex items-center justify-start gap-2 py-3">
                   <span className="text-xl">
                     <FaHistory />
