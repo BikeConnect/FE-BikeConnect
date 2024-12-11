@@ -212,7 +212,7 @@ button.action-button.outlinee {
 
 button.action-button.outlinee:hover {
 
-  /* background-color: #472CB2; */
+  background-color: #472CB2;
 }
 /* Responsive Adjustments */
 @media (max-width: 768px) {
