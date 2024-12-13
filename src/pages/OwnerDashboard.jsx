@@ -52,6 +52,14 @@ const OwnerDashboard = ({ onLogout }) => {
                   <span className="text-xl">
                     <FaMotorcycle />
                   </span>
+                  <Link className="block" to="/postlistowner">
+                    Danh sách xe
+                  </Link>
+                </li>
+                <li className="flex items-center justify-start gap-2 py-3">
+                  <span className="text-xl">
+                    <FaMotorcycle />
+                  </span>
                   <Link className="block" to="/owner-dashboard/rent-bike-request">
                     Yêu cầu thuê xe
                   </Link>
