@@ -147,11 +147,6 @@ const OwnerListVehicles = () => {
         return;
       }
 
-      if (endDate <= today) {
-        toast.error("Ngày kết thúc không được là ngày trong quá khứ");
-        return;
-      }
-
       if (startDate > endDate) {
         toast.error("Ngày kết thúc phải sau ngày bắt đầu");
         return;
