@@ -138,6 +138,24 @@ const OwnerListVehicles = () => {
   //Cập nhật thông tin với fake data
   const handleUpdateVehicle = async () => {
     try {
+      const today = new Date();
+      const startDate = new Date(editingVehicle.startDate);
+      const endDate = new Date(editingVehicle.endDate);
+
+      if (startDate <= today) {
+        toast.error("Ngày bắt đầu không được là ngày trong quá khứ");
+        return;
+      }
+
+      if (endDate <= today) {
+        toast.error("Ngày kết thúc không được là ngày trong quá khứ");
+        return;
+      }
+
+      if (startDate > endDate) {
+        toast.error("Ngày kết thúc phải sau ngày bắt đầu");
+        return;
+      }
 
       setEditingVehicle(vehicles);
       const updateData = {
