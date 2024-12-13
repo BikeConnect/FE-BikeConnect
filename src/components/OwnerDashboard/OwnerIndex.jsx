@@ -17,7 +17,6 @@ import {
 
 const OwnerIndex = () => {
   const dispatch = useDispatch();
-  const [user, setUser] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -49,29 +48,48 @@ const OwnerIndex = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    if (name === "phone") {
-      const phoneRegex = /^[0][0-9]*$/;
-      if (value === "" || phoneRegex.test(value)) {
-        setFormData((prev) => ({
-          ...prev,
-          [name]: value,
-        }));
-      }
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    }
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const nameRegex = /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠƯàáâãèéêìíòóôõùúăđĩũơưẠ-ỹ\s]+$/;
+    const addressRegex = /^[\p{L}0-9,.\- ]+$/u;
     const phoneRegex = /^[0][0-9]{9}$/;
+
+    if (!formData.name || !nameRegex.test(formData.name)) {
+      alert("Tên không hợp lệ! Vui lòng nhập tên hợp lệ (chỉ chứa chữ cái).");
+      return;
+    }
+
     if (!phoneRegex.test(formData.phone)) {
       alert(
-        "Số điện thoại không hợp lệ! Vui lòng nhập số điện thoại bắt đầu bằng số 0 và có 10 chữ số"
+        "Số điện thoại không hợp lệ! Vui lòng nhập số điện thoại bắt đầu bằng số 0 và có 10 chữ số."
+      );
+      return;
+    }
+
+    if (!formData.city || !nameRegex.test(formData.city)) {
+      alert(
+        "Tỉnh/Thành phố không hợp lệ! Vui lòng nhập tên thành phố hợp lệ (chỉ chứa chữ cái)."
+      );
+      return;
+    }
+
+    if (!formData.district || !nameRegex.test(formData.district)) {
+      alert(
+        "Quận/Huyện không hợp lệ! Vui lòng nhập tên quận/huyện hợp lệ (chỉ chứa chữ cái)."
+      );
+      return;
+    }
+
+    if (!formData.address || !addressRegex.test(formData.address)) {
+      alert(
+        "Địa chỉ không hợp lệ! Vui lòng nhập địa chỉ hợp lệ (có thể bao gồm chữ cái, số, dấu phẩy, dấu chấm hoặc dấu gạch ngang)."
       );
       return;
     }
@@ -168,17 +186,14 @@ const OwnerIndex = () => {
 
               <div className="flex items-center space-x-4">
                 <FaPhone className="text-[#472cb2]" />
-                <div className="relative w-full">
-                  <input
-                    type="text"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    placeholder="Nhập số điện thoại"
-                    maxLength="10"
-                    className="w-full p-2 border rounded focus:outline-none focus:border-[#472cb2]"
-                  />
-                </div>
+                <input
+                  type="text"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  placeholder="Nhập số điện thoại"
+                  className="w-full p-2 border rounded focus:outline-none focus:border-[#472cb2]"
+                />
               </div>
 
               <div className="flex items-center space-x-4">
@@ -200,7 +215,7 @@ const OwnerIndex = () => {
                     name="city"
                     value={formData.city}
                     onChange={handleChange}
-                    placeholder="Thành phố"
+                    placeholder="Tỉnh/Thành phố"
                     className="w-full p-2 border rounded focus:outline-none focus:border-[#472cb2]"
                   />
                   <input
@@ -216,7 +231,7 @@ const OwnerIndex = () => {
                     name="address"
                     value={formData.address}
                     onChange={handleChange}
-                    placeholder="Địa chỉ"
+                    placeholder="Địa chỉ cụ thể"
                     className="w-full p-2 border rounded focus:outline-none focus:border-[#472cb2]"
                   />
                 </div>
@@ -282,7 +297,7 @@ const OwnerIndex = () => {
                 onClick={handleEdit}
                 className="px-4 py-2 bg-[#472cb2] text-white rounded-md hover:bg-[#472cb2]"
               >
-                Chỉnh sửa thông tin
+                Chỉnh sửa
               </button>
             </div>
           </div>
