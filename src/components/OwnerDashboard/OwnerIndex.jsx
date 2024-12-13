@@ -57,7 +57,7 @@ const OwnerIndex = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const nameRegex = /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠƯàáâãèéêìíòóôõùúăđĩũơưẠ-ỹ\s]+$/;
+    const nameRegex = /^[a-zA-Z0-9\s]+$/;
     const addressRegex = /^[\p{L}0-9,.\- ]+$/u;
     const phoneRegex = /^[0][0-9]{9}$/;
 
