@@ -26,9 +26,59 @@ const OwnerListVehicles = () => {
   const fetchVehicles = async (page) => {
     try {
       setLoading(true);
-      const response = await api.get(`/owner/get-owner-vehicles?page=${page}`);
-      setVehicles(response.data.metadata);
-      setPagination(response.data.pagination);
+
+      //Fake data
+      const mockData = [
+        {
+          _id: '1',
+          brand: 'Toyota',
+          model: 'Camry',
+          license: '51H-12345',
+          price: 1000000,
+          startDate: '2024-12-01',
+          endDate: '2024-12-31',
+          availability_status: 'available',
+          availableDates: ['2024-12-01', '2024-12-05', '2024-12-10']
+        },
+        {
+          _id: '2',
+          brand: 'Honda',
+          model: 'Civic',
+          license: '51G-67890',
+          price: 800000,
+          startDate: '2024-11-15',
+          endDate: '2024-12-15',
+          availability_status: 'rented',
+          availableDates: []
+        },
+        {
+          _id: '3',
+          brand: 'Mazda',
+          model: 'CX-5',
+          license: '52F-54321',
+          price: 1200000,
+          startDate: '2024-12-05',
+          endDate: '2024-12-20',
+          availability_status: 'available',
+          availableDates: ['2024-12-05', '2024-12-10', '2024-12-15']
+        }
+      ];
+
+      const mockPagination = {
+        currentPage: 1,
+        totalPages: 1,
+        totalItems: mockData.length,
+        itemsPerPage: 5,
+        hasNextPage: false,
+        hasPrevPage: false
+      };
+
+      setVehicles(mockData);
+      setPagination(mockPagination);
+
+      // const response = await api.get(`/owner/get-owner-vehicles?page=${page}`);
+      // setVehicles(response.data.metadata);
+      // setPagination(response.data.pagination);
     } catch (error) {
       toast.error('Không thể tải danh sách xe');
     } finally {
@@ -53,35 +103,70 @@ const OwnerListVehicles = () => {
   };
 
   const handleEditDates = (vehicle) => {
+
+    if (vehicle.availability_status === 'rented') {
+      toast.error('Không thể chỉnh sửa thông tin xe vì xe đang cho thuê');
+      return;
+    }
+
     setEditingVehicle(vehicle);
     setSelectedDates(vehicle.availableDates.map(date => new Date(date)));
     setShowDateModal(true);
   };
 
+  // const handleUpdateVehicle = async () => {
+  //   try {
+  //     const updateData = {
+  //       startDate: editingVehicle.startDate,
+  //       endDate: editingVehicle.endDate,
+  //       availableDates: selectedDates.map(date => date.toISOString()),
+  //       availability_status: 'available'
+  //     };
+
+  //     await api.put(`/owner/update-vehicle-status/${editingVehicle._id}`, updateData);
+
+  //     toast.success('Cập nhật thông tin xe thành công');
+  //     setShowDateModal(false);
+  //     setEditingVehicle(null);
+  //     fetchVehicles(currentPage);
+  //   } catch (error) {
+  //     console.error('Update error:', error);
+  //     toast.error(error.response?.data?.message || 'Không thể cập nhật thông tin xe');
+  //   }
+  // };
+
+  //Cập nhật thông tin với fake data
   const handleUpdateVehicle = async () => {
     try {
+
+      setEditingVehicle(vehicles);
       const updateData = {
+        ...editingVehicle,
         startDate: editingVehicle.startDate,
         endDate: editingVehicle.endDate,
         availableDates: selectedDates.map(date => date.toISOString()),
-        availability_status: 'available'
+        availability_status: 'available',
       };
 
-      await api.put(`/owner/update-vehicle-status/${editingVehicle._id}`, updateData);
-      
+      setVehicles((prevVehicles) =>
+        prevVehicles.map((vehicle) =>
+          vehicle._id === editingVehicle._id ? updateData : vehicle
+        )
+      );
+
       toast.success('Cập nhật thông tin xe thành công');
       setShowDateModal(false);
       setEditingVehicle(null);
-      fetchVehicles(currentPage); 
     } catch (error) {
       console.error('Update error:', error);
-      toast.error(error.response?.data?.message || 'Không thể cập nhật thông tin xe');
+      toast.error('Không thể cập nhật thông tin xe');
     }
   };
 
+
   const handleDateSelect = (date) => {
     const newDate = new Date(date.setHours(0, 0, 0, 0));
-    
+
     if (selectedDates.some(d => d.getTime() === newDate.getTime())) {
       setSelectedDates(selectedDates.filter(d => d.getTime() !== newDate.getTime()));
     } else {
@@ -167,11 +252,10 @@ const OwnerListVehicles = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center gap-2">
-                      <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        vehicle.availability_status === 'available' 
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-red-100 text-red-800'
-                      }`}>
+                      <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${vehicle.availability_status === 'available'
+                        ? 'bg-green-100 text-green-800'
+                        : 'bg-red-100 text-red-800'
+                        }`}>
                         {vehicle.availability_status === 'available' ? 'Có sẵn' : 'Đang cho thuê'}
                       </span>
                       {isVehicleExpired(vehicle.endDate) && (
@@ -204,27 +288,25 @@ const OwnerListVehicles = () => {
           <button
             onClick={handlePrevPage}
             disabled={!pagination.hasPrevPage}
-            className={`px-4 py-2 rounded-md ${
-              pagination.hasPrevPage
-                ? "bg-blue-500 text-white hover:bg-blue-600"
-                : "bg-gray-200 text-gray-500 cursor-not-allowed"
-            }`}
+            className={`px-4 py-2 rounded-md ${pagination.hasPrevPage
+              ? "bg-blue-500 text-white hover:bg-blue-600"
+              : "bg-gray-200 text-gray-500 cursor-not-allowed"
+              }`}
           >
             Trang trước
           </button>
-          
+
           <span className="text-gray-600">
             Trang {pagination.currentPage} / {pagination.totalPages}
           </span>
-          
+
           <button
             onClick={handleNextPage}
             disabled={!pagination.hasNextPage}
-            className={`px-4 py-2 rounded-md ${
-              pagination.hasNextPage
-                ? "bg-blue-500 text-white hover:bg-blue-600"
-                : "bg-gray-200 text-gray-500 cursor-not-allowed"
-            }`}
+            className={`px-4 py-2 rounded-md ${pagination.hasNextPage
+              ? "bg-blue-500 text-white hover:bg-blue-600"
+              : "bg-gray-200 text-gray-500 cursor-not-allowed"
+              }`}
           >
             Trang sau
           </button>
@@ -235,7 +317,7 @@ const OwnerListVehicles = () => {
         <div className="modal-overlay">
           <div className="modal-content">
             <h3 className="text-xl font-semibold mb-4">Chỉnh sửa thời gian cho thuê</h3>
-            
+
             <div className="mb-4">
               <label className="block text-sm font-medium mb-2">Ngày bắt đầu:</label>
               <input
@@ -293,7 +375,7 @@ const OwnerListVehicles = () => {
                   setEditingVehicle(null);
                 }}
                 className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors duration-200 flex items-center"
-                >
+              >
                 Hủy
               </button>
               <button
