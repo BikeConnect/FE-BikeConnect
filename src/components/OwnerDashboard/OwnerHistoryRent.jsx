@@ -19,104 +19,19 @@ const OwnerHistoryRent = () => {
     hasPrevPage: false
   });
 
-  const fakeBookings = [
-    {
-      _id: "1",
-      customerName: "Nguyễn Văn A",
-      vehicleModel: "Xe máy Yamaha",
-      startDate: "2024-12-01T10:00:00Z",
-      endDate: "2024-12-05T10:00:00Z",
-      totalAmount: 500000,
-      status: "completed",
-      ownerConfirmed: { rejectionReason: null }
-    },
-    {
-      _id: "2",
-      customerName: "Trần Thị B",
-      vehicleModel: "Xe máy Honda",
-      startDate: "2024-12-10T08:00:00Z",
-      endDate: "2024-12-12T08:00:00Z",
-      totalAmount: 400000,
-      status: "active",
-      ownerConfirmed: { rejectionReason: null }
-    },
-    {
-      _id: "3",
-      customerName: "Lê Minh C",
-      vehicleModel: "Ô tô Toyota",
-      startDate: "2024-11-20T09:00:00Z",
-      endDate: "2024-11-23T09:00:00Z",
-      totalAmount: 1000000,
-      status: "cancelled",
-      ownerConfirmed: { rejectionReason: "Không có sẵn xe" }
-    },
-    {
-      _id: "4",
-      customerName: "Phạm Hoàng D",
-      vehicleModel: "Xe máy Suzuki",
-      startDate: "2024-12-02T12:00:00Z",
-      endDate: "2024-12-06T12:00:00Z",
-      totalAmount: 350000,
-      status: "pending",
-      ownerConfirmed: { rejectionReason: null }
-    },
-    {
-      _id: "5",
-      customerName: "Võ Đức E",
-      vehicleModel: "Xe máy Piaggio",
-      startDate: "2024-12-07T14:00:00Z",
-      endDate: "2024-12-09T14:00:00Z",
-      totalAmount: 600000,
-      status: "completed",
-      ownerConfirmed: { rejectionReason: null }
-    },
-    {
-      _id: "6",
-      customerName: "Nguyễn Mai F",
-      vehicleModel: "Ô tô BMW",
-      startDate: "2024-12-10T16:00:00Z",
-      endDate: "2024-12-15T16:00:00Z",
-      totalAmount: 2500000,
-      status: "active",
-      ownerConfirmed: { rejectionReason: null }
-    }
-  ];
-
-  // const fetchBookingHistory = async (page) => {
-  //   try {
-  //     setLoading(true);
-  //     const response = await api.get(`/owner/get-owner-all-bookings-history?page=${page}`);
-  //     setBookingHistory(response.data.bookings);
-  //     setPagination(response.data.pagination);
-  //   } catch (error) {
-  //     toast.error("Đã có lỗi xảy ra!");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
   const fetchBookingHistory = async (page) => {
     try {
       setLoading(true);
-      setTimeout(() => {
-        const startIndex = (page - 1) * pagination.itemsPerPage;
-        const endIndex = page * pagination.itemsPerPage;
-        const pageBookings = fakeBookings.slice(startIndex, endIndex);
-
-        setBookingHistory(pageBookings);
-        setPagination({
-          ...pagination,
-          totalItems: fakeBookings.length,
-          totalPages: Math.ceil(fakeBookings.length / pagination.itemsPerPage),
-          hasNextPage: page < Math.ceil(fakeBookings.length / pagination.itemsPerPage),
-          hasPrevPage: page > 1
-        });
-      }, 0);
+      const response = await api.get(`/owner/get-owner-all-bookings-history?page=${page}`);
+      setBookingHistory(response.data.bookings);
+      setPagination(response.data.pagination);
     } catch (error) {
       toast.error("Đã có lỗi xảy ra!");
     } finally {
       setLoading(false);
     }
   };
+
 
   useEffect(() => {
     fetchBookingHistory(currentPage);

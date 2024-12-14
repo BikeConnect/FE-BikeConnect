@@ -29,63 +29,11 @@ const OwnerRequestBike = () => {
 
   const fetchBookingRequests = async (page) => {
     try {
-      //Fake data
-      const fakeData = [
-        {
-          _id: "1",
-          customerName: "Nguyễn Văn A",
-          vehicleModel: "Yamaha Exciter",
-          startDate: "2024-12-15",
-          endDate: "2024-12-20",
-        },
-        {
-          _id: "2",
-          customerName: "Trần Thị B",
-          vehicleModel: "Honda Wave",
-          startDate: "2024-12-18",
-          endDate: "2024-12-22",
-        },
-        {
-          _id: "3",
-          customerName: "Phạm Văn C",
-          vehicleModel: "Suzuki Raider",
-          startDate: "2024-12-10",
-          endDate: "2024-12-15",
-        },
-        {
-          _id: "4",
-          customerName: "Lê Thị D",
-          vehicleModel: "Vespa Primavera",
-          startDate: "2024-12-12",
-          endDate: "2024-12-18",
-        },
-        {
-          _id: "5",
-          customerName: "Đặng Văn E",
-          vehicleModel: "SYM Star",
-          startDate: "2024-12-14",
-          endDate: "2024-12-19",
-        },
-      ];
 
-      const itemsPerPage = 5;
-      const startIndex = (page - 1) * itemsPerPage;
-      const paginatedData = fakeData.slice(startIndex, startIndex + itemsPerPage);
-
-      setBookingRequests(paginatedData);
-      setPagination({
-        currentPage: page,
-        totalPages: Math.ceil(fakeData.length / itemsPerPage),
-        totalItems: fakeData.length,
-        itemsPerPage: itemsPerPage,
-        hasNextPage: page < Math.ceil(fakeData.length / itemsPerPage),
-        hasPrevPage: page > 1,
-      });
-
-      // setLoading(true);
-      // const response = await api.get(`/owner/get-customer-booking-request?page=${page}`);
-      // setBookingRequests(response.data.bookings);
-      // setPagination(response.data.pagination);
+      setLoading(true);
+      const response = await api.get(`/owner/get-customer-booking-request?page=${page}`);
+      setBookingRequests(response.data.bookings);
+      setPagination(response.data.pagination);
     } catch (error) {
       toast.error("Đã có lỗi xảy ra!");
     } finally {
@@ -104,26 +52,18 @@ const OwnerRequestBike = () => {
   }, [bookingRequests]);
 
   const handleAccept = async () => {
-    // try {
-    //   await api.put(`/confirm-contract/${selectedContractForTerms._id}`, {
-    //     isConfirmed: true,
-    //   });
-
-    //   setBookingRequests(prevRequests =>
-    //     prevRequests.filter(booking => booking._id !== selectedContractForTerms._id)
-    //   );
-
-    //   setShowTermsModal(false);
-    //   setSelectedContractForTerms(null);
-    //   toast.success("Đã chấp nhận yêu cầu thuê xe thành công!");
-    // } catch (error) {
-    //   toast.error("Có lỗi xảy ra khi chấp nhận yêu cầu!");
-    // }
     try {
-      toast.success("Đã chấp nhận yêu cầu thuê xe thành công!");
-      setBookingRequests(prevRequests => prevRequests.filter(booking => booking._id !== selectedContractForTerms._id));
+      await api.put(`/confirm-contract/${selectedContractForTerms._id}`, {
+        isConfirmed: true,
+      });
+
+      setBookingRequests(prevRequests =>
+        prevRequests.filter(booking => booking._id !== selectedContractForTerms._id)
+      );
+
       setShowTermsModal(false);
       setSelectedContractForTerms(null);
+      toast.success("Đã chấp nhận yêu cầu thuê xe thành công!");
     } catch (error) {
       toast.error("Có lỗi xảy ra khi chấp nhận yêu cầu!");
     }
@@ -135,41 +75,31 @@ const OwnerRequestBike = () => {
   };
 
   const handleConfirmReject = async (rejectReason) => {
-    // try {
-    //   const response = await api.put(`/confirm-contract/${selectedContractId}`, {
-    //     isConfirmed: false,
-    //     rejectReason: rejectReason,
-    //   });
-
-    //   if (response.status === 200) {
-    //     setBookingRequests(prevRequests =>
-    //       prevRequests.filter(booking => booking._id !== selectedContractId)
-    //     );
-
-    //     if (bookingRequests.length === 1 && currentPage > 1) {
-    //       setCurrentPage(1);
-    //     } else {
-    //       fetchBookingRequests(currentPage);
-    //     }
-
-    //     toast.success("Đã từ chối yêu cầu thuê xe thành công!");
-    //   }
-    // } catch (error) {
-    //   console.error("Error rejecting contract:", error);
-    //   toast.error("Có lỗi xảy ra khi từ chối yêu cầu!");
-    // } finally {
-    //   setShowRejectModal(false);
-    //   setSelectedContractId(null);
-    // }
-
     try {
-      toast.success("Đã từ chối yêu cầu thuê xe thành công!");
-      setBookingRequests(prevRequests => prevRequests.filter(booking => booking._id !== selectedContractId));
+      const response = await api.put(`/confirm-contract/${selectedContractId}`, {
+        isConfirmed: false,
+        rejectReason: rejectReason,
+      });
 
+      if (response.status === 200) {
+        setBookingRequests(prevRequests =>
+          prevRequests.filter(booking => booking._id !== selectedContractId)
+        );
+
+        if (bookingRequests.length === 1 && currentPage > 1) {
+          setCurrentPage(1);
+        } else {
+          fetchBookingRequests(currentPage);
+        }
+
+        toast.success("Đã từ chối yêu cầu thuê xe thành công!");
+      }
+    } catch (error) {
+      console.error("Error rejecting contract:", error);
+      toast.error("Có lỗi xảy ra khi từ chối yêu cầu!");
+    } finally {
       setShowRejectModal(false);
       setSelectedContractId(null);
-    } catch (error) {
-      toast.error("Có lỗi xảy ra khi từ chối yêu cầu!");
     }
   };
 

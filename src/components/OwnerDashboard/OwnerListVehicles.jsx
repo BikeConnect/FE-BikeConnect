@@ -26,59 +26,9 @@ const OwnerListVehicles = () => {
   const fetchVehicles = async (page) => {
     try {
       setLoading(true);
-
-      //Fake data
-      const mockData = [
-        {
-          _id: '1',
-          brand: 'Toyota',
-          model: 'Camry',
-          license: '51H-12345',
-          price: 1000000,
-          startDate: '2024-12-01',
-          endDate: '2024-12-31',
-          availability_status: 'available',
-          availableDates: ['2024-12-01', '2024-12-05', '2024-12-10']
-        },
-        {
-          _id: '2',
-          brand: 'Honda',
-          model: 'Civic',
-          license: '51G-67890',
-          price: 800000,
-          startDate: '2024-11-15',
-          endDate: '2024-12-15',
-          availability_status: 'rented',
-          availableDates: []
-        },
-        {
-          _id: '3',
-          brand: 'Mazda',
-          model: 'CX-5',
-          license: '52F-54321',
-          price: 1200000,
-          startDate: '2024-12-05',
-          endDate: '2024-12-20',
-          availability_status: 'available',
-          availableDates: ['2024-12-05', '2024-12-10', '2024-12-15']
-        }
-      ];
-
-      const mockPagination = {
-        currentPage: 1,
-        totalPages: 1,
-        totalItems: mockData.length,
-        itemsPerPage: 5,
-        hasNextPage: false,
-        hasPrevPage: false
-      };
-
-      setVehicles(mockData);
-      setPagination(mockPagination);
-
-      // const response = await api.get(`/owner/get-owner-vehicles?page=${page}`);
-      // setVehicles(response.data.metadata);
-      // setPagination(response.data.pagination);
+      const response = await api.get(`/owner/get-owner-vehicles?page=${page}`);
+      setVehicles(response.data.metadata);
+      setPagination(response.data.pagination);
     } catch (error) {
       toast.error('Không thể tải danh sách xe');
     } finally {
@@ -114,67 +64,27 @@ const OwnerListVehicles = () => {
     setShowDateModal(true);
   };
 
-  // const handleUpdateVehicle = async () => {
-  //   try {
-  //     const updateData = {
-  //       startDate: editingVehicle.startDate,
-  //       endDate: editingVehicle.endDate,
-  //       availableDates: selectedDates.map(date => date.toISOString()),
-  //       availability_status: 'available'
-  //     };
-
-  //     await api.put(`/owner/update-vehicle-status/${editingVehicle._id}`, updateData);
-
-  //     toast.success('Cập nhật thông tin xe thành công');
-  //     setShowDateModal(false);
-  //     setEditingVehicle(null);
-  //     fetchVehicles(currentPage);
-  //   } catch (error) {
-  //     console.error('Update error:', error);
-  //     toast.error(error.response?.data?.message || 'Không thể cập nhật thông tin xe');
-  //   }
-  // };
-
-  //Cập nhật thông tin với fake data
   const handleUpdateVehicle = async () => {
     try {
-      const today = new Date();
-      const startDate = new Date(editingVehicle.startDate);
-      const endDate = new Date(editingVehicle.endDate);
-
-      if (startDate <= today) {
-        toast.error("Ngày bắt đầu không được là ngày trong quá khứ");
-        return;
-      }
-
-      if (startDate > endDate) {
-        toast.error("Ngày kết thúc phải sau ngày bắt đầu");
-        return;
-      }
-
-      setEditingVehicle(vehicles);
       const updateData = {
-        ...editingVehicle,
         startDate: editingVehicle.startDate,
         endDate: editingVehicle.endDate,
         availableDates: selectedDates.map(date => date.toISOString()),
-        availability_status: 'available',
+        availability_status: 'available'
       };
 
-      setVehicles((prevVehicles) =>
-        prevVehicles.map((vehicle) =>
-          vehicle._id === editingVehicle._id ? updateData : vehicle
-        )
-      );
+      await api.put(`/owner/update-vehicle-status/${editingVehicle._id}`, updateData);
 
       toast.success('Cập nhật thông tin xe thành công');
       setShowDateModal(false);
       setEditingVehicle(null);
+      fetchVehicles(currentPage);
     } catch (error) {
       console.error('Update error:', error);
-      toast.error('Không thể cập nhật thông tin xe');
+      toast.error(error.response?.data?.message || 'Không thể cập nhật thông tin xe');
     }
   };
+
 
 
   const handleDateSelect = (date) => {
