@@ -1,15 +1,18 @@
-body { 
-    margin: 0;
-    padding: 0;
-    font-family: 'Roboto', sans-serif;
-    overflow-x: hidden;
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif;
+  overflow-x: hidden;
 }
 
 /* Container chính */
 .main-container {
-    width: 1200px;
-    margin: 0 auto;
-    box-sizing: border-box;
+  width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* Đảm bảo tất cả các container con đều có width 1200px */
@@ -21,46 +24,46 @@ body {
 .service-benefits,
 .cycle-tips-container,
 .rental-signup-container {
-    width: 1200px !important;
-    max-width: 1200px !important;
-    margin: 0 auto;
-    box-sizing: border-box;
-    padding: 0;
+  width: 1200px !important;
+  max-width: 1200px !important;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 0;
 }
 
 /* Container fluid cũng phải có width cố định */
 .container-fluid.rental-container {
-    width: 1200px !important;
-    max-width: 1200px !important;
-    padding: 0;
+  width: 1200px !important;
+  max-width: 1200px !important;
+  padding: 0;
 }
 
 /* Xử lý responsive */
 @media (max-width: 1200px) {
-    .container,
-    .search-container,
-    .about-bike-connect,
-    .container-fluid,
-    .rental-container,
-    .cycle-rental-steps,
-    .service-benefits,
-    .cycle-tips-container,
-    .rental-signup-container {
-        width: 100% !important;
-        padding: 0 20px;
-    }
+  .container,
+  .search-container,
+  .about-bike-connect,
+  .container-fluid,
+  .rental-container,
+  .cycle-rental-steps,
+  .service-benefits,
+  .cycle-tips-container,
+  .rental-signup-container {
+    width: 100% !important;
+    padding: 0 20px;
+  }
 }
 
 /* Đảm bảo các hình ảnh không bị tràn */
 img {
-    max-width: 100%;
-    height: auto;
+  max-width: 100%;
+  height: auto;
 }
 
 /* Thêm clear fix cho các container */
 .container::after,
 .container-fluid::after {
-    content: "";
-    display: table;
-    clear: both;
+  content: "";
+  display: table;
+  clear: both;
 }

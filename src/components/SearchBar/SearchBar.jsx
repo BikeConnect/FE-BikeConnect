@@ -37,7 +37,7 @@ const SearchBar = () => {
 
   const handleSearch = async () => {
     if (!selectedLocation) {
-      alert("Vui lòng chọn địa điểm");
+      alert("Vui lòng chọn vị trí");
       return;
     }
 
@@ -78,14 +78,14 @@ const SearchBar = () => {
         api.get(`/find-booking`, {
           params: {
             startDate: formattedStartDate,
-            endDate: formattedEndDate
-          }
-        }), 
+            endDate: formattedEndDate,
+          },
+        }),
         api.get(`/sorted-by-distance`, {
           params: {
-            address: selectedLocation
-          }
-        })
+            address: selectedLocation,
+          },
+        }),
       ]);
 
       const timeData = timeResponse.data;
@@ -138,7 +138,11 @@ const SearchBar = () => {
         localStorage.removeItem("userData");
         navigate("/");
       } else {
-        alert(`Có lỗi xảy ra khi tìm kiếm: ${error.response?.data?.message || error.message}`);
+        alert(
+          `Có lỗi xảy ra khi tìm kiếm: ${
+            error.response?.data?.message || error.message
+          }`
+        );
       }
     }
   };
@@ -147,19 +151,18 @@ const SearchBar = () => {
     <>
       <div className="search-bar-container">
         <div className="search-bar-field">
-          <div className="field-label">Địa điểm</div>
+          <div className="field-label">Vị trí</div>
           <button
             className="dropdown-btn"
             onClick={() => setIsLocationModalOpen(true)}
           >
             <div className="button-content">
-              <span className="icon-wrapper">
-                <MapPin size={20} />
-              </span>
+              {/* <span className="icon-wrapper">
+                <MapPin size={20} color="#fff" />
+              </span> */}
               <span className="button-text">
-                {selectedLocation || "Chọn địa điểm"}
+                {selectedLocation || "Chọn vị trí"}
               </span>
-              <ChevronDown size={20} color="#6b7280" />
             </div>
           </button>
         </div>
@@ -171,11 +174,10 @@ const SearchBar = () => {
             onClick={() => setIsTimeModalOpen(true)}
           >
             <div className="button-content">
-              <span className="icon-wrapper">
+              {/* <span className="icon-wrapper">
                 <Clock size={20} />
-              </span>
+              </span> */}
               <span className="button-text">{formatSelectedDates()}</span>
-              <ChevronDown size={20} color="#6b7280" />
             </div>
           </button>
         </div>
