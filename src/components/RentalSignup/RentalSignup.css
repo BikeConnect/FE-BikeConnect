@@ -1,5 +1,5 @@
 .rental-signup-container {
-  background-color: #dcecdc;
+  background-color: #030303d6;
   padding: 40px 20px;
   margin: 40px 0;
   border-radius: 16px;
@@ -13,35 +13,37 @@
   justify-content: space-between;
   align-items: center;
   gap: 20px;
+  
 }
 
-.rental-text h2 {
+.rental-title {
   font-size: 28px;
   font-weight: 600;
   margin-bottom: 10px;
+  color: #fff;
 }
 
 .rental-text p {
   font-size: 16px;
-  color: #666;
+  color: rgba(255, 255, 255, 0.7);
   margin: 0;
 }
 
-.btn-primary-custom {
-  background-color: #472CB2;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
+.btn-rentalSignup {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 16px;
+  flex-direction: column;
+  background-color: #472cb2;
+  border-radius: 24px;
   white-space: nowrap;
-  color: #fff;
   transition: background-color 0.3s;
 }
 
-.btn-primary-custom:hover {
+.btn-rental-text {
+  font-size: 16px;
+  color: #fff;
+}
+
+.btn-rentalSignup:hover {
   background-color: #3a2391;
   color: #fff;
 }
@@ -52,7 +54,7 @@
     text-align: center;
   }
 
-  .rental-text h2 {
+  .rental-title {
     font-size: 24px;
   }
 

@@ -69,7 +69,7 @@
   color: #472cb2;
 }
 
-.menu-link.active::after {
+/* .menu-link.active::after {
   content: "";
   position: absolute;
   bottom: -2px;
@@ -79,7 +79,7 @@
   background-color: #472cb2;
   border-radius: 2px;
   animation: slideIn 0.3s ease-in-out;
-}
+} */
 
 .auth-buttons {
   position: absolute;

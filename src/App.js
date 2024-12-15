@@ -57,7 +57,6 @@ import OwnerChangePassword from "./components/OwnerDashboard/OwnerChangePassword
 import OwnerChatAdmin from "./components/OwnerDashboard/OwnerChatAdmin";
 import OwnerListVehicles from "./components/OwnerDashboard/OwnerListVehicles";
 
-
 function AppContent() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState("");
@@ -124,7 +123,6 @@ function AppContent() {
     );
   };
 
-
   return (
     <div className="App">
       <Header />
@@ -156,17 +154,14 @@ function AppContent() {
         <Route path="/contract" element={<CreateContract />} />
         <Route path="/valrequest" element={<AuthUser />} />
         <Route path="/manageuser" element={<ManageUser />} />
-        <Route path="/postlistowner" element={<PostListOwner />} />
         <Route path="/post" element={<PostListOwner />} />
         <Route
           path="/viewtransactionhis"
           element={<ViewTransactionHistory />}
         />
-       
         <Route path="/motorbikereview" element={<MotorbikeReview />} />
         <Route path="/rental-signup" element={<RentalSignup />} />
         <Route path="/ownerchat" element={<OwnerChat />} />
-        
         <Route
           path="/user-dashboard"
           element={
@@ -194,16 +189,14 @@ function AppContent() {
           <Route path="chat/:customerId" element={<OwnerChatCustomer />} />
           <Route path="chat-admin" element={<OwnerChatAdmin />} />
           <Route path="rent-bike-request" element={<OwnerRequestBike />} />
-          <Route path="postlistowner" element={<PostListOwner />} />
-        
+
           <Route path="rent-bike-history" element={<OwnerHistoryRent />} />
           <Route path="change-password" element={<OwnerChangePassword />} />
           <Route path="list-vehicles" element={<OwnerListVehicles />} />
           <Route path="paymentowner" element={<PaymentOwner />} />
+          <Route path="postlistowner" element={<PostListOwner />} />
         </Route>
-
-        <Route path="UpdatePage" element={<UpdatePage />} />
-        
+        <Route path="/update-vehicle/:id" element={<UpdatePage />} />
       </Routes>
     </div>
   );

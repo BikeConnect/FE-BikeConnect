@@ -73,7 +73,7 @@ const CyclerentalGrid = () => {
   const [motorcycles, setMotorcycles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const itemsPerPage = 8;
+  const itemsPerPage = 4;
 
   useEffect(() => {
     const fetchMotorcycles = async () => {
@@ -148,7 +148,7 @@ const CyclerentalGrid = () => {
         </div>
       </div>
 
-      <div className="row">
+      <div className="row retal-container">
         {currentItems.map((item, index) => (
           <MotorcycleCard key={index} data={item} />
         ))}

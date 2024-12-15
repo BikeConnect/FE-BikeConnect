@@ -19,9 +19,9 @@ h4 {
 }
 
 .text-center .rental-title {
-  font-size: 24px;
-  font-weight: 600;
-  color: #000;
+  font-size: 28px;
+  font-weight: 800;
+  color: #212529;
 }
 
 a {
@@ -201,6 +201,11 @@ a {
 .rental-chevron-right {
   fill: var(--primary-color);
   width: 9px;
+}
+
+.retal-container {
+  margin-top: 32px;
+  flex-wrap: nowrap;
 }
 
 /* Responsive Design */
