@@ -1,49 +1,60 @@
-.service-grid {
-  margin-top: 3rem;
-  padding: 0px;
+.service-container {
+  display: flex;
+  gap: 16px;
+  margin-top: 32px;
 }
 
-.service-grid h2 {
-  text-align: center;
-  margin-bottom: 2rem;
-  font-size: 2rem;
-  font-weight: 700;
+.service-title {
+  font-size: 28px;
+  font-weight: 800;
 }
 
-.service-grid .card {
-  border: none;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-  transition: transform 0.3s;
-  height: 100%; /* Đảm bảo thẻ card có chiều cao đồng đều */
+.service-item {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-
-
-.service-grid .card-img-top {
-  height: 300px;     
-  width: 100%;        
-  object-fit: cover;  
+.service-item-HaiPhong,
+.service-item-DaNang {
+  border-radius: 24px;
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
 }
 
-.service-grid .card-body {
-  /* padding: 0.5rem; */
-  height: 0.03rem;
-
+.service-item-HaNoi,
+.service-item-SaiGon {
+  border-radius: 24px;
+  width: 100%;
+  height: 192px;
+  object-fit: cover;
 }
 
-.service-grid .card-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 0.1rem;
+.item-figure-HaiPhong,
+.item-figure-HaNoi,
+.item-figure-SaiGon,
+.item-figure-DaNang {
+  position: relative;
 }
 
-.service-grid .card-text {
-  color: #6c757d;
-  font-size: 0.9rem;
+.city-name-HaiPhong,
+.city-name-HaNoi,
+.city-name-SaiGon,
+.city-name-DaNang {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  color: #000;
+  background-color: #fff;
+  padding: 3px 14px;
+  border-radius: 14px;
+  line-height: 24px;
+  font-size: 16px;
+  font-weight: 400;
 }
 
-@media (max-width: 767.98px) {
-  .service-grid .card {
-    margin-bottom: 1.5rem;
-  }
+.item-group-HCMHaNoi {
+  gap: 16px;
 }

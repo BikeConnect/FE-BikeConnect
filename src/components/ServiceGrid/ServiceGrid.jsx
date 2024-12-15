@@ -1,31 +1,66 @@
-import React from 'react';
-import './ServiceGrid.css';
+import React from "react";
+import "./ServiceGrid.css";
 
 const ServiceGrid = () => {
-    const locations = [
-        { name: 'Hà Nội', image: 'https://hoanghamobile.com/tin-tuc/wp-content/uploads/2024/04/anh-ha-noi.jpg' },
-        { name: 'Hà Tĩnh', image: 'https://images.vietnamtourism.gov.vn/vn/images/2015/04.jpg' },
-        { name: 'Đà Nẵng', image: 'https://images2.thanhnien.vn/zoom/686_429/Uploaded/nguyentu/2018_11_12/sacmaudanang-maithanhchuong_CBMJ.jpg' },
-        { name: 'Hồ Chí Minh', image:'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/474076PRq/hinh-anh-thanh-pho-ho-chi-minh-ve-dem_031033761.jpg' },
-    ];
-
-    return (
-        <div className="container mt-5 service-grid">
-            <h2 className="text-center mb-4">Dịch vụ chúng tôi có ở mọi nơi</h2>
-            <div className="row">
-                {locations.map((location, index) => (
-                    <div className="col-md-6 mb-4" key={index}>
-                        <div className="card">
-                            <img src={location.image} className="card-img-top" alt={location.name} />
-                            <div className="card-body">
-                                <h5 className="card-title">{location.name}</h5>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </div>
+  return (
+    <div className="container mt-5 service-grid">
+      <h2 className="service-title">Dịch vụ chúng tôi có ở mọi nơi</h2>
+      <div className="service-container">
+        <div className="service-item item-figure-DaNang">
+          <img
+            src={require("../../assets/images/images_homePage/HCM.jpg")}
+            alt="Hồ Chí Minh"
+            className="service-item-DaNang"
+          />
+          <div className="city-name-DaNang">Hồ Chí Minh</div>
         </div>
-    );
+        <div className="service-item item-group-HCMHaNoi">
+          <figure className="item-figure-SaiGon">
+            <img
+              src={require("../../assets/images/images_homePage/DaNang.jpg")}
+              alt="Đà Nẵng"
+              className="service-item-SaiGon"
+            />
+            <div className="city-name-SaiGon">Đà Nẵng</div>
+          </figure>
+          <figure className="item-figure-HaNoi">
+            <img
+              src={require("../../assets/images/images_homePage/HaNoi.jpg")}
+              alt="Hà Nội"
+              className="service-item-HaNoi"
+            />
+            <div className="city-name-HaNoi">Hà Nội</div>
+          </figure>
+        </div>
+        <div className="service-item item-figure-HaiPhong">
+          <img
+            src={require("../../assets/images/images_homePage/PhuQuoc.avif")}
+            alt="Phú Quốc"
+            className="service-item-HaiPhong"
+          />
+          <div className="city-name-HaiPhong">Phú Quốc</div>
+        </div>
+        <div className="service-item item-group-HCMHaNoi">
+          <figure className="item-figure-SaiGon">
+            <img
+              src={require("../../assets/images/images_homePage/HoiAn.avif")}
+              alt="Hội An"
+              className="service-item-SaiGon"
+            />
+            <div className="city-name-SaiGon">Hội An</div>
+          </figure>
+          <figure className="item-figure-HaNoi">
+            <img
+              src={require("../../assets/images/images_homePage/Hue.jpg")}
+              alt="Huế"
+              className="service-item-HaNoi"
+            />
+            <div className="city-name-HaNoi">Huế</div>
+          </figure>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default ServiceGrid;

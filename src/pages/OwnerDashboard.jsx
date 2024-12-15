@@ -22,7 +22,7 @@ const OwnerDashboard = ({ onLogout }) => {
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
-      const footer = document.getElementById('footer'); // Assuming your footer has this ID
+      const footer = document.getElementById("footer"); // Assuming your footer has this ID
       const footerRect = footer.getBoundingClientRect();
       const footerTop = footerRect.top + window.scrollY;
       // setIsFixed(scrollPosition > 80)
@@ -69,17 +69,6 @@ const OwnerDashboard = ({ onLogout }) => {
   return (
     <div>
       <div className="mt-2 bg-slate-200">
-<<<<<<< HEAD
-        <div className="max-w">
-          <div className="w-[90%] mx-auto md-lg:block hidden">
-            <div>
-              <button
-                onClick={() => setShowFilter(!showFilter)}
-                className="px-3 py-3 text-center text-white bg-[#472cb2]"
-              >
-                <FaList />
-              </button>
-=======
         <div className="w-[90%] mx-auto md-lg:block hidden">
           <div>
             <button
@@ -119,7 +108,10 @@ const OwnerDashboard = ({ onLogout }) => {
                   <span className="text-xl">
                     <FaMotorcycle />
                   </span>
-                  <Link className="block" to="/owner-dashboard/rent-bike-request">
+                  <Link
+                    className="block"
+                    to="/owner-dashboard/rent-bike-request"
+                  >
                     Yêu cầu thuê xe
                   </Link>
                 </li>
@@ -135,7 +127,10 @@ const OwnerDashboard = ({ onLogout }) => {
                   <span className="text-xl">
                     <FaHistory />
                   </span>
-                  <Link className="block" to="/owner-dashboard/rent-bike-history">
+                  <Link
+                    className="block"
+                    to="/owner-dashboard/rent-bike-history"
+                  >
                     Lịch sử cho thuê xe
                   </Link>
                 </li>
@@ -157,7 +152,6 @@ const OwnerDashboard = ({ onLogout }) => {
                   <div className="block text-red-500">Đăng xuất</div>
                 </li>
               </ul>
->>>>>>> f440ccde24532518abce2522f653c0d9cf0f0db2
             </div>
           </div>
 
@@ -288,9 +282,7 @@ const OwnerDashboard = ({ onLogout }) => {
           </div>
         </div>
       </div>
-      <div id="footer">
-        {/* <Footer /> */}
-      </div>
+      <div id="footer">{/* <Footer /> */}</div>
     </div>
   );
 };
