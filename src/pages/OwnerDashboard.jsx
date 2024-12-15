@@ -69,6 +69,7 @@ const OwnerDashboard = ({ onLogout }) => {
   return (
     <div>
       <div className="mt-2 bg-slate-200">
+<<<<<<< HEAD
         <div className="max-w">
           <div className="w-[90%] mx-auto md-lg:block hidden">
             <div>
@@ -78,6 +79,85 @@ const OwnerDashboard = ({ onLogout }) => {
               >
                 <FaList />
               </button>
+=======
+        <div className="w-[90%] mx-auto md-lg:block hidden">
+          <div>
+            <button
+              onClick={() => setShowFilter(!showFilter)}
+              className="px-3 py-3 text-center text-white bg-[#472cb2]"
+            >
+              <FaList />
+            </button>
+          </div>
+        </div>
+
+        <div className="h-full mx-auto">
+          <div className="flex py-3 md-lg:w-[90%] mx-auto relative">
+            <div
+              className={`rounded-md z-50 md-lg:absolute ${
+                showFilter ? "-left-4" : "-left-[360px]"
+              } w-[270px] ml-4 bg-white`}
+            >
+              <ul className="px-4 py-2 text-slate-800">
+                <li className="flex items-center justify-start gap-2 py-3">
+                  <span className="text-xl">
+                    <GoHomeFill />
+                  </span>
+                  <Link className="block" to="/owner-dashboard">
+                    Thông tin cá nhân
+                  </Link>
+                </li>
+                <li className="flex items-center justify-start gap-2 py-3">
+                  <span className="text-xl">
+                    <FaMotorcycle />
+                  </span>
+                  <Link className="block" to="/postlistowner">
+                    Danh sách xe
+                  </Link>
+                </li>
+                <li className="flex items-center justify-start gap-2 py-3">
+                  <span className="text-xl">
+                    <FaMotorcycle />
+                  </span>
+                  <Link className="block" to="/owner-dashboard/rent-bike-request">
+                    Yêu cầu thuê xe
+                  </Link>
+                </li>
+                <li className="flex items-center justify-start gap-2 py-3">
+                  <span className="text-xl">
+                    <IoMdChatboxes />
+                  </span>
+                  <Link className="block" to="/owner-dashboard/chat">
+                    Chat
+                  </Link>
+                </li>
+                <li className="flex items-center justify-start gap-2 py-3">
+                  <span className="text-xl">
+                    <FaHistory />
+                  </span>
+                  <Link className="block" to="/owner-dashboard/rent-bike-history">
+                    Lịch sử cho thuê xe
+                  </Link>
+                </li>
+                <li className="flex items-center justify-start gap-2 py-3">
+                  <span className="text-xl">
+                    <TbPassword />
+                  </span>
+                  <Link className="block" to="/owner-dashboard/change-password">
+                    Đổi mật khẩu
+                  </Link>
+                </li>
+                <li
+                  onClick={logout}
+                  className="flex items-center justify-start gap-2 py-3 cursor-pointer"
+                >
+                  <span className="text-xl">
+                    <IoLogOutSharp />
+                  </span>
+                  <div className="block text-red-500">Đăng xuất</div>
+                </li>
+              </ul>
+>>>>>>> f440ccde24532518abce2522f653c0d9cf0f0db2
             </div>
           </div>
 
