@@ -196,6 +196,7 @@ const SearchBar = () => {
         isOpen={isTimeModalOpen}
         onClose={() => setIsTimeModalOpen(false)}
         onSelectDates={handleDateSelect}
+        availableDates={[]} 
       />
     </>
   );
