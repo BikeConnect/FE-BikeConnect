@@ -56,6 +56,7 @@ import OwnerHistoryRent from "./components/OwnerDashboard/OwnerHistoryRent";
 import OwnerChangePassword from "./components/OwnerDashboard/OwnerChangePassword";
 import OwnerChatAdmin from "./components/OwnerDashboard/OwnerChatAdmin";
 import OwnerListVehicles from "./components/OwnerDashboard/OwnerListVehicles";
+import { CustomerProvider } from "./components/UI_Admin/CustomerContext";
 
 function AppContent() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -81,17 +82,6 @@ function AppContent() {
       }
     }
   }, [dispatch]);
-
-  // const ShowNavBar = () => {
-  //   const displayNavPaths = [
-  //     "/customerprofiles",
-  //     "/changepassword",
-  //     "/rentalhistory",
-  //   ];
-  //   // return displayNavPaths.includes(location.pathname) ? (
-  //   //   <NavBar userRole={userRole} />
-  //   // ) : null;
-  // };
 
   const handleLogin = (role) => {
     setUserRole(role);
@@ -204,9 +194,11 @@ function AppContent() {
 
 function App() {
   return (
-    <Router>
-      <AppContent />
-    </Router>
+    <CustomerProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </CustomerProvider>
   );
 }
 
