@@ -20,6 +20,8 @@ const MotorcycleCard = ({ data }) => {
     navigate(`/BikeDetail/${data._id}/${data.slug}`);
   };
 
+  const reviewCount = Number.isInteger(data.reviews) ? data.reviews : 0;
+
   return (
     <Link
       className="col-lg-3 col-md-6 col-sm-12 mb-4"
@@ -50,7 +52,7 @@ const MotorcycleCard = ({ data }) => {
               {data.status}
             </div>
             <div className="rental-rating">
-              {Array(data.reviews)
+              {Array(reviewCount)
                 .fill()
                 .map((_, index) => (
                   <FontAwesomeIcon
@@ -59,7 +61,7 @@ const MotorcycleCard = ({ data }) => {
                     className="rental-star"
                   />
                 ))}
-              <span className="rental-review-count">({data.reviews})</span>
+              <span className="rental-review-count">({reviewCount})</span>
             </div>
           </div>
         </div>

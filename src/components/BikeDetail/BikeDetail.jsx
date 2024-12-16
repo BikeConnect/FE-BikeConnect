@@ -111,7 +111,7 @@ const BikeDetail = () => {
         />
         <CycleInformation bikeData={bikeData} />
         <SimilarProducts products={similarProducts} type="motorcycle" />
-        <RatingCycle bikeData={bikeData} />
+        {bikeData && <RatingCycle bikeData={bikeData} />}
         <Footer />
       </div>
       {isChatOpen && <Chat />}

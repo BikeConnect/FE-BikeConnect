@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import { Clock, Store, MessageCircle, Star, Check, X, RotateCcw } from 'lucide-react';
 import './RentalStatusTabs.css';
 import { useNavigate } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
 import image from '../../assets/images/images_homePage/v994_8600.png';
-
 
 const RentalStatusTabs = () => {
   const [activeTab, setActiveTab] = useState('all');
-  const location = useLocation();
   const [motorcycles, setMotorcycles] = useState({
     all: [
       {
