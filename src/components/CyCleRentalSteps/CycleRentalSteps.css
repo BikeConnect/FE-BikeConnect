@@ -1,26 +1,24 @@
-/* CycleRentalSteps.css */
 .cycle-rental-steps {
   display: flex;
-  align-items: stretch; /* Ensures both columns match in height */
+  align-items: stretch;
   height: 100%;
 }
 
 .row {
   display: flex;
-  align-items: stretch; /* Both columns will have equal height */
+  align-items: stretch;
 }
 
-.steps-content, .image-column {
-  min-height: 100%; /* Ensures both sections grow to fill the height */
+.steps-content,
+.image-column {
+  min-height: 100%;
 }
 
 .image-column img {
-  height: 100%; /* Ensure the image takes up the full height of the column */
-  width: 100%; /* Ensure the image scales correctly */
-  object-fit: cover; /* Keep aspect ratio while covering the container */
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 }
-
-
 
 .steps-title {
   font-size: 36px;
@@ -42,7 +40,7 @@
 
 .step-icon {
   font-size: 40px;
-  color: #472CB2; /* Màu chính cho các biểu tượng */
+  color: #472cb2; /* Màu chính cho các biểu tượng */
   margin-right: 15px; /* Khoảng cách hợp lý giữa biểu tượng và văn bản */
   margin-top: 5px; /* Đảm bảo biểu tượng căn giữa với văn bản */
 }
@@ -59,5 +57,3 @@
   margin: 0;
   line-height: 1.5; /* Khoảng cách dòng phù hợp */
 }
-
- 

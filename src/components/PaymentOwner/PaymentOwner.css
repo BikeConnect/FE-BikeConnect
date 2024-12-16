@@ -80,7 +80,7 @@
   }
   
   button {
-    padding: 8px 16px;
+    /* padding: 8px 16px; */
     background-color: #3182ce;
     color: white;
     border: none;

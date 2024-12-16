@@ -21,7 +21,8 @@ api.interceptors.request.use(
       "/vehicles/vehicle-detail",
     ];
 
-    if (!config.url?.includes("upload-profile-image")) {
+    if (!config.url?.includes("upload-profile-image") && 
+        !config.url?.includes("update-vehicle")) {
       config.headers["Content-Type"] = "application/json";
     }
 

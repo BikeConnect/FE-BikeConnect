@@ -134,6 +134,19 @@ table {
   border-spacing: 0;
 }
 
+.fixed {
+  position: fixed;
+  transition: all 0.3s ease;
+}
+
+.fixed + .content {
+  padding-top: 70px;
+}
+
+.fixed .rounded-lg {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 .navbar::-webkit-scrollbar-thumb {
   background-color: var(--primary-color);
 }

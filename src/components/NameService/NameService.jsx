@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import './NameService.css';
+import React, { useState } from "react";
+import "./NameService.css";
 
 const NameService = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -10,9 +10,16 @@ const NameService = () => {
 
   return (
     <div className="service-name">
-      <div className="title-container">
-        <h1 className="titleName">Cộng Đồng Những Người Thuê Và Cho Thuê Xe</h1>
-      </div>
+      <img
+        src={require("../../assets/images/images_homePage/Background.jpg")}
+        alt="Background"
+        className="background-image"
+      />
+      <figure className="title-container">
+        <h1 className="titleName">Khám Phá Việt Nam Trên Bánh Xe</h1>
+        <p className="button-detail">Tìm chuyến đi hoàn hảo của bạn</p>
+        <button className="discover-button">Discover</button>
+      </figure>
     </div>
   );
 };

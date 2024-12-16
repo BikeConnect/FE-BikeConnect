@@ -1,0 +1,13 @@
+.fixed {
+  position: fixed;
+  top: 1rem; /* Adjust as needed */
+  left: 0; /* Align to the left */
+  width: 254px; /* Match the width of the navbar */
+  z-index: 1000; /* Ensure it stays above other content */
+  background-color: white; /* Background color to avoid transparency */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow for better visibility */
+}
+
+.with-fixed-nav {
+  margin-left: 270px; /* Adjust the main content margin when navbar is fixed */
+}
