@@ -46,12 +46,12 @@ const LocationModal = ({ isOpen, onClose, onSelectLocation }) => {
       <div className="modal-container" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2 className="modal-title">Địa điểm</h2>
-          <button className="close-button" onClick={onClose}>
+          <button className="close-buttonn" onClick={onClose}>
             <X size={20} />
           </button>
         </div>
 
-        <div className="modal-content">
+        <div className="modal-contentt">
           <div className="search-input-container">
             <Search className="search-icon" size={20} />
             <input

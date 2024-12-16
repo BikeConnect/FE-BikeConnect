@@ -123,9 +123,16 @@ const TimePickerModal = ({ isOpen, onClose, onSelectDates, availableDates }) => 
 
   return (
     <div className="time-modal-overlay" onClick={onClose}>
+     
       <div className="time-modal-container" onClick={(e) => e.stopPropagation()}>
-        <div className="time-modal-title">Thời gian</div>
+     
+        <div className="time-modal-title">Thời gian
 
+        <button className="navigation-buttonn" onClick={onClose}>
+            <X size={20} />
+          </button>
+        </div>
+        
         <div className="time-modal-header">
           <button
             className="navigation-button"
@@ -142,9 +149,7 @@ const TimePickerModal = ({ isOpen, onClose, onSelectDates, availableDates }) => 
           >
             <ChevronRight size={20} />
           </button>
-          <button className="navigation-button" onClick={onClose}>
-            <X size={20} />
-          </button>
+          
         </div>
 
         <div className="calendar-container">

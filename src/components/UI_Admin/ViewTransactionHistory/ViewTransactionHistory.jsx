@@ -81,7 +81,7 @@ const ViewTransactionHistory = () => {
                 
                 <div className="card-body">
                   {/* Cải thiện phần tìm kiếm */}
-                  <div className="search-filter-container">
+                  {/* <div className="search-filter-container">
                     <div className="search-box">
                       <Search size={18} className="search-icon" />
                       <input 
@@ -100,7 +100,7 @@ const ViewTransactionHistory = () => {
                       <option value="Đã thanh toán">Đã thanh toán</option>
                       <option value="Đang chờ">Đang chờ</option>
                     </select>
-                  </div>
+                  </div> */}
 
                   {/* Bảng với đường viền đầy đủ */}
                   <div className="table-responsive">
