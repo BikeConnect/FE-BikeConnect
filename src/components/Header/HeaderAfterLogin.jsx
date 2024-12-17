@@ -175,7 +175,7 @@ const HeaderAfterLogin = ({ onLogout, userRole }) => {
                 </>
               ) : (
                 <>
-                  <NavLink to="/rentals" className="menu-link">
+                  <NavLink to="/CarRentalList" className="menu-link">
                     Thuê xe
                   </NavLink>
                 </>
