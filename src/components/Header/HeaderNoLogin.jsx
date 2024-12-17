@@ -3,6 +3,7 @@ import logo from "../../assets/images/8.png";
 import "./HeaderNoLogin.css";
 import Login from "../Login/Login";
 import Register from "../Register/Register";
+import CarRentalList from "../CarRentalList/CarRentalList";
 import { NavLink } from "react-router-dom";
 import Support from "../Support/Support";
 import RentalSignup from "../RentalSignup/RentalSignup";
@@ -53,7 +54,7 @@ const HeaderNoLogin = ({ onLoginSuccess }) => {
               <NavLink to="/" className="menu-link">
                 Trang chủ
               </NavLink>
-              <NavLink to="/rental-signup" className="menu-link" >
+              <NavLink to="/CarRentalList" className="menu-link" >
                 Cho thuê xe
               </NavLink>
               <NavLink to="/guide" className="menu-link">

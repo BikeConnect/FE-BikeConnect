@@ -9,6 +9,11 @@ p {
   padding: 0 15px;
 }
 
+.title-cusFilter {
+  font-size: 28px;
+  font-weight: 800;
+}
+
 /* Filter Container Styles */
 .filter-container {
   background-color: #fff;
@@ -72,6 +77,19 @@ p {
   background-repeat: no-repeat;
   background-position: right 12px center;
   padding-right: 32px;
+  border: 2px solid #e0e0e0;
+  color: #333;
+  margin-bottom: 15px;
+  transition: border-color 0.3s ease;
+  text-align: center;
+}
+
+.filter-label {
+  border: 2px solid #e0e0e0;
+  color: #333;
+  margin-bottom: 15px;
+  transition: border-color 0.3s ease;
+  text-align: center;
 }
 
 .rating-checkboxes {

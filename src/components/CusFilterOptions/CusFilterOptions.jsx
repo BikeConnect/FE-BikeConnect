@@ -253,7 +253,7 @@ const CusFilterOptions = () => {
 
   return (
     <Container className="centered-container mt-4 mb-5">
-      <h1 className="my-4 text-center">Thông tin </h1>
+      <h1 className="my-4 text-center title-cusFilter">Danh sách xe</h1>
       <Row>
         <Col md={3} className="mb-4">
           <div className="filter-container">
@@ -286,7 +286,7 @@ const CusFilterOptions = () => {
         <Col md={9}>
           <Row className="mb-4 filter-row">
             {/* Sắp xếp các bộ lọc theo chiều ngang */}
-            <Col xs={6} md={3}>
+            {/* <Col xs={6} md={3}>
               <Form.Group controlId="vehicleType" className="filter-group">
                 <Form.Label>Loại Xe</Form.Label>
                 <Form.Control
@@ -300,7 +300,7 @@ const CusFilterOptions = () => {
                   <option value="Xe đạp">Xe đạp</option>
                 </Form.Control>
               </Form.Group>
-            </Col>
+            </Col> */}
 
             <Col xs={6} md={3}>
               <Form.Group controlId="brand" className="filter-group">
@@ -342,12 +342,12 @@ const CusFilterOptions = () => {
 
             <Col xs={6} md={3}>
               <Form.Group controlId="sortBy" className="filter-group">
-                <Form.Label>Sắp Xếp Theo</Form.Label>
-                <Form.Control
+                <Form.Label>Sắp Xếp</Form.Label>
+                <Form.Control 
                   as="select"
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="filter-select"
+                  className="filter-select filter-label"
                 >
                   <option value="newest">Mới nhất</option>
                   <option value="priceAsc">Giá: Thấp đến Cao</option>

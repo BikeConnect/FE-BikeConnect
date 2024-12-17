@@ -18,7 +18,7 @@ const NameService = () => {
       <figure className="title-container">
         <h1 className="titleName">Khám Phá Việt Nam Trên Bánh Xe</h1>
         <p className="button-detail">Tìm chuyến đi hoàn hảo của bạn</p>
-        <button className="discover-button">Discover</button>
+        <button className="discover-button">Khám Phá</button>
       </figure>
     </div>
   );

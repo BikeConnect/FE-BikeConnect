@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
-import { X, ChevronLeft, ChevronRight } from 'lucide-react';
-import './TimePickerModal.css';
-import moment from 'moment';
+import React, { useState } from "react";
+import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import "./TimePickerModal.css";
+import moment from "moment";
 
-const TimePickerModal = ({ isOpen, onClose, onSelectDates, availableDates }) => {
+const TimePickerModal = ({
+  isOpen,
+  onClose,
+  onSelectDates,
+  availableDates,
+}) => {
   const [selectedDates, setSelectedDates] = useState(new Set());
   const [currentDate, setCurrentDate] = useState(new Date());
   const [rangeStart, setRangeStart] = useState(null);
@@ -45,9 +50,9 @@ const TimePickerModal = ({ isOpen, onClose, onSelectDates, availableDates }) => 
   };
 
   const formatDate = (date) => {
-    return date.toLocaleDateString('vi-VN', {
-      year: 'numeric',
-      month: 'long',
+    return date.toLocaleDateString("vi-VN", {
+      year: "numeric",
+      month: "long",
     });
   };
 
@@ -79,15 +84,15 @@ const TimePickerModal = ({ isOpen, onClose, onSelectDates, availableDates }) => 
     } else {
       const start = new Date(Math.min(rangeStart.getTime(), date.getTime()));
       const end = new Date(Math.max(rangeStart.getTime(), date.getTime()));
-      
+
       const newSelectedDates = new Set();
       let current = new Date(start);
-      
+
       while (current <= end) {
         newSelectedDates.add(current.toDateString());
         current = new Date(current.setDate(current.getDate() + 1));
       }
-      
+
       setSelectedDates(newSelectedDates);
       setRangeStart(null);
     }
@@ -101,44 +106,56 @@ const TimePickerModal = ({ isOpen, onClose, onSelectDates, availableDates }) => 
 
   const handleApply = () => {
     const sortedDates = Array.from(selectedDates)
-      .map(dateStr => new Date(dateStr))
+      .map((dateStr) => new Date(dateStr))
       .sort((a, b) => a - b);
-  
-    const result = sortedDates.length > 1
-      ? [sortedDates[0], sortedDates[sortedDates.length - 1]]
-      : sortedDates;
-  
+
+    const result =
+      sortedDates.length > 1
+        ? [sortedDates[0], sortedDates[sortedDates.length - 1]]
+        : sortedDates;
+
     onSelectDates(result);
     onClose();
   };
-  
 
-  const weekDays = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+  const weekDays = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
 
   const isDateAvailable = (date) => {
-    return availableDates.some(availableDate => 
-      moment(availableDate).startOf('day').isSame(moment(date).startOf('day'))
+    if (!Array.isArray(availableDates)) {
+      return false; // Hoặc có thể trả về true tùy thuộc vào logic của bạn
+    }
+    return availableDates.some((availableDate) =>
+      moment(availableDate).startOf("day").isSame(moment(date).startOf("day"))
     );
   };
 
   return (
     <div className="time-modal-overlay" onClick={onClose}>
-      <div className="time-modal-container" onClick={(e) => e.stopPropagation()}>
+      <div
+        className="time-modal-container"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="time-modal-title">Thời gian</div>
 
         <div className="time-modal-header">
           <button
             className="navigation-button"
-            onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1))}
+            onClick={() =>
+              setCurrentDate(
+                new Date(currentDate.getFullYear(), currentDate.getMonth() - 1)
+              )
+            }
           >
             <ChevronLeft size={20} />
           </button>
-          <div className="month-header">
-            {formatDate(currentDate)}
-          </div>
+          <div className="month-header">{formatDate(currentDate)}</div>
           <button
             className="navigation-button"
-            onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1))}
+            onClick={() =>
+              setCurrentDate(
+                new Date(currentDate.getFullYear(), currentDate.getMonth() + 1)
+              )
+            }
           >
             <ChevronRight size={20} />
           </button>
@@ -150,91 +167,118 @@ const TimePickerModal = ({ isOpen, onClose, onSelectDates, availableDates }) => 
         <div className="calendar-container">
           <div className="month-calendar">
             <div className="weekdays">
-              {weekDays.map(day => (
+              {weekDays.map((day) => (
                 <div key={day}>{day}</div>
               ))}
             </div>
             <div className="days-grid">
-              {getMonthData(currentDate).flat().map((date, index) => {
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-                const isPastDay = date && date < today;
-                const inRange = isInRange(date);
+              {getMonthData(currentDate)
+                .flat()
+                .map((date, index) => {
+                  const today = new Date();
+                  today.setHours(0, 0, 0, 0);
+                  const isPastDay = date && date < today;
+                  const inRange = isInRange(date);
 
-                return (
-                  <div
-                    key={index}
-                    className={`day-cell ${date ? [
-                      isToday(date) ? 'today' : '',
-                      isSelected(date) ? 'selected' : '',
-                      inRange ? 'in-range' : '',
-                      isPastDay ? 'blurred-day' : ''
-                    ].filter(Boolean).join(' ') : 'disabled'}`}
-                    onClick={() => date && !isPastDay && handleDateClick(date)}
-                    onMouseEnter={() => handleDateHover(date)}
-                    disabled={!isDateAvailable(date)}
-                  >
-                    {date ? date.getDate() : ''}
-                  </div>
-                );
-              })}
+                  return (
+                    <div
+                      key={index}
+                      className={`day-cell ${
+                        date
+                          ? [
+                              isToday(date) ? "today" : "",
+                              isSelected(date) ? "selected" : "",
+                              inRange ? "in-range" : "",
+                              isPastDay ? "blurred-day" : "",
+                            ]
+                              .filter(Boolean)
+                              .join(" ")
+                          : "disabled"
+                      }`}
+                      onClick={() =>
+                        date && !isPastDay && handleDateClick(date)
+                      }
+                      onMouseEnter={() => handleDateHover(date)}
+                      disabled={!isDateAvailable(date)}
+                    >
+                      {date ? date.getDate() : ""}
+                    </div>
+                  );
+                })}
             </div>
           </div>
 
           <div className="month-calendar">
             <div className="weekdays">
-              {weekDays.map(day => (
+              {weekDays.map((day) => (
                 <div key={day}>{day}</div>
               ))}
             </div>
             <div className="days-grid">
-              {getMonthData(getNextMonth(currentDate)).flat().map((date, index) => {
-                const inRange = isInRange(date);
-                return (
-                  <div
-                    key={index}
-                    className={`day-cell ${date ? [
-                      isToday(date) ? 'today' : '',
-                      isSelected(date) ? 'selected' : '',
-                      inRange ? 'in-range' : ''
-                    ].filter(Boolean).join(' ') : 'disabled'}`}
-                    onClick={() => date && handleDateClick(date)}
-                    onMouseEnter={() => handleDateHover(date)}
-                    disabled={!isDateAvailable(date)}
-                  >
-                    {date ? date.getDate() : ''}
-                  </div>
-                );
-              })}
+              {getMonthData(getNextMonth(currentDate))
+                .flat()
+                .map((date, index) => {
+                  const inRange = isInRange(date);
+                  return (
+                    <div
+                      key={index}
+                      className={`day-cell ${
+                        date
+                          ? [
+                              isToday(date) ? "today" : "",
+                              isSelected(date) ? "selected" : "",
+                              inRange ? "in-range" : "",
+                            ]
+                              .filter(Boolean)
+                              .join(" ")
+                          : "disabled"
+                      }`}
+                      onClick={() => date && handleDateClick(date)}
+                      onMouseEnter={() => handleDateHover(date)}
+                      disabled={!isDateAvailable(date)}
+                    >
+                      {date ? date.getDate() : ""}
+                    </div>
+                  );
+                })}
             </div>
           </div>
         </div>
 
         <div className="selected-dates">
-        <div style={{ flex: 1 }}>
-  {selectedDates.size > 0 && (
-    <span className="selected-date-tag">
-      {Array.from(selectedDates).length > 1
-        ? `${new Date(Array.from(selectedDates)[0]).toLocaleDateString('vi-VN')} - ${new Date(Array.from(selectedDates)[selectedDates.size - 1]).toLocaleDateString('vi-VN')}`
-        : new Date(Array.from(selectedDates)[0]).toLocaleDateString('vi-VN')}
-      <X
-        size={14}
-        onClick={() => {
-          setSelectedDates(new Set());
-          setRangeStart(null);
-          setHoverDate(null);
-        }}
-      />
-    </span>
-  )}
-</div>
+          <div style={{ flex: 1 }}>
+            {selectedDates.size > 0 && (
+              <span className="selected-date-tag">
+                {Array.from(selectedDates).length > 1
+                  ? `${new Date(
+                      Array.from(selectedDates)[0]
+                    ).toLocaleDateString("vi-VN")} - ${new Date(
+                      Array.from(selectedDates)[selectedDates.size - 1]
+                    ).toLocaleDateString("vi-VN")}`
+                  : new Date(Array.from(selectedDates)[0]).toLocaleDateString(
+                      "vi-VN"
+                    )}
+                <X
+                  size={14}
+                  onClick={() => {
+                    setSelectedDates(new Set());
+                    setRangeStart(null);
+                    setHoverDate(null);
+                  }}
+                />
+              </span>
+            )}
+          </div>
 
           {selectedDates.size > 0 && (
-            <button className="clear-button" onClick={() => {
-              setSelectedDates(new Set());
-              setRangeStart(null);
-              setHoverDate(null);
-            }}>
+            <button
+              className="clear-button"
+              onClick={() => {
+                setSelectedDates(new Set());
+                setRangeStart(null);
+                setHoverDate(null);
+              }}
+            >
               Xóa
             </button>
           )}
