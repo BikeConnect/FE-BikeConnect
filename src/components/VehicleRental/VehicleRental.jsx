@@ -12,6 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import api from "../../api/api";
 import { Link } from "react-router-dom";
+import moment from 'moment';
 
 const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
   const [bikeData, setBikeData] = useState(bike || null);
@@ -175,10 +176,8 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
     }
 
     try {
-      const startDate = new Date(selectedDates[0]).toISOString().split("T")[0];
-      const endDate = new Date(selectedDates[selectedDates.length - 1])
-        .toISOString()
-        .split("T")[0];
+      const startDate = moment(selectedDates[0]).format("DD/MM/YYYY");
+      const endDate = moment(selectedDates[selectedDates.length - 1]).format("DD/MM/YYYY");
 
       const response = await api.post("/create-booking", {
         vehicleId: vehicleId,
@@ -205,6 +204,10 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
         alert(error.response?.data?.message || "Có lỗi xảy ra khi đặt xe");
       }
     }
+  };
+
+  const formatDisplayDate = (date) => {
+    return moment(date).format("DD/MM/YYYY");
   };
 
   if (!bikeData) {
@@ -291,32 +294,6 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
             </div>
 
             <div className="gap-3 location-selection d-flex flex-column">
-              {/* <div className="location-field">
-                <label className="mb-1 text-sm text-gray-700">
-                  Địa điểm nhận xe
-                </label>
-                <div className="gap-2 location-options d-flex">
-                  <button
-                    className={`location-option flex-1 ${
-                      pickupLocation === "Tại cửa hàng" ? "active" : ""
-                    }`}
-                    onClick={() => setPickupLocation("Tại cửa hàng")}
-                  >
-                    Tại cửa hàng
-                  </button>
-                  <button
-                    className={`location-option flex-1 ${
-                      pickupLocation !== "Tại cửa hàng" ? "active" : ""
-                    }`}
-                    onClick={() => openLocationModal("pickup")}
-                  >
-                    {pickupLocation !== "Tại cửa hàng"
-                      ? pickupLocation
-                      : "Chọn địa điểm"}
-                  </button>
-                </div>
-              </div>*/}
-
               <div className="time-selection">
                 <label className="mb-1 text-sm text-gray-700">
                   Thời gian thuê xe
@@ -342,12 +319,10 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
                   <span>
                     {selectedDates.length > 0
                       ? selectedDates.length === 1
-                        ? new Date(selectedDates[0]).toLocaleDateString("vi-VN")
-                        : `${new Date(selectedDates[0]).toLocaleDateString(
-                            "vi-VN"
-                          )} đến ${new Date(
+                        ? formatDisplayDate(selectedDates[0])
+                        : `${formatDisplayDate(selectedDates[0])} đến ${formatDisplayDate(
                             selectedDates[selectedDates.length - 1]
-                          ).toLocaleDateString("vi-VN")}`
+                          )}`
                       : "Chọn thời gian"}
                   </span>
                 </div>
@@ -462,8 +437,7 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
           </div>
         </div>
       </div>
-
-      {/* Modals */}
+      
       <LocationModal
         isOpen={isLocationModalOpen}
         onClose={() => setIsLocationModalOpen(false)}
