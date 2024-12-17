@@ -207,7 +207,6 @@ const HeaderAfterLogin = ({ onLogout, userRole }) => {
                 <Notification
                   show={showNotification}
                   onClose={handleHideNotification}
-                  notifications={fakeNotifications}
                 />
               </div>
               <div
@@ -215,7 +214,11 @@ const HeaderAfterLogin = ({ onLogout, userRole }) => {
                 onMouseLeave={handleContainerMouseLeave}
               >
                 <div className="user-avatar" onMouseEnter={handleMouseEnter}>
-                  <img src={userInfo.image || ava} alt="User Avatar" className="avatar-img" />
+                  <img
+                    src={userInfo.image || ava}
+                    alt="User Avatar"
+                    className="avatar-img"
+                  />
                   {showProfile && (
                     <div
                       className="profile-dropdown"

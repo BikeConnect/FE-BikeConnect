@@ -12,7 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import api from "../../api/api";
 import { Link } from "react-router-dom";
-import moment from 'moment';
+import moment from "moment";
 
 const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
   const [bikeData, setBikeData] = useState(bike || null);
@@ -32,6 +32,17 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
     endDate: null,
   });
   const [availableDates, setAvailableDates] = useState([]);
+  const [selectedOption, setSelectedOption] = useState('car');
+  const [otherLocation, setOtherLocation] = useState('');
+
+  const handleSelectChange = (event) => {
+      setSelectedOption(event.target.value);
+  };
+
+  const handleInputChange = (event) => {
+      setOtherLocation(event.target.value);
+  };
+
 
   useEffect(() => {
     if (bike) {
@@ -43,7 +54,7 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
         });
       }
       if (bike.availableDates) {
-        setAvailableDates(bike.availableDates.map(date => new Date(date)));
+        setAvailableDates(bike.availableDates.map((date) => new Date(date)));
       }
       return;
     }
@@ -177,7 +188,9 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
 
     try {
       const startDate = moment(selectedDates[0]).format("DD/MM/YYYY");
-      const endDate = moment(selectedDates[selectedDates.length - 1]).format("DD/MM/YYYY");
+      const endDate = moment(selectedDates[selectedDates.length - 1]).format(
+        "DD/MM/YYYY"
+      );
 
       const response = await api.post("/create-booking", {
         vehicleId: vehicleId,
@@ -295,6 +308,31 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
 
             <div className="gap-3 location-selection d-flex flex-column">
               <div className="time-selection">
+                <div className="vehicleRental-location-select">
+                  <label htmlFor="location-select" className="choose-location-label">Chọn vị trí:</label>
+                  <select
+                    id="location-select"
+                    value={selectedOption}
+                    onChange={handleSelectChange}
+                    className="vehicleRental-form-select"
+                  >
+                    <option value="car">Vị trí xe</option>
+                    <option value="other">Vị trí khác</option>
+                  </select>
+
+                  {selectedOption === "other" && (
+                    <div className="vehicleRental-input-container">
+                      <input
+                        type="text"
+                        id="other-input"
+                        value={otherLocation}
+                        onChange={handleInputChange}
+                        placeholder="Nhập vị trí khác..."
+                        className="vehicleRental-form-input"
+                      />
+                    </div>
+                  )}
+                </div>
                 <label className="mb-1 text-sm text-gray-700">
                   Thời gian thuê xe
                 </label>
@@ -320,7 +358,9 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
                     {selectedDates.length > 0
                       ? selectedDates.length === 1
                         ? formatDisplayDate(selectedDates[0])
-                        : `${formatDisplayDate(selectedDates[0])} đến ${formatDisplayDate(
+                        : `${formatDisplayDate(
+                            selectedDates[0]
+                          )} đến ${formatDisplayDate(
                             selectedDates[selectedDates.length - 1]
                           )}`
                       : "Chọn thời gian"}
@@ -437,7 +477,7 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
           </div>
         </div>
       </div>
-      
+
       <LocationModal
         isOpen={isLocationModalOpen}
         onClose={() => setIsLocationModalOpen(false)}

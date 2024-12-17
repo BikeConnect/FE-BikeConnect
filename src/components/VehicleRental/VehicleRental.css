@@ -301,3 +301,24 @@ body {
 .negotiate-button:hover {
   background-color: #059669;
 }
+
+.vehicleRental-location-select {
+  margin-bottom: 20px;
+}
+
+.vehicleRental-input-container {
+  margin-top: 12px;
+}
+
+.vehicleRental-form-input,
+.vehicleRental-form-select {
+  height: 44px;
+  width: 100%;
+  padding: 4px 8px;
+}
+
+.choose-location-label {
+  font-size: 16px;
+  font-weight: 400;
+  margin-bottom: 12px;
+}

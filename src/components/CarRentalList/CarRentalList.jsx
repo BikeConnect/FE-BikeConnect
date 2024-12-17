@@ -24,7 +24,7 @@ const CusFilterOptions = () => {
   const [sortBy, setSortBy] = useState("newest");
   const [selectedStars, setSelectedStars] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
+  const itemsPerPage = 12;
 
   const handleStarFilterChange = (star) => {
     setSelectedStars((prev) =>

@@ -1,18 +1,21 @@
 .rental-history {
-    margin-top: 100px;
     padding: 20px;
     font-family: 'Roboto', sans-serif;
+    background-color: #fff;
+    border-radius: 0.375rem;
 }
 
 .rental-history h2 {
-    color: #472CB2;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #2d3748;
 }
 
 .rental-history table {
-    width: 80%;
     border-collapse: collapse;
     margin-top: 20px;
-    margin-left: 14%;
+    width: 100%;
 }
 
 .rental-history th,

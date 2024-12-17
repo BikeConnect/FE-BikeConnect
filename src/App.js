@@ -166,6 +166,7 @@ function AppContent() {
           <Route path="chat/:ownerId" element={<CustomerChat />} />
           <Route path="change-password" element={<CustomerChangePassword />} />
           <Route path="rentalstatustabs" element={<RentalStatusTabs />} />
+          <Route path="rentalhistory" element={<RentalHistory />} />  
         </Route>
         <Route
           path="/owner-dashboard"
