@@ -1,6 +1,7 @@
-.auth-user-container {
+.manage-user-container {
     padding: 20px;
     font-family: 'Roboto', sans-serif;
+    margin-left: 10%;
 }
 
 .button-container {

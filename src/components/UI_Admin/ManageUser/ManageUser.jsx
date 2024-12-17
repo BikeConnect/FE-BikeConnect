@@ -4,13 +4,13 @@ import ManageOwner from './ManageOwner/ManageOwner';
 import './ManageUser.css';
 import NavbarDashboard from '../NavbarDashboard/NavbarDashboard';
 
-const ManageUser = () => {
+const ManageUser = () => {    
     const [activeTab, setActiveTab] = useState('customer');
 
     return (
         <div>
             <NavbarDashboard />
-            <div className="auth-user-container">
+            <div className="manage-user-container">
                 <div className="button-container">
                     <button
                         className={`tab-button ${activeTab === 'customer' ? 'active' : ''}`}

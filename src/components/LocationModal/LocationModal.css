@@ -41,16 +41,18 @@
   flex-grow: 1;
 }
 
-.close-button {
+.close-buttonn {
   position: absolute;
-  right: 1.5rem;
-  background: none;
-  border: none;
+  right: 0.1rem;
+  background:rgb(137, 130, 130);
+  border:1px black;
   cursor: pointer;
   padding: 4px;
+  border-radius: 50%;
+  color: black;
 }
 
-.modal-content {
+.modal-contentt {
   padding: 1.5rem;
   flex-grow: 1;
   overflow-y: auto;
@@ -152,6 +154,7 @@
 .vehicle-button {
   display: flex;
   align-items: center;
+  color: #472cb2;
   gap: 0.5rem;
   padding: 0.75rem;
   background-color: white;

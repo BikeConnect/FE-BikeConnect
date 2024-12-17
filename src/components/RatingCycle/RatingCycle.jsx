@@ -1,19 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faThumbsUp,
-  faThumbsDown,
-  faStar,
-} from "@fortawesome/free-solid-svg-icons";
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Form,
-  Button,
-  Pagination,
-} from "react-bootstrap";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { Container, Row, Col, Card, Form, Pagination } from "react-bootstrap";
 import "./RatingCycle.css";
 import hinhanhxe2 from "../../assets/images/images_homePage/v994_9054.png";
 
@@ -24,7 +12,8 @@ const RatingCycle = () => {
     reviews: [
       {
         user: "Nguyễn Ngọc Trường",
-        comment: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Dui ut ornare lectus sit. Dictum varius duis at consectetur lorem. Nunc scelerisque viverra mauris in aliquam sem fringilla ut morbi. Amet mauris commodo quis imperdiet massa.",
+        comment:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Dui ut ornare lectus sit. Dictum varius duis at consectetur lorem. Nunc scelerisque viverra mauris in aliquam sem fringilla ut morbi. Amet mauris commodo quis imperdiet massa.",
         date: "July 2, 2020 03:29 PM",
         likes: 128,
         dislikes: 5,
@@ -106,35 +95,8 @@ const RatingCycle = () => {
     setCurrentPage(1);
   };
 
-  const handleFilterTypeChange = (type) => {
-    setFilterType(type);
-    setCurrentPage(1);
-  };
-
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-  };
-
-  const handleLike = (index) => {
-    setRatings((prev) => {
-      const updatedReviews = [...prev.reviews];
-      updatedReviews[index] = {
-        ...updatedReviews[index],
-        likes: updatedReviews[index].likes + 1,
-      };
-      return { ...prev, reviews: updatedReviews };
-    });
-  };
-
-  const handleDislike = (index) => {
-    setRatings((prev) => {
-      const updatedReviews = [...prev.reviews];
-      updatedReviews[index] = {
-        ...updatedReviews[index],
-        dislikes: updatedReviews[index].dislikes + 1,
-      };
-      return { ...prev, reviews: updatedReviews };
-    });
   };
 
   return (
@@ -248,9 +210,7 @@ const RatingCycle = () => {
                       </div>
                     </div>
                     <p className="review-comment">{review.comment}</p>
-                    <a className="btn-reply">
-                      Phản hồi
-                    </a>
+                    <a className="btn-reply">Phản hồi</a>
                   </div>
                 </div>
               </Card>

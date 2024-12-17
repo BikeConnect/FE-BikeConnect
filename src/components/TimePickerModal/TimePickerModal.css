@@ -32,7 +32,7 @@
 }
 
 .time-select-container {
-  display: flex;
+  /* display: flex; */
   align-items: center;
   gap: 0.5rem;
   background-color: #f3f4f6;
@@ -143,6 +143,16 @@
   color: #472CB2;
 }
 
+.navigation-buttonn {
+  position:relative;
+  left: 15rem;
+  background:rgb(137, 130, 130);
+  border:1px black;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  color: black;
+}
 .navigation-button:disabled {
   color: #d1d5db;
   cursor: not-allowed;
