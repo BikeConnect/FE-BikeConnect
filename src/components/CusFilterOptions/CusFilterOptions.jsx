@@ -186,7 +186,7 @@ const CusFilterOptions = () => {
               <img
                 src={formattedData.image}
                 alt={formattedData.name}
-                className="card-img-top vehicle-image"
+                className="card-img-top cusfilter-image"
               />
             </div>
             <div className="card-body vehicle-details">
@@ -252,8 +252,8 @@ const CusFilterOptions = () => {
   };
 
   return (
-    <Container className="centered-container mt-4 mb-5">
-      <h1 className="my-4 text-center title-cusFilter">Danh sách xe</h1>
+    <Container className="centered-container mb-5">
+      <h1 className="text-center title-cusFilter">Danh sách xe</h1>
       <Row>
         <Col md={3} className="mb-4">
           <div className="filter-container">
@@ -327,7 +327,9 @@ const CusFilterOptions = () => {
                     onBlur={handleMinPriceBlur}
                     className="filter-input price-input"
                   />
-                  <span className="px-2">-</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" className="cusfilter-icon-minus"> 
+                    <path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z" />
+                  </svg>
                   <Form.Control
                     type="text"
                     placeholder="Cao nhất"
@@ -343,7 +345,7 @@ const CusFilterOptions = () => {
             <Col xs={6} md={3}>
               <Form.Group controlId="sortBy" className="filter-group">
                 <Form.Label>Sắp Xếp</Form.Label>
-                <Form.Control 
+                <Form.Control
                   as="select"
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}

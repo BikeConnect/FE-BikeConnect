@@ -57,6 +57,7 @@ import OwnerChangePassword from "./components/OwnerDashboard/OwnerChangePassword
 import OwnerChatAdmin from "./components/OwnerDashboard/OwnerChatAdmin";
 import OwnerListVehicles from "./components/OwnerDashboard/OwnerListVehicles";
 import { CustomerProvider } from "./components/UI_Admin/CustomerContext";
+import CarRentalList from "./components/CarRentalList/CarRentalList";
 
 function AppContent() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -133,6 +134,7 @@ function AppContent() {
         <Route path="/policies1" element={<PrinciplePage />} />
         <Route path="/policies2" element={<PrivacyPolicy />} />
         <Route path="/policies3" element={<Complaints />} />
+        <Route path="/CarRentalList" element={<CarRentalList />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/BikeDetail/:name/:slug" element={<BikeDetail />} />
         <Route path="/support" element={<Support />} />

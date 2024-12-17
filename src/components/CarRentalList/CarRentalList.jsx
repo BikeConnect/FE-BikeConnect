@@ -23,7 +23,6 @@ const CusFilterOptions = () => {
   // const [sortBy, setSortBy] = useState("newest");
   const [selectedStars, setSelectedStars] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-
   const itemsPerPage = 6;
 
   // const handleStarFilterChange = (star) => {
@@ -41,6 +40,34 @@ const CusFilterOptions = () => {
     : [];
 
   useEffect(() => {
+    const fetchVehicles = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:8080/api/vehicles/list-vehicles"
+        );
+        const result = await response.json();
+
+        console.log("Response from API:", result);
+
+        if (result.status === 200 && Array.isArray(result.metadata)) {
+          setVehicles(result.metadata); // Lưu trữ mảng xe vào state
+          console.log("Vehicles set:", result.metadata);
+        } else {
+          throw new Error("Dữ liệu không hợp lệ");
+        }
+      } catch (err) {
+        console.error("Error fetching vehicles:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchVehicles();
+  }, []);
+
+  useEffect(() => {
+    console.log("Current state:", state);
     if (state?.combinedResults && Array.isArray(state.combinedResults)) {
       const transformedVehicles = state.combinedResults.map((item) => {
         return {
@@ -66,8 +93,10 @@ const CusFilterOptions = () => {
       });
 
       setVehicles(transformedVehicles);
+      console.log("Transformed vehicles set:", transformedVehicles); // Log the transformed vehicles
     } else {
       setVehicles([]);
+      console.log("No combined results found in state."); // Log if no combined results
     }
   }, [state]);
 
@@ -171,53 +200,29 @@ const CusFilterOptions = () => {
   };
 
   const VehicleCard = ({ data }) => {
-    const formattedData = {
-      ...data,
-      name: typeof data.name === "object" ? data.name.text || "" : data.name,
-      currentPrice:
-        typeof data.currentPrice === "object"
-          ? data.currentPrice.text || "0 VND/ngày"
-          : data.currentPrice,
-      originalPrice:
-        typeof data.originalPrice === "object"
-          ? data.originalPrice.text || "0 VND"
-          : data.originalPrice,
-      location:
-        typeof data.location === "object"
-          ? data.location.text || ""
-          : data.location,
-      status:
-        typeof data.status === "object"
-          ? data.status.text || "Xe mới"
-          : data.status,
-      distance:
-        typeof data.distance === "object"
-          ? data.distance.text || "0km"
-          : data.distance.text || "0km",
-    };
-
     return (
       <Col lg={4} md={6} sm={12} className="mb-4">
-        <Link
-          // to={`/ChiTietXe/${formattedData.name}`}
-          className="vehicle-card-link"
-        >
+        <Link className="vehicle-card-link">
           <div className="card vehicle-card">
             <div className="vehicle-image-wrapper">
               <img
-                src={formattedData.image}
-                alt={formattedData.name}
+                src={data.images?.[0]?.url || xedethue} // Sử dụng ảnh đầu tiên hoặc ảnh mặc định
+                alt={data.brand}
                 className="card-img-top vehicle-image"
               />
             </div>
             <div className="card-body vehicle-details">
-              <h5 className="card-title vehicle-name">{formattedData.name}</h5>
+              <h5 className="card-title vehicle-name">{data.brand}</h5>
               <p className="card-text vehicle-price-section">
                 <span className="vehicle-current-price">
-                  {formattedData.currentPrice}
+                  {(
+                    data.price -
+                    (data.price * (data.discount || 0)) / 100
+                  ).toLocaleString()}{" "}
+                  VND/ngày
                 </span>
                 <span className="vehicle-original-price">
-                  {formattedData.originalPrice}
+                  {data.price.toLocaleString()} VND
                 </span>
               </p>
               <p className="card-text vehicle-location">
@@ -225,20 +230,14 @@ const CusFilterOptions = () => {
                   icon={faMapMarkerAlt}
                   className="location-icon"
                 />{" "}
-                {formattedData.location}
+                {data.address}
               </p>
               <div className="vehicle-footer d-flex justify-content-between">
                 <div className="vehicle-status">
                   <div>
-                    <FontAwesomeIcon
-                      icon={
-                        formattedData.type === "Xe máy"
-                          ? faMotorcycle
-                          : faBicycle
-                      }
-                      className="status-icon"
-                    />{" "}
-                    {formattedData.status}
+                    {data.availability_status === "available"
+                      ? "Có sẵn"
+                      : "Không có sẵn"}
                   </div>
                   <div>
                     <span className="vehicle-distance">
@@ -246,12 +245,12 @@ const CusFilterOptions = () => {
                         icon={faTachometerAlt}
                         className="distance-icon"
                       />{" "}
-                      {formattedData.distance}
+                      {data.distance || "0km"}
                     </span>
                   </div>
                 </div>
                 <div className="vehicle-rating">
-                  {Array(Math.floor(formattedData.rating))
+                  {Array(Math.floor(data.rating))
                     .fill()
                     .map((_, index) => (
                       <FontAwesomeIcon
@@ -261,7 +260,7 @@ const CusFilterOptions = () => {
                       />
                     ))}
                   <span className="vehicle-review-count">
-                    ({formattedData.rating})
+                    ({data.reviews || 0})
                   </span>
                 </div>
               </div>
@@ -276,21 +275,97 @@ const CusFilterOptions = () => {
     <Container className="centered-container mt-4 mb-5">
       <h1 className="my-4 text-center title-cusFilter">Danh sách xe</h1>
       <Row>
-        <Col md={9}>
-          <Navbar className="123"></Navbar>
+        <Col className="carRentalList-container">
+          <Navbar className="">
+            <div className="filter-container">
+              <h2 className="filter-title">Lọc</h2>
+              <Form className="filter-form">
+                <Form.Group controlId="rating" className="filter-group">
+                  <Form.Label>Đánh Giá</Form.Label>
+                  <div className="rating-checkboxes">
+                    {[5, 4, 3, 2, 1].map((star) => (
+                      <Form.Check
+                        key={star}
+                        type="checkbox"
+                        id={`filter-star-${star}`}
+                        label={
+                          <span className="text-warning">
+                            {star} <FontAwesomeIcon icon={faStar} />
+                          </span>
+                        }
+                        // onChange={() => handleStarFilterChange(star)}
+                        checked={selectedStars.includes(star)}
+                        className="filter-star"
+                      />
+                    ))}
+                  </div>
+                </Form.Group>
+              </Form>
+              <Form.Group controlId="brand" className="filter-group">
+                <Form.Label>Thương Hiệu</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Nhập thương hiệu"
+                  // value={brand}
+                  // onChange={(e) => setBrand(e.target.value)}
+                  className="filter-input"
+                />
+              </Form.Group>
+              <Form.Group controlId="price" className="filter-group">
+                <Form.Label>Khoảng Giá</Form.Label>
+                <div className="d-flex flex-col carRental-space-price">
+                  <Form.Control
+                    type="text"
+                    placeholder="Thấp nhất"
+                    // value={minPrice}
+                    // onChange={handleMinPriceChange}
+                    // onBlur={handleMinPriceBlur}
+                    className="filter-input price-input"
+                  />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 448 512"
+                    className="carRental-icon-minus"
+                  >
+                    <path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z" />
+                  </svg>
+                  <Form.Control
+                    type="text"
+                    placeholder="Cao nhất"
+                    // value={maxPrice}
+                    // onChange={handleMaxPriceChange}
+                    // onBlur={handleMaxPriceBlur}
+                    className="filter-input price-input"
+                  />
+                </div>
+              </Form.Group>
+              <Form.Group controlId="sortBy" className="filter-group">
+                <Form.Label>Sắp Xếp</Form.Label>
+                <Form.Control
+                  as="select"
+                  // value={sortBy}
+                  // onChange={(e) => setSortBy(e.target.value)}
+                  className="filter-select filter-label"
+                >
+                  <option value="newest">Mới nhất</option>
+                  <option value="priceAsc">Giá: Thấp đến Cao</option>
+                  <option value="priceDesc">Giá: Cao đến Thấp</option>
+                  <option value="ratingAsc">Sao: Thấp đến Cao</option>
+                  <option value="ratingDesc">Sao: Cao đến Thấp</option>
+                </Form.Control>
+              </Form.Group>
+            </div>
+          </Navbar>
 
           {/* Thẻ Xe */}
           <Col md={9}>
-            <h1 className="my-4 text-center title-cusFilter">Danh sách xe</h1>
             <Row>
-              {loading ? (
-                <div>Loading...</div>
-              ) : error ? (
-                <div>Error: {error}</div>
-              ) : (
+              {vehicles.length > 0 ? (
                 vehicles.map((vehicle) => (
-                  <VehicleCard key={vehicle.id} data={vehicle} />
+                  <VehicleCard key={vehicle._id} data={vehicle} />
                 ))
+              ) : (
+                <div>Không có xe nào</div>
               )}
             </Row>
           </Col>

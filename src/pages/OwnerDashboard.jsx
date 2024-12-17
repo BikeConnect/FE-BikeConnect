@@ -82,7 +82,7 @@ const OwnerDashboard = ({ onLogout }) => {
 
         <div className="h-full mx-auto">
           <div className="h-full mx-auto">
-            <div className="flex py-3 md-lg:w-[90%] mx-auto relative">
+            <div className="flex justify-evenly py-3 md-lg:w-[90%] mx-auto relative">
               <div
                 className={`rounded-md z-50 md-lg:absolute ${
                   showFilter ? "-left-4" : "-left-[360px]"
@@ -99,13 +99,8 @@ const OwnerDashboard = ({ onLogout }) => {
                       Thông tin cá nhân
                     </Link>
                   </li>
-                  <li className="flex items-center justify-start gap-2 py-3 relative">
-                    <span className="text-xl">
-                      <BiSolidGrid />
-                    </span>
-                    <Link className="block" to="/owner-dashboard/list-vehicles">
-                      Xe của tôi
-                    </Link>
+                  {/* <li className="flex items-center justify-start gap-2 py-3 relative">
+                    
                     {hasExpiredVehicles && (
                       <span
                         className="text-red-500 flex items-center gap-1 ml-2"
@@ -117,10 +112,10 @@ const OwnerDashboard = ({ onLogout }) => {
                         </span>
                       </span>
                     )}
-                  </li>
+                  </li> */}
                   <li className="flex items-center justify-start gap-2 py-3">
                     <span className="text-xl">
-                      <FaMotorcycle />
+                      <BiSolidGrid />
                     </span>
                     <Link className="block" to="/owner-dashboard/postlistowner">
                       Danh sách xe

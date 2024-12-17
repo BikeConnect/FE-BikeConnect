@@ -9,6 +9,11 @@ p {
   padding: 0 15px;
 }
 
+.carRentalList-container {
+  display: flex;
+  gap: 60px;
+}
+
 .title-cusFilter {
   font-size: 28px;
   font-weight: 800;
@@ -20,6 +25,7 @@ p {
   border-radius: 12px;
   padding: 24px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  width: 250px;
 }
 
 .filter-title {
@@ -43,7 +49,7 @@ p {
 }
 
 .filter-group {
-  margin-bottom: 0;
+  margin-bottom: 18px;
 }
 
 .filter-group .form-label {
@@ -62,6 +68,7 @@ p {
   border-radius: 8px;
   font-size: 14px;
   transition: all 0.2s ease;
+  margin: 0;
 }
 
 .filter-input:focus,
@@ -90,6 +97,7 @@ p {
   margin-bottom: 15px;
   transition: border-color 0.3s ease;
   text-align: center;
+  width: 100%;
 }
 
 .rating-checkboxes {
@@ -182,6 +190,7 @@ p {
   text-overflow: ellipsis;
   display: block;
   margin-bottom: 8px;
+  text-align: start;
 }
 
 .location-icon,
@@ -237,6 +246,16 @@ p {
 .pagination-info {
   font-size: 14px;
   color: #666;
+}
+
+.carRental-space-price {
+  align-items: center;
+  
+}
+
+.carRental-icon-minus {
+  width: 30px;
+  fill: #ccc;
 }
 
 /* Responsive Styles */
