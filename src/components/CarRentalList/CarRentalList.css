@@ -12,6 +12,12 @@ p {
 .carRentalList-container {
   display: flex;
   gap: 60px;
+  margin-top: 20px;
+}
+
+.carRentalList-navbar {
+  align-items: flex-start;
+  padding-top: 0;
 }
 
 .title-cusFilter {
@@ -203,7 +209,7 @@ p {
   display: flex;
   justify-content: space-between;
   font-size: 14px;
-  flex-direction: column;
+  flex-direction: row;
   align-items: flex-start;
   gap: 8px;
 }
