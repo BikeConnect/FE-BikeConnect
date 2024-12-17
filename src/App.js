@@ -48,7 +48,6 @@ import ViewTransactionHistory from "./components/UI_Admin/ViewTransactionHistory
 import RentalStatusTabs from "./components/RentalStatusTabs/RentalStatusTabs";
 import MotorbikeReview from "./components/MotorbikeReview/MotorbikeReview";
 import RentalSignup from "./components/RentalSignup/RentalSignup";
-import OwnerChat from "./components/OwnerChat/OwnerChat";
 import PaymentOwner from "./components/PaymentOwner/PaymentOwner";
 import OwnerRequestBike from "./components/OwnerDashboard/OwnerRequestBike";
 import UpdatePage from "./components/UpdatePage/UpdatePage";
@@ -153,7 +152,7 @@ function AppContent() {
         />
         <Route path="/motorbikereview" element={<MotorbikeReview />} />
         <Route path="/rental-signup" element={<RentalSignup />} />
-        <Route path="/ownerchat" element={<OwnerChat />} />
+        {/* <Route path="/ownerchat" element={<OwnerChat />} /> */}
         <Route
           path="/user-dashboard"
           element={

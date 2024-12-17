@@ -190,7 +190,7 @@ const PostListOwner = () => {
                   </div>
                   <div>
                     <span className="post-list-item-rating">
-                      {[...Array(vehicle.rating)].map((_, index) => (
+                    {[...Array(Math.max(0, Math.floor(vehicle.rating || 0)))].map((_, index) => (
                         <svg
                           key={index}
                           xmlns="http://www.w3.org/2000/svg"

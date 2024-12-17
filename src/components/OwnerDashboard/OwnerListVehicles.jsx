@@ -38,6 +38,7 @@ const OwnerListVehicles = () => {
     try {
       setLoading(true);
       const response = await api.get(`/owner/get-owner-vehicles?page=${page}`);
+      console.log("response:::",response)
       setVehicles(response.data.metadata);
       setPagination(response.data.pagination);
     } catch (error) {
@@ -246,7 +247,7 @@ const OwnerListVehicles = () => {
                 <tr key={vehicle._id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <img
-                      src={vehicle.images[0].url}
+                      src={vehicle.images[0]?.url}
                       alt={`${vehicle.brand} ${vehicle.model}`}
                       className="h-12 w-20 object-cover rounded-md"
                       onError={(e) => {
