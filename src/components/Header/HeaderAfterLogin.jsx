@@ -132,7 +132,7 @@ const HeaderAfterLogin = ({ onLogout, userRole }) => {
     },
     {
       name: "Hoàng Anh E",
-      content: "Bạn có thông báo mới về giao dịch.",
+      content: "Bạn có thông báo m���i về giao dịch.",
       time: "5 ngày trước",
       imageUrl: ava3,
       isRead: true,
@@ -167,7 +167,7 @@ const HeaderAfterLogin = ({ onLogout, userRole }) => {
               <NavLink to="/homepage" className="menu-link">
                 Trang chủ
               </NavLink>
-              {userRole === "owner" ? (
+              {(userRole || localStorage.getItem("userRole")) === "owner" ? (
                 <>
                   <NavLink to="/post" className="menu-link">
                     Đăng bài thuê xe
