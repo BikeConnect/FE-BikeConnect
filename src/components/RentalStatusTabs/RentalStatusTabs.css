@@ -211,7 +211,7 @@ button.action-button.outlinee {
 }
 
 button.action-button.outlinee:hover {
-
+  color: #fff;
   background-color: #472CB2;
 }
 /* Responsive Adjustments */
