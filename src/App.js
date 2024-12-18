@@ -187,6 +187,7 @@ function AppContent() {
           <Route path="list-vehicles" element={<OwnerListVehicles />} />
           <Route path="paymentowner" element={<PaymentOwner />} />
           <Route path="postlistowner" element={<PostListOwner />} />
+          <Route path="rentalhistory" element={<RentalHistory />} />  
         </Route>
         <Route path="/update-vehicle/:id" element={<UpdatePage />} />
       </Routes>
