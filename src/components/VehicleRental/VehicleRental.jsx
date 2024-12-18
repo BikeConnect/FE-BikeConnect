@@ -13,8 +13,10 @@ import {
 import api from "../../api/api";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import CustomerContractTerms from "./Contract/CustomerContractTerms";
+import { useSelector } from "react-redux";
 
-const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
+const VehicleRental = ({ bike, vehicleId }) => {
   const [bikeData, setBikeData] = useState(bike || null);
   const [loading, setLoading] = useState(!bike);
   const [error, setError] = useState(null);
@@ -34,6 +36,10 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
   const [availableDates, setAvailableDates] = useState([]);
   const [selectedOption, setSelectedOption] = useState('car');
   const [otherLocation, setOtherLocation] = useState('');
+  const [showTermsModal, setShowTermsModal] = useState(false);
+  const [contractData, setContractData] = useState(null);
+
+  const { userInfo } = useSelector((state) => state.auth);
 
   const handleSelectChange = (event) => {
       setSelectedOption(event.target.value);
@@ -66,7 +72,8 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
 
     const fetchVehicleDetails = async () => {
       try {
-        const response = await api.get(`/post/vehicle-detail/${vehicleId}`);
+        const response = await api.get(`/vehicles/vehicle-detail/${vehicleId}`);
+        console.log("response::::",response);
         if (!response.data || !response.data.metadata) {
           throw new Error("Không tìm thấy dữ liệu xe");
         }
@@ -188,25 +195,47 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
 
     try {
       const startDate = moment(selectedDates[0]).format("DD/MM/YYYY");
-      const endDate = moment(selectedDates[selectedDates.length - 1]).format(
-        "DD/MM/YYYY"
-      );
+      const endDate = moment(selectedDates[selectedDates.length - 1]).format("DD/MM/YYYY");
 
-      const response = await api.post("/create-booking", {
-        vehicleId: vehicleId,
+      const contractData = {
+        customerName: localStorage.getItem('userData') ? JSON.parse(localStorage.getItem('userData')).name : '',
+        vehicleModel: bikeData.model,
+        vehicleLicense: bikeData.license,
         startDate: startDate,
         endDate: endDate,
-      });
+        totalAmount: calculateTotal(),
+        customerPhone: userInfo.phone,
+        ownerPhone: bikeData.ownerPhone || '',
+        location: selectedOption === 'other' ? otherLocation : cycleData.address,
+      };
 
+      setContractData(contractData);
+      setShowTermsModal(true);
+
+    } catch (error) {
+      console.error("Error preparing contract:", error);
+      alert("Có lỗi xảy ra khi chuẩn bị hợp đồng");
+    }
+  };
+
+  const handleAcceptContract = async (contractDetails) => {
+    try {
+      const response = await api.post("/create-booking", {
+        vehicleId: vehicleId,
+        startDate: contractDetails.startDate,
+        endDate: contractDetails.endDate,
+        customerPhone: contractDetails.customerPhone,
+      });
       if (response.status === 200 || response.status === 201) {
+        const contractId = response.data.contract._id;
+        console.log("contractId::::",contractId);
+        await confirmContract(contractId, true);
+        
+        setShowTermsModal(false);
         alert("Đặt xe thành công!");
-      } else {
-        throw new Error("Đặt xe thất bại");
       }
     } catch (error) {
-      console.log("Full error object:", error);
-      console.log("Response data:", error.response?.data);
-
+      console.error("Booking error:", error);
       if (error.response?.status === 401) {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("isLoggedIn");
@@ -216,6 +245,21 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
       } else {
         alert(error.response?.data?.message || "Có lỗi xảy ra khi đặt xe");
       }
+    }
+  };
+
+  const confirmContract = async (contractId, isConfirmed, rejectReason = "") => {
+    try {
+      const response = await api.put(`/confirm-contract/${contractId}`, {
+        isConfirmed,
+        rejectReason,
+      });
+      if (response.status === 200) {
+        console.log("Contract confirmed successfully");
+      }
+    } catch (error) {
+      console.error("Error confirming contract:", error);
+      throw error;
     }
   };
 
@@ -490,6 +534,18 @@ const VehicleRental = ({ bike, vehicleId, onOpenChat }) => {
         onSelectDates={handleDateSelect}
         availableDates={availableDates}
       />
+
+      {showTermsModal && contractData && (
+        <CustomerContractTerms
+          booking={contractData}
+          bikeData={bikeData}
+          onClose={() => {
+            setShowTermsModal(false);
+            setContractData(null);
+          }}
+          onAccept={handleAcceptContract}
+        />
+      )}
     </div>
   );
 };

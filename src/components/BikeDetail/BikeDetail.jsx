@@ -8,7 +8,6 @@ import Footer from "../Footer/Footer";
 import Chat from "../Chat/Chat"; // Import component Chat
 import thuexemay from "../../assets/images/images_homePage/v994_8600.png";
 import api from "../../api/api";
-import moment from "moment";
 
 const BikeDetail = () => {
   const { name: vehicleId, slug } = useParams();
@@ -18,7 +17,7 @@ const BikeDetail = () => {
   const [error, setError] = useState(null);
   const [isChatOpen, setIsChatOpen] = useState(false);
 
-  console.log(bikeData);
+  console.log("bikeData::::",bikeData);
 
   useEffect(() => {
     const fetchBikeAndSimilarProducts = async () => {
@@ -39,6 +38,8 @@ const BikeDetail = () => {
 
           setBikeData({
             ...bikeDetails,
+            ownerName: bikeDetails.ownerId.name,
+            ownerPhone: bikeDetails.ownerId.phone,
             ownerId: ownerIdValue,
             slug: bikeDetails.slug || vehicleId,
             currentPrice: bikeDetails.discount

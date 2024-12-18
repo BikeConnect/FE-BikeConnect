@@ -26,7 +26,8 @@ const OwnerRequestBike = () => {
   const [showTermsModal, setShowTermsModal] = useState(false);
   const [selectedContractForTerms, setSelectedContractForTerms] =
     useState(null);
-
+  console.log("selectedBooking::::",selectedBooking);
+  
   const fetchBookingRequests = async (page) => {
     try {
 
