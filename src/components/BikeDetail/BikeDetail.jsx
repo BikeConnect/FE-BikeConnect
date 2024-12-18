@@ -48,7 +48,6 @@ const BikeDetail = () => {
           });
         }
 
-        // Fetch similar products
         const similarResponse = await api.get("/vehicles/list-vehicles");
         if (similarResponse.data && similarResponse.data.metadata) {
           const otherVehicles = similarResponse.data.metadata.filter(
