@@ -2,6 +2,11 @@
   margin: 0 80px;
 }
 
+.UpdatePage-title {
+  font-size: 28px;
+  font-weight: 800;
+}
+
 .post-page {
   display: flex;
   justify-content: center;

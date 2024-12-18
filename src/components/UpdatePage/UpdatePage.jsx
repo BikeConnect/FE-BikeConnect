@@ -256,7 +256,7 @@ const UpdatePage = () => {
   return (
     <div className="update-page">
       <form className="update-form" onSubmit={handleSubmit}>
-        <h1>Cập Nhật Xe</h1>
+        <h1 className="UpdatePage-title">Cập Nhật Xe</h1>
 
         <div className="form-container">
           <div className="vehicle-form">

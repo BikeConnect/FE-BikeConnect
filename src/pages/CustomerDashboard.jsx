@@ -73,14 +73,6 @@ const UserDashboard = ({onLogout}) => {
                 </li>
                 <li className="flex items-center justify-start gap-2 py-3">
                   <span className="text-xl">
-                    <FaMotorcycle />
-                  </span>
-                  <Link className="block" to="/user-dashboard/register-bike">
-                    Đăng kí cho thuê
-                  </Link>
-                </li>
-                <li className="flex items-center justify-start gap-2 py-3">
-                  <span className="text-xl">
                     <TbPassword />
                   </span>
                   <Link className="block" to="/user-dashboard/change-password">

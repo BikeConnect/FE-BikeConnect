@@ -1,48 +1,117 @@
-import React from 'react';
-import './RentalHistory.css';
-import NavBar from '../NavBar/NavBar';
-import HeaderAfterLogin from '../Header/HeaderAfterLogin';
+import React, { useState, useEffect } from "react";
+import "./RentalHistory.css";
+import api from "../../api/api";
 
 const RentalHistory = () => {
-    const rentalData = [
-        { id: 1, licensePlate: '29A-12345', vehicleName: 'Yamaha Nouvo', vehicleType: 'Xe máy', date: '2024-10-20', notes: 'Không có ghi chú' },
-        { id: 2, licensePlate: '59C-67890', vehicleName: 'Honda AirBlade', vehicleType: 'Xe máy', date: '2024-10-22', notes: 'Bảo dưỡng tốt' },
-        { id: 3, licensePlate: 'HN-54321', vehicleName: 'Xe đạp địa hình', vehicleType: 'Xe đạp', date: '2024-10-25', notes: 'Không có ghi chú' },
-        { id: 4, licensePlate: 'HN-65432', vehicleName: 'Xe đạp điện', vehicleType: 'Xe đạp', date: '2024-10-27', notes: 'Lốp hơi non' },
-        { id: 5, licensePlate: '30E-13579', vehicleName: 'Yamaha Janus', vehicleType: 'Xe máy', date: '2024-10-29', notes: 'Không có ghi chú' },
-    ];
+  const [rentalData, setRentalData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    return (
-        <div>
-            <div className="rental-history">
-                <h2>Lịch sử thuê xe</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Số thứ tự</th>
-                            <th>Biển số</th>
-                            <th>Tên xe</th>
-                            <th>Loại xe</th>
-                            <th>Ngày</th>
-                            <th>Ghi chú</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {rentalData.map((item, index) => (
-                            <tr key={item.id}>
-                                <td>{index + 1}</td>
-                                <td>{item.licensePlate}</td>
-                                <td>{item.vehicleName}</td>
-                                <td>{item.vehicleType}</td>
-                                <td>{item.date}</td>
-                                <td>{item.notes}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    );
+  useEffect(() => {
+    const fetchRentalHistory = async () => {
+      try {
+        const userRole = localStorage.getItem("userRole");
+        const endpoint =
+          userRole === "owner"
+            ? "/owner/vehicle-history"
+            : "/customer/vehicle-history";
+
+        const response = await api.get(endpoint);
+        console.log("Raw API response:", response);
+
+        if (!response.data || !response.data.bookings) {
+          console.log("Invalid response structure:", response.data);
+          throw new Error("Dữ liệu không đúng định dạng");
+        }
+
+        const transformedData = response.data.bookings.map((item) => {
+          console.log("Processing item:", item);
+          return {
+            id: item._id,
+            licensePlate: item.vehicleInfo?.license || "N/A",
+            vehicleName:
+              `${item.vehicleInfo?.brand || ""} ${
+                item.vehicleInfo?.model || ""
+              }`.trim() || "N/A",
+            vehicleType: getStatusText(item.bookingStatus),
+            date: formatDateRange(item.startDate, item.endDate),
+            notes: formatPrice(item.totalPrice),
+          };
+        });
+
+        console.log("Transformed data:", transformedData);
+        setRentalData(transformedData);
+      } catch (error) {
+        console.error("Error details:", {
+          message: error.message,
+          response: error.response?.data,
+          status: error.response?.status,
+        });
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRentalHistory();
+  }, []);
+
+  const getStatusText = (status) => {
+    const statusMap = {
+      pending: "Đang chờ xác nhận",
+      accepted: "Đã xác nhận",
+      completed: "Đã trả",
+      cancelled: "Đã hủy",
+      rejected: "Đã từ chối",
+    };
+    return statusMap[status.toLowerCase()] || status;
+  };
+
+  const formatDateRange = (startDate, endDate) => {
+    const formatDate = (date) => {
+      return new Date(date).toLocaleDateString("vi-VN");
+    };
+    return `${formatDate(startDate)} - ${formatDate(endDate)}`;
+  };
+
+  const formatPrice = (amount) => {
+    return `${amount?.toLocaleString("vi-VN")} VND`;
+  };
+
+  if (loading) return <div>Đang tải...</div>;
+  if (error) return <div>Lỗi: {error}</div>;
+
+  return (
+    <div>
+      <div className="rental-history">
+        <h2>Lịch sử thuê xe</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Số thứ tự</th>
+              <th>Biển số</th>
+              <th>Tên xe</th>
+              <th>Trạng thái</th>
+              <th>Ngày</th>
+              <th>Giá</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rentalData.map((item, index) => (
+              <tr key={item.id}>
+                <td>{index + 1}</td>
+                <td>{item.licensePlate}</td>
+                <td>{item.vehicleName}</td>
+                <td>{item.vehicleType}</td>
+                <td>{item.date}</td>
+                <td>{item.notes}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
 };
 
 export default RentalHistory;
