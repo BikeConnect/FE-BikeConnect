@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
 import { Star, Upload, X, Store, Clock, Check } from 'lucide-react';
 import './MotorbikeReview.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import image from '../../assets/images/images_homePage/v994_8600.png';
+import api from '../../api/api';
 
-
-const MotorbikeReview = ({ 
-  motorcycleData = {
+const MotorbikeReview = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const motorcycleData = location.state?.motorcycleData || {
     id: '1',
     name: 'Honda Winner X',
     price: '200.000đ/ngày',
     owner: 'Trần Văn B',
     date: '21/11/2024 10:00',
     image: '/api/placeholder/150/150'
-  }
-}) => {
+  };
+
   const [rating, setRating] = useState(5);
   const [hover, setHover] = useState(5);
   const [review, setReview] = useState('');
@@ -22,7 +24,6 @@ const MotorbikeReview = ({
   const [videos, setVideos] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [showThankYouModal, setShowThankYouModal] = useState(false);
-  const navigate = useNavigate();
 
   // Giữ nguyên các hàm xử lý như cũ
   const handleImageUpload = (e) => {
@@ -59,19 +60,45 @@ const MotorbikeReview = ({
     setVideos(newVideos);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Lưu trạng thái đã đánh giá vào localStorage
-    localStorage.setItem(`reviewed_${motorcycleData.id}`, 'true');
-    
-    // Hiển thị modal cảm ơn
-    setShowThankYouModal(true);
-    
-    // Sau 3 giây, chuyển về trang RentalStatusTabs
-    setTimeout(() => {
-      navigate('/user-dashboard/rentalstatustabs');
-    }, 3000);
+    try {
+      const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+      console.log("userData1/23", userData)
+      const reviewData = {
+        vehicleId: motorcycleData.id,
+        name: userData.name || "",
+        rating: rating,
+        review: review
+      };
+
+      console.log("Review Data being sent:", reviewData);
+      console.log("Token:", localStorage.getItem("accessToken"));
+      console.log("Current URL:", window.location.href);
+
+      const response = await api.post('/home/customer/submit-review', reviewData);
+      console.log("API Response:", response);
+      
+      if (response.status === 200 || response.status === 201) {
+        console.log("Review submitted successfully:", response.data);
+        localStorage.setItem(`reviewed_${motorcycleData.id}`, 'true');
+        setShowThankYouModal(true);
+        
+        setTimeout(() => {
+          navigate('/user-dashboard/rentalstatustabs');
+        }, 3000);
+      }
+
+    } catch (error) {
+      console.error("Error details:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+        config: error.config
+      });
+      alert("Có lỗi xảy ra khi gửi đánh giá. Vui lòng thử lại sau.");
+    }
   };
 
   return (
@@ -85,8 +112,7 @@ const MotorbikeReview = ({
           <div className="motorbike-card-grid">
             <div className="motorbike-image-wrapper">
               <img
-                // src={motorcycleData.image}
-                src={image}
+                src={motorcycleData.image || image}
                 alt={motorcycleData.name}
                 className="motorbike-image"
               />
@@ -94,7 +120,9 @@ const MotorbikeReview = ({
             <div className="motorbike-info">
               <div className="motorbike-details">
                 <div className="motorbike-detail-item">
-                  <h3 className="motorbike-name">{motorcycleData.name}</h3>
+                  <h3 className="motorbike-name">
+                    {motorcycleData.name} {motorcycleData.model}
+                  </h3>
                 </div>
                 <div className="motorbike-detail-item">
                   <p className="motorbike-price">{motorcycleData.price}</p>
@@ -148,100 +176,6 @@ const MotorbikeReview = ({
             placeholder="Nhập đánh giá của bạn về xe máy..."
             className="review-textarea" 
           />
-        </div>
-
-        {/* Upload và Preview Section */}
-        <div className="media-upload-section">
-          <div className="media-upload">
-            <h3 className="media-upload-title">Tải ảnh và video</h3>
-            <div className="upload-buttons">
-              <label className="upload-buttonn">
-                <Upload className="upload-icon" />
-                <span>Tải ảnh lên</span>
-                <input
-                  type="file"
-                  className="hidden-file-input"
-                  multiple
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                />
-              </label>
-              <label className="upload-buttonn">
-                <Upload className="upload-icon" />
-                <span>Tải video lên</span>
-                <input
-                  type="file"
-                  className="hidden-file-input"
-                  multiple
-                  accept="video/*"
-                  onChange={handleVideoUpload}
-                />
-              </label>
-            </div>
-          </div>
-
-          {/* Image Preview */}
-          {images.length > 0 && (
-            <div className="preview-section">
-              <h4 className="preview-title">Ảnh đã chọn ({images.length})</h4>
-              <div className="preview-grid">
-                {images.map((image, index) => (
-                  <div key={index} className="preview-item">
-                    <img 
-                      src={image.url} 
-                      alt={`Preview ${index + 1}`} 
-                      className="preview-image"
-                      onClick={() => setSelectedImage(image.url)}
-                    />
-                    <button
-                      type="button"
-                      className="remove-preview-button"
-                      onClick={() => removeImage(index)}
-                    >
-                      <X size={16} />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Image Modal */}
-          {selectedImage && (
-            <div className="modal-overlay" onClick={() => setSelectedImage(null)}>
-              <div className="modal-content">
-                <img src={selectedImage} alt="Enlarged preview" className="modal-image" />
-                <button className="modal-close" onClick={() => setSelectedImage(null)}>
-                  <X size={24} />
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* Video Preview */}
-          {videos.length > 0 && (
-            <div className="preview-section">
-              <h4 className="preview-title">Video đã chọn ({videos.length})</h4>
-              <div className="preview-grid">
-                {videos.map((video, index) => (
-                  <div key={index} className="preview-item">
-                    <video controls className="preview-video">
-                      <source src={video.url} type={video.file.type} />
-                      Your browser does not support the video tag.
-                    </video>
-                    <button
-                       
-                      type="button"
-                      className="remove-preview-button"
-                      onClick={() => removeVideo(index)}
-                    >
-                      
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
 
         {/* Submit Button */}

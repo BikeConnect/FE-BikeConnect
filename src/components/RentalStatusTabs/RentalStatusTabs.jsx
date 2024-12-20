@@ -76,7 +76,7 @@ const RentalStatusTabs = () => {
               model: booking.vehicle.model,
               status: getStatusText(booking.bookingDetails.status),
               statusType: getStatusType(booking.bookingDetails.status),
-              price: `${booking.contract.totalAmount.toLocaleString(
+              price: `${booking.bookingDetails.totalPrice.toLocaleString(
                 "vi-VN"
               )}đ/ngày`,
               owner: booking.vehicle.owner.name,
@@ -115,11 +115,11 @@ const RentalStatusTabs = () => {
     const statusLower = status.toLowerCase();
 
     const statusMap = {
-      pending: "pending-confirm", // Chờ xác nhận
-      accepted: "receiving", // Nhận xe
-      in_progress: "returning", // Trả xe
-      completed: "rating", // Đánh giá
-      cancelled: "cancelled", // Đã hủy
+      pending: "pending-confirm",    // Chờ xác nhận
+      accepted: "receiving",         // Nhận xe
+      rejected: "returning",         // Trả xe (fixed from pending-confirm)
+      completed: "rating",          // Đánh giá
+      cancelled: "cancelled",       // Đã hủy
     };
 
     console.log("Mapping status:", status, "to:", statusMap[statusLower]);
@@ -128,11 +128,11 @@ const RentalStatusTabs = () => {
 
   const getStatusText = (status) => {
     const statusTextMap = {
-      PENDING: "Chờ xác nhận yêu cầu",
-      ACCEPTED: "Đang trong quá trình nhận xe",
-      REJECTED: "Đang sử dụng xe",
-      COMPLETED: "Đang chờ đánh giá",
-      CANCELLED: "Đã hủy",
+      pending: "Chờ xác nhận",
+      accepted: "Nhận xe",
+      rejected: "Trả xe",
+      completed: "Đánh giá",
+      cancelled: "Đã hủy"
     };
     return statusTextMap[status] || status;
   };
@@ -141,7 +141,7 @@ const RentalStatusTabs = () => {
     const labelMap = {
       PENDING: "Ngày yêu cầu",
       ACCEPTED: "Ngày xác nhận yêu cầu",
-      REJECTED: "Ngày nhận xe",
+      REJECTED: "Ngày trả xe",
       COMPLETED: "Ngày trả xe",
       CANCELLED: "Ngày hủy",
     };
@@ -356,12 +356,20 @@ const RentalStatusTabs = () => {
           variant: isReviewed ? "success" : "primary",
           onClick: () => {
             if (!isReviewed) {
+              const motorcycle = motorcycles.all.find((m) => m.id === motorcycleId);
+              console.log("motorcycle1/23", motorcycle)
               navigate("/motorbikereview", {
                 state: {
-                  motorcycleData: motorcycles.all.find(
-                    (m) => m.id === motorcycleId
-                  ),
-                },
+                  motorcycleData: {
+                    id: motorcycle.id,
+                    name: motorcycle.name,
+                    model: motorcycle.model,
+                    price: motorcycle.price,
+                    owner: motorcycle.owner,
+                    date: motorcycle.date,
+                    image: motorcycle.image
+                  }
+                }
               });
             }
           },
