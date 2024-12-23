@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import {
   Clock,
   Store,
@@ -19,97 +18,98 @@ const RentalStatusTabs = () => {
   const [motorcycles, setMotorcycles] = useState({
     all: [],
   });
-
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    totalPages: 1,
+    totalItems: 0,
+    itemsPerPage: 5,
+    hasNextPage: false,
+    hasPrevPage: false,
+  });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  const [currentPage, setCurrentPage] = useState(1);
+
   useEffect(() => {
-    const fetchBookings = async () => {
-      const token = localStorage.getItem("accessToken");
-      console.log("Current token:", token);
+    fetchBookings(currentPage);
+  }, [currentPage, activeTab]);
 
-      const myHeaders = new Headers();
-      myHeaders.append("Authorization", `Bearer ${token}`);
-      console.log("Request headers:", Object.fromEntries(myHeaders.entries()));
+  useEffect(() => {
+    if (motorcycles.all.length === 0 && currentPage > 1) {
+      setCurrentPage((prev) => prev - 1);
+    }
+  }, [motorcycles.all.length, currentPage]);
 
-      const requestOptions = {
-        method: "GET",
-        headers: myHeaders,
-        redirect: "follow",
-      };
+  const fetchBookings = async (page) => {
+    try {
+      setIsLoading(true);
+      setError(null);
 
-      try {
-        setIsLoading(true);
-        setError(null);
-        console.log("Token before fetch:", token);
-        console.log("Headers:", {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        });
-        const response = await fetch(
-          "http://localhost:8080/api/all-bookings",
-          requestOptions
+      const status = activeTab === "all" ? "" : activeTab;
+      const response = await api.get(`/all-bookings`, {
+        params: {
+          page: page,
+          status: status,
+        },
+      });
+
+      if (response.data?.data?.bookings) {
+        const formattedBookings = response.data.data.bookings.map(
+          (booking) => ({
+            id: booking._id || "",
+            name: booking.vehicle?.brand || "Không xác định",
+            model: booking.vehicle?.model || "Không xác định",
+            status: getStatusText(booking.bookingDetails?.status),
+            statusType: getStatusType(booking.bookingDetails?.status),
+            price: booking.contract?.totalAmount
+              ? `${booking.contract.totalAmount.toLocaleString("vi-VN")}đ/ngày`
+              : "Chưa có giá",
+            owner: booking.vehicle?.owner?.name || "Không xác định",
+            date: booking.bookingDetails?.startDate
+              ? new Date(booking.bookingDetails.startDate).toLocaleString(
+                  "vi-VN",
+                  {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  }
+                )
+              : "Chưa có ngày",
+            dateLabel: getDateLabel(booking.bookingDetails?.status),
+            image: booking.vehicle?.images?.[0]?.url || image,
+          })
         );
-        console.log("Response status:", response.status);
 
-        if (!response.ok) {
-          const errorText = await response.text();
-          console.error("API Error:", {
-            status: response.status,
-            statusText: response.statusText,
-            body: errorText,
-          });
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const result = await response.json();
-        console.log("API Response:", result);
-        console.log("Raw API Response:", result);
-
-        if (result.data?.bookings) {
-          const formattedBookings = result.data.bookings.map((booking) => {
-            console.log("Processing booking:", booking);
-            const formatted = {
-              id: booking._id,
-              name: booking.vehicle.brand,
-              model: booking.vehicle.model,
-              status: getStatusText(booking.bookingDetails.status),
-              statusType: getStatusType(booking.bookingDetails.status),
-              price: `${booking.bookingDetails.totalPrice.toLocaleString(
-                "vi-VN"
-              )}đ/ngày`,
-              owner: booking.vehicle.owner.name,
-              date: new Date(booking.bookingDetails.startDate).toLocaleString(
-                "vi-VN",
-                {
-                  day: "2-digit",
-                  month: "2-digit",
-                  year: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                }
-              ),
-              dateLabel: getDateLabel(booking.bookingDetails.status),
-              image: booking.vehicle.images?.[0]?.url || image,
-            };
-            console.log("Formatted booking:", formatted);
-            return formatted;
-          });
-
-          console.log("Setting motorcycles state:", formattedBookings);
-          setMotorcycles({ all: formattedBookings });
-        }
-      } catch (error) {
-        console.error("Fetch error:", error);
-        setError(error.message);
-      } finally {
-        setIsLoading(false);
+        setMotorcycles({ all: formattedBookings });
+        setPagination({
+          ...response.data.data.pagination,
+          hasNextPage: page < response.data.data.pagination.totalPages,
+          hasPrevPage: page > 1,
+        });
       }
-    };
+    } catch (error) {
+      console.error("Fetch error:", error);
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    fetchBookings();
-  }, [navigate]);
+  const handleNextPage = () => {
+    if (pagination.hasNextPage) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (pagination.hasPrevPage) {
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
 
   const getStatusType = (status) => {
     const statusLower = status.toLowerCase();
@@ -499,6 +499,38 @@ const RentalStatusTabs = () => {
           </div>
         ))}
       </div>
+
+      {motorcycles.all.length > 0 && (
+        <div className="mt-6 flex justify-center items-center gap-4">
+          <button
+            onClick={handlePrevPage}
+            disabled={!pagination.hasPrevPage}
+            className={`px-4 py-2 rounded-md ${
+              pagination.hasPrevPage
+                ? "bg-blue-500 text-white hover:bg-blue-600"
+                : "bg-gray-200 text-gray-500 cursor-not-allowed"
+            }`}
+          >
+            Trang trước
+          </button>
+
+          <span className="text-gray-600">
+            Trang {pagination.currentPage} / {pagination.totalPages}
+          </span>
+
+          <button
+            onClick={handleNextPage}
+            disabled={!pagination.hasNextPage}
+            className={`px-4 py-2 rounded-md ${
+              pagination.hasNextPage
+                ? "bg-blue-500 text-white hover:bg-blue-600"
+                : "bg-gray-200 text-gray-500 cursor-not-allowed"
+            }`}
+          >
+            Trang sau
+          </button>
+        </div>
+      )}
     </div>
   );
 };

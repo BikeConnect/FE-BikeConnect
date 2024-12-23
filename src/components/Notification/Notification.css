@@ -112,6 +112,32 @@ f.notification-text .notification-item.unread {
   font-size: 14px;
   color: #555;
   margin: 8px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 250px;
+  position: relative;
+}
+
+.notification-text:hover {
+  white-space: normal;
+  overflow: visible;
+  position: relative;
+}
+
+.notification-text:hover::after {
+  content: attr(data-full-text);
+  position: absolute;
+  left: 0;
+  top: 100%;
+  /* background: white; */
+  padding: 8px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  width: max-content;
+  max-width: 300px;
+  white-space: normal;
 }
 
 .notification-time {

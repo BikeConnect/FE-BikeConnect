@@ -237,7 +237,7 @@ const CustomerChat = () => {
               onClick={() => setShow(true)}
               className="flex items-center justify-center w-full h-[250px] text-lg font-bold text-slate-600"
             >
-              <span>Select owner</span>
+              <span>Chọn chủ xe để chat</span>
             </div>
           )}
         </div>

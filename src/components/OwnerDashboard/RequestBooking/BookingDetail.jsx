@@ -1,6 +1,7 @@
 import React from "react";
 
 const BookingDetail = ({ booking, onClose, rejectionReason }) => {
+  console.log("booking::::", booking);
   if (!booking) return null;
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -34,8 +35,8 @@ const BookingDetail = ({ booking, onClose, rejectionReason }) => {
               </h3>
               <div className="space-y-2">
                 <div className="flex items-center text-gray-700">
-                  <span className="label">{" "}Họ và tên:</span>
-                  <span className="value">{" "} {booking.customerName}</span>
+                  <span className="label"> Họ và tên:</span>
+                  <span className="value"> {booking.customerName}</span>
                 </div>
                 <div className="flex items-center text-gray-700">
                   <span className="label">Email:</span>
@@ -44,6 +45,14 @@ const BookingDetail = ({ booking, onClose, rejectionReason }) => {
                 <div className="flex items-center text-gray-700">
                   <span className="label">Số điện thoại:</span>
                   <span className="value"> {booking.customerPhone}</span>
+                </div>
+                <div className="flex items-center text-gray-700">
+                  <span className="label">Địa chỉ lấy xe:</span>
+                  <span className="value">
+                    {booking.customerAlterAddress
+                      ? booking.customerAlterAddress
+                      : booking.vehicleAddress}
+                  </span>{" "}
                 </div>
               </div>
             </div>
