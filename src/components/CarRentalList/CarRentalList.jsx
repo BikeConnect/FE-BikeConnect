@@ -33,6 +33,7 @@ const CusFilterOptions = () => {
     setCurrentPage(1);
   };
 
+  
   useEffect(() => {
     const fetchVehicles = async () => {
       try {
