@@ -26,7 +26,7 @@ const PostPage = () => {
   useEffect(() => {
     if (vehicle.startDate && vehicle.endDate) {
       setSelectedDates([]);
-      setVehicle(prev => ({...prev, availableDates: []}));
+      setVehicle((prev) => ({ ...prev, availableDates: [] }));
     }
   }, [vehicle.startDate, vehicle.endDate]);
 
@@ -37,24 +37,70 @@ const PostPage = () => {
     }));
   };
 
-  const handleImageUpload = (uploadedImages) => {
+  const handleImageUpload = async (uploadedImages) => {
     if (!uploadedImages.length) {
       alert("Hãy chọn ít nhất một file ảnh hợp lệ.");
       return;
     }
 
-    // Chỉ giữ lại các tệp hình ảnh hợp lệ
-    const validImages = uploadedImages.filter((img) => img instanceof File && img.type.startsWith('image/'));
+    const validImages = uploadedImages.filter(
+      (img) => img instanceof File && img.type.startsWith("image/")
+    );
 
     if (validImages.length === 0) {
       alert("Hãy chọn ít nhất một file ảnh hợp lệ.");
       return;
     }
 
-    setVehicle((prevVehicle) => ({
-      ...prevVehicle,
-      images: [...prevVehicle.images, ...validImages],
-    }));
+    try {
+      const formData = new FormData();
+      formData.append("file", validImages[0]);
+
+      console.log("Sending image to classify API:", {
+        imageType: validImages[0].type,
+        imageSize: validImages[0].size,
+      });
+
+      const response = await fetch("http://localhost:33333/classify", {
+        method: "POST",
+        body: formData,
+      });
+
+      console.log("API Response status:", response.status);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Classification API error:", errorData);
+        throw new Error(
+          `Classification failed: ${errorData.message || "Unknown error"}`
+        );
+      }
+
+      const result = await response.json();
+      console.log("Classification result:", result);
+
+      const [brand, ...modelParts] = result.label.split(" ");
+      const model = modelParts.join(" ");
+
+      setVehicle((prevVehicle) => ({
+        ...prevVehicle,
+        brand: brand,
+        model: model,
+        images: [...prevVehicle.images, ...validImages],
+      }));
+    } catch (error) {
+      console.error("Detailed error when classifying image:", {
+        error: error.message,
+        stack: error.stack,
+      });
+
+      alert(`Lỗi khi phân loại ảnh: ${error.message}`);
+
+      setVehicle((prevVehicle) => ({
+        ...prevVehicle,
+        images: [...prevVehicle.images, ...validImages],
+      }));
+    }
 
     setShowUploadModal(false);
   };
@@ -63,28 +109,38 @@ const PostPage = () => {
     setVehicle((prevVehicle) => {
       const updatedImages = [...prevVehicle.images];
       updatedImages.splice(imageIndex, 1);
+
+      if (updatedImages.length === 0) {
+        return {
+          ...prevVehicle,
+          images: updatedImages,
+          brand: "",
+          model: "",
+        };
+      }
+
       return { ...prevVehicle, images: updatedImages };
     });
   };
 
   const handleDateSelect = (date) => {
     const newDate = new Date(date.setHours(0, 0, 0, 0));
-    
-    if (selectedDates.some(d => d.getTime() === newDate.getTime())) {
+
+    if (selectedDates.some((d) => d.getTime() === newDate.getTime())) {
       const newSelectedDates = selectedDates.filter(
-        d => d.getTime() !== newDate.getTime()
+        (d) => d.getTime() !== newDate.getTime()
       );
       setSelectedDates(newSelectedDates);
-      setVehicle(prev => ({
+      setVehicle((prev) => ({
         ...prev,
-        availableDates: newSelectedDates
+        availableDates: newSelectedDates,
       }));
     } else {
       const newSelectedDates = [...selectedDates, newDate];
       setSelectedDates(newSelectedDates);
-      setVehicle(prev => ({
+      setVehicle((prev) => ({
         ...prev,
-        availableDates: newSelectedDates
+        availableDates: newSelectedDates,
       }));
     }
   };
@@ -155,7 +211,7 @@ const PostPage = () => {
         license: vehicle.license,
         startDate: vehicle.startDate,
         endDate: vehicle.endDate,
-        availableDates: vehicle.availableDates.map(date => 
+        availableDates: vehicle.availableDates.map((date) =>
           new Date(date).toISOString()
         ),
       };
@@ -164,18 +220,21 @@ const PostPage = () => {
       if (vehicle.images && vehicle.images.length > 0) {
         vehicle.images.forEach((image) => {
           if (image instanceof File) {
-            formData.append('images', image);
+            formData.append("images", image);
           }
         });
       }
 
-      const response = await fetch("http://localhost:8080/api/vehicles/create-vehicle", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: formData,
-      });
+      const response = await fetch(
+        "http://localhost:8080/api/vehicles/create-vehicle",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: formData,
+        }
+      );
 
       if (response.ok) {
         const result = await response.json();
@@ -212,7 +271,9 @@ const PostPage = () => {
                     class="custom-input"
                     type="text"
                     value={vehicle.license}
-                    onChange={(e) => handleVehicleChange("license", e.target.value)}
+                    onChange={(e) =>
+                      handleVehicleChange("license", e.target.value)
+                    }
                     placeholder="Nhập biển số xe..."
                   />
                 </div>
@@ -222,7 +283,9 @@ const PostPage = () => {
                     class="custom-input"
                     type="text"
                     value={vehicle.address}
-                    onChange={(e) => handleVehicleChange("address", e.target.value)}
+                    onChange={(e) =>
+                      handleVehicleChange("address", e.target.value)
+                    }
                     placeholder="Nhập địa chỉ..."
                   />
                 </div>
@@ -236,7 +299,9 @@ const PostPage = () => {
                     class="custom-input"
                     type="text"
                     value={vehicle.brand}
-                    onChange={(e) => handleVehicleChange("brand", e.target.value)}
+                    onChange={(e) =>
+                      handleVehicleChange("brand", e.target.value)
+                    }
                     placeholder="Nhập thương hiệu xe..."
                   />
                 </div>
@@ -246,7 +311,9 @@ const PostPage = () => {
                     class="custom-input"
                     type="text"
                     value={vehicle.model}
-                    onChange={(e) => handleVehicleChange("model", e.target.value)}
+                    onChange={(e) =>
+                      handleVehicleChange("model", e.target.value)
+                    }
                     placeholder="Nhập model xe..."
                   />
                 </div>
@@ -260,7 +327,9 @@ const PostPage = () => {
                     class="custom-input"
                     type="number"
                     value={vehicle.price}
-                    onChange={(e) => handleVehicleChange("price", e.target.value)}
+                    onChange={(e) =>
+                      handleVehicleChange("price", e.target.value)
+                    }
                     placeholder="Nhập giá xe..."
                   />
                 </div>
@@ -270,7 +339,9 @@ const PostPage = () => {
                     class="custom-input"
                     type="number"
                     value={vehicle.discount}
-                    onChange={(e) => handleVehicleChange("discount", e.target.value)}
+                    onChange={(e) =>
+                      handleVehicleChange("discount", e.target.value)
+                    }
                     placeholder="Nhập giảm giá..."
                   />
                 </div>
@@ -282,7 +353,9 @@ const PostPage = () => {
                 <textarea
                   class="custom-input"
                   value={vehicle.description}
-                  onChange={(e) => handleVehicleChange("description", e.target.value)}
+                  onChange={(e) =>
+                    handleVehicleChange("description", e.target.value)
+                  }
                   placeholder="Nhập mô tả xe..."
                 />
               </div>
@@ -294,18 +367,26 @@ const PostPage = () => {
                   <input
                     type="date"
                     value={vehicle.startDate}
-                    onChange={(e) => handleVehicleChange("startDate", e.target.value)}
+                    onChange={(e) =>
+                      handleVehicleChange("startDate", e.target.value)
+                    }
                   />
-                  {errors.startDate && <div className="error-message">{errors.startDate}</div>}
+                  {errors.startDate && (
+                    <div className="error-message">{errors.startDate}</div>
+                  )}
                 </div>
                 <div className="form-group form-group-endDate">
                   <label>Ngày kết thúc:</label>
                   <input
                     type="date"
                     value={vehicle.endDate}
-                    onChange={(e) => handleVehicleChange("endDate", e.target.value)}
+                    onChange={(e) =>
+                      handleVehicleChange("endDate", e.target.value)
+                    }
                   />
-                  {errors.endDate && <div className="error-message">{errors.endDate}</div>}
+                  {errors.endDate && (
+                    <div className="error-message">{errors.endDate}</div>
+                  )}
                 </div>
               </div>
               {vehicle.startDate && vehicle.endDate && (
@@ -321,8 +402,10 @@ const PostPage = () => {
                       highlightDates={selectedDates}
                       dateFormat="dd/MM/yyyy"
                       calendarClassName="custom-calendar"
-                      dayClassName={date =>
-                        selectedDates.some(d => d.getTime() === date.getTime())
+                      dayClassName={(date) =>
+                        selectedDates.some(
+                          (d) => d.getTime() === date.getTime()
+                        )
                           ? "selected-day"
                           : undefined
                       }
@@ -336,21 +419,21 @@ const PostPage = () => {
                   </div>
                 </div>
               )}
-           
+
               {/* Row 6: AssetUpload */}
               <div className="form-group form-group-img">
                 <label>Hình ảnh:</label>
-                <button
-                  type="button"
-                  onClick={() => setShowUploadModal(true)}
-                >
+                <button type="button" onClick={() => setShowUploadModal(true)}>
                   Tải lên hình ảnh
                 </button>
                 <div className="image-preview">
                   {vehicle.images.length > 0 ? (
                     vehicle.images.map((image, imageIndex) => (
                       <div key={imageIndex} className="image-item">
-                        <img src={URL.createObjectURL(image)} alt={`Image ${imageIndex}`} />
+                        <img
+                          src={URL.createObjectURL(image)}
+                          alt={`Image ${imageIndex}`}
+                        />
                         <button
                           type="button"
                           onClick={() => handleRemoveImage(imageIndex)}
