@@ -34,21 +34,44 @@ const VehicleRental = ({ bike, vehicleId }) => {
     endDate: null,
   });
   const [availableDates, setAvailableDates] = useState([]);
-  const [selectedOption, setSelectedOption] = useState('car');
-  const [otherLocation, setOtherLocation] = useState('');
+  const [selectedOption, setSelectedOption] = useState("car");
+  const [otherLocation, setOtherLocation] = useState("");
   const [showTermsModal, setShowTermsModal] = useState(false);
   const [contractData, setContractData] = useState(null);
 
   const { userInfo } = useSelector((state) => state.auth);
 
   const handleSelectChange = (event) => {
-      setSelectedOption(event.target.value);
+    setSelectedOption(event.target.value);
+  };
+
+  const updateAlterAddress = async (newAddress) => {
+    try {
+      const response = await api.put("/customer/alter-address", {
+        customerId: userInfo._id,
+        alterAddress: newAddress,
+      });
+
+      if (response.data.success) {
+        console.log("Đã cập nhật địa chỉ thành công");
+      }
+    } catch (error) {
+      console.error("Lỗi khi cập nhật địa chỉ:", error);
+    }
   };
 
   const handleInputChange = (event) => {
-      setOtherLocation(event.target.value);
-  };
+    const newAddress = event.target.value;
+    setOtherLocation(newAddress);
 
+    if (selectedOption === "other") {
+      const timeoutId = setTimeout(() => {
+        updateAlterAddress(newAddress);
+      }, 1000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  };
 
   useEffect(() => {
     if (bike) {
@@ -73,7 +96,7 @@ const VehicleRental = ({ bike, vehicleId }) => {
     const fetchVehicleDetails = async () => {
       try {
         const response = await api.get(`/vehicles/vehicle-detail/${vehicleId}`);
-        console.log("response::::",response);
+        console.log("response::::", response);
         if (!response.data || !response.data.metadata) {
           throw new Error("Không tìm thấy dữ liệu xe");
         }
@@ -195,26 +218,52 @@ const VehicleRental = ({ bike, vehicleId }) => {
 
     try {
       const startDate = moment(selectedDates[0]).format("DD/MM/YYYY");
-      const endDate = moment(selectedDates[selectedDates.length - 1]).format("DD/MM/YYYY");
+      const endDate = moment(selectedDates[selectedDates.length - 1]).format(
+        "DD/MM/YYYY"
+      );
 
       const contractData = {
-        customerName: localStorage.getItem('userData') ? JSON.parse(localStorage.getItem('userData')).name : '',
+        customerName: userInfo.name || "",
+        vehicleId: vehicleId,
         vehicleModel: bikeData.model,
         vehicleLicense: bikeData.license,
         startDate: startDate,
         endDate: endDate,
         totalAmount: calculateTotal(),
         customerPhone: userInfo.phone,
-        ownerPhone: bikeData.ownerPhone || '',
-        location: selectedOption === 'other' ? otherLocation : cycleData.address,
+        ownerPhone: bikeData.ownerPhone || "",
+        location:
+          selectedOption === "other" ? otherLocation : cycleData.address,
+        originalAddress: cycleData.address,
+        alterAddress: selectedOption === "other" ? otherLocation : null,
       };
 
-      setContractData(contractData);
-      setShowTermsModal(true);
+      // Gọi API để tạo booking
+      const response = await api.post("/create-booking", {
+        vehicleId: vehicleId,
+        startDate: startDate,
+        endDate: endDate,
+        customerPhone: userInfo.phone,
+        location: contractData.location,
+        alterAddress: contractData.alterAddress,
+      });
 
+      if (response.status === 200 || response.status === 201) {
+        const contractId = response.data.contract._id;
+        console.log("contractId:", contractId);
+        alert("Đặt xe thành công!");
+      }
     } catch (error) {
-      console.error("Error preparing contract:", error);
-      alert("Có lỗi xảy ra khi chuẩn bị hợp đồng");
+      console.error("Booking error:", error);
+      if (error.response?.status === 401) {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("userRole");
+        localStorage.removeItem("userData");
+        alert("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
+      } else {
+        alert(error.response?.data?.message || "Có lỗi xảy ra khi đặt xe");
+      }
     }
   };
 
@@ -228,9 +277,9 @@ const VehicleRental = ({ bike, vehicleId }) => {
       });
       if (response.status === 200 || response.status === 201) {
         const contractId = response.data.contract._id;
-        console.log("contractId::::",contractId);
+        console.log("contractId::::", contractId);
         await confirmContract(contractId, true);
-        
+
         setShowTermsModal(false);
         alert("Đặt xe thành công!");
       }
@@ -248,7 +297,11 @@ const VehicleRental = ({ bike, vehicleId }) => {
     }
   };
 
-  const confirmContract = async (contractId, isConfirmed, rejectReason = "") => {
+  const confirmContract = async (
+    contractId,
+    isConfirmed,
+    rejectReason = ""
+  ) => {
     try {
       const response = await api.put(`/confirm-contract/${contractId}`, {
         isConfirmed,
@@ -353,7 +406,12 @@ const VehicleRental = ({ bike, vehicleId }) => {
             <div className="gap-3 location-selection d-flex flex-column">
               <div className="time-selection">
                 <div className="vehicleRental-location-select">
-                  <label htmlFor="location-select" className="choose-location-label">Chọn vị trí:</label>
+                  <label
+                    htmlFor="location-select"
+                    className="choose-location-label"
+                  >
+                    Chọn vị trí:
+                  </label>
                   <select
                     id="location-select"
                     value={selectedOption}
@@ -534,18 +592,6 @@ const VehicleRental = ({ bike, vehicleId }) => {
         onSelectDates={handleDateSelect}
         availableDates={availableDates}
       />
-
-      {showTermsModal && contractData && (
-        <CustomerContractTerms
-          booking={contractData}
-          bikeData={bikeData}
-          onClose={() => {
-            setShowTermsModal(false);
-            setContractData(null);
-          }}
-          onAccept={handleAcceptContract}
-        />
-      )}
     </div>
   );
 };

@@ -4,20 +4,43 @@ import { NavLink, useNavigate } from "react-router-dom";
 import logo from "../../assets/images/8.png";
 import "./HeaderAfterLogin.css";
 import ava from "../../assets/images/avatar_user1.jpg";
-import ava2 from "../../assets/images/avatar_user2.jpg";
-import ava3 from "../../assets/images/avatar_user3.jpg";
 import Support from "../Support/Support";
 import Notification from "../Notification/Notification";
 import { useSelector } from "react-redux";
+import api from "../../api/api";
+import { io } from "socket.io-client";
 
 const HeaderAfterLogin = ({ onLogout, userRole }) => {
   const navigate = useNavigate();
   const [showProfile, setShowProfile] = useState(false);
   const [showSupport, setShowSupport] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const dropdownRef = useRef(null);
   const avatarRef = useRef(null);
   const { userInfo } = useSelector((state) => state.auth);
+  const [socket, setSocket] = useState(null);
+
+  const fetchUnreadCount = async () => {
+    try {
+      const endpoint =
+        (userRole || localStorage.getItem("userRole")) === "owner"
+          ? "/notify/owner/notifications"
+          : "/notify/customer/notifications";
+
+      const response = await api.get(endpoint);
+      if (response.data?.unreadCount) {
+        setUnreadCount(response.data.unreadCount);
+      }
+    } catch (error) {
+      console.error("Error fetching unread count:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUnreadCount();
+  }, [showNotification]);
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -35,16 +58,28 @@ const HeaderAfterLogin = ({ onLogout, userRole }) => {
     };
   }, []);
 
+  useEffect(() => {
+    const newSocket = io("http://localhost:8080");
+    setSocket(newSocket);
+
+    if (userInfo?._id) {
+      const role = userRole || localStorage.getItem("userRole");
+      newSocket.emit("join_notifications", userInfo._id, role);
+
+      newSocket.on("new_notification", (notification) => {
+        console.log("Received notification:", notification);
+        setUnreadCount((prev) => prev + 1);
+        fetchUnreadCount();
+      });
+    }
+
+    return () => {
+      newSocket.disconnect();
+    };
+  }, [userInfo._id, userRole]);
+
   const handleMouseEnter = () => {
     setShowProfile(true);
-  };
-
-  const handleMouseLeave = () => {
-    setShowProfile(false);
-  };
-
-  const handleDropdownMouseLeave = () => {
-    setShowProfile(false);
   };
 
   const handleNavigateToProfile = () => {
@@ -101,58 +136,6 @@ const HeaderAfterLogin = ({ onLogout, userRole }) => {
     }
   };
 
-  const fakeNotifications = [
-    {
-      name: "Nguyễn Văn A",
-      content: "Yêu cầu thuê xe của bạn đã được chấp nhận.",
-      time: "15 phút trước",
-      imageUrl: ava,
-      isRead: false,
-    },
-    {
-      name: "Trần Thị B",
-      content: "Giao dịch sắp tới của bạn sẽ diễn ra vào ngày mai.",
-      time: "4 giờ trước",
-      imageUrl: ava,
-      isRead: true,
-    },
-    {
-      name: "Lê Văn C",
-      content: "Thông tin về giao dịch đã được cập nhật.",
-      time: "4 giờ trước",
-      imageUrl: ava,
-      isRead: false,
-    },
-    {
-      name: "Phạm Thị D",
-      content: "Yêu cầu thuê xe mới đã được gửi tới bạn.",
-      time: "4 giờ trước",
-      imageUrl: ava2,
-      isRead: false,
-    },
-    {
-      name: "Hoàng Anh E",
-      content: "Bạn có thông báo m���i về giao dịch.",
-      time: "5 ngày trước",
-      imageUrl: ava3,
-      isRead: true,
-    },
-    {
-      name: "Phạm Thị D",
-      content: "Yêu cầu thuê xe mới đã được gửi tới bạn.",
-      time: "4 giờ trước",
-      imageUrl: ava2,
-      isRead: false,
-    },
-    {
-      name: "Hoàng Anh E",
-      content: "Bạn có thông báo mới về giao dịch.",
-      time: "5 ngày trước",
-      imageUrl: ava3,
-      isRead: true,
-    },
-  ];
-
   return (
     <>
       <header className="header-after-login">
@@ -203,10 +186,14 @@ const HeaderAfterLogin = ({ onLogout, userRole }) => {
                   onMouseEnter={handleShowNotification}
                 >
                   <FaBell className="bell-icon" />
+                  {unreadCount > 0 && (
+                    <span className="notification-badge">{unreadCount}</span>
+                  )}
                 </div>
                 <Notification
                   show={showNotification}
                   onClose={handleHideNotification}
+                  onNotificationRead={fetchUnreadCount}
                 />
               </div>
               <div

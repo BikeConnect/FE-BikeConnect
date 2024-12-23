@@ -244,7 +244,7 @@ const OwnerChatCustomer = () => {
                   })
                 ) : (
                   <div className="flex flex-col items-center justify-center w-full h-full gap-2 text-black">
-                    <span>Select Customer</span>
+                    <span>Chọn khách hàng để chat</span>
                   </div>
                 )}
               </div>
