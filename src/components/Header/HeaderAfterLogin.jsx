@@ -23,11 +23,10 @@ const HeaderAfterLogin = ({ onLogout, userRole }) => {
 
   const fetchUnreadCount = async () => {
     try {
-      const endpoint =
-        (userRole || localStorage.getItem("userRole")) === "owner"
-          ? "/notify/owner/notifications"
-          : "/notify/customer/notifications";
-
+      const endpoint = (userRole || localStorage.getItem("userRole")) === "owner"
+        ? "/notify/owner/notifications"
+        : "/notify/customer/notifications";
+      
       const response = await api.get(endpoint);
       if (response.data?.unreadCount) {
         setUnreadCount(response.data.unreadCount);
@@ -63,12 +62,12 @@ const HeaderAfterLogin = ({ onLogout, userRole }) => {
     setSocket(newSocket);
 
     if (userInfo?._id) {
-      const role = userRole || localStorage.getItem("userRole");
-      newSocket.emit("join_notifications", userInfo._id, role);
+      // Join notification room
+      newSocket.emit("join_notifications", userInfo._id, userRole);
 
+      // Listen for new notifications
       newSocket.on("new_notification", (notification) => {
-        console.log("Received notification:", notification);
-        setUnreadCount((prev) => prev + 1);
+        setUnreadCount(prev => prev + 1);
         fetchUnreadCount();
       });
     }
@@ -77,6 +76,7 @@ const HeaderAfterLogin = ({ onLogout, userRole }) => {
       newSocket.disconnect();
     };
   }, [userInfo._id, userRole]);
+
 
   const handleMouseEnter = () => {
     setShowProfile(true);
