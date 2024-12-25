@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 // import NavBar from "../NavBar/NavBar";
 import "./PostListOwner.css";
 import api from "../../api/api";
-
+console.log("PostListOwner");
 const PostListOwner = () => {
   const navigate = useNavigate();
   const [vehicles, setVehicles] = useState([]);

@@ -1,6 +1,39 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../api/api";
 
+export const admin_login = createAsyncThunk(
+  "auth/admin_login",
+  async (info, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.post("/auth/admin-login", info, {
+        withCredentials: true,
+      });
+      console.log(data);
+      localStorage.setItem("accessToken", data.accessToken);
+
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const admin_logout = createAsyncThunk(
+  "auth/admin_logout",
+  async () => {
+    try {
+      const { data } = await api.post("/auth/admin-logout", {
+        withCredentials: true,
+      });
+      localStorage.clear();
+      return data;
+    } catch (error) {
+      localStorage.clear();
+      throw error;
+    }
+  }
+);
+
 export const owner_login = createAsyncThunk(
   "auth/owner_login",
   async (info, { rejectWithValue, fulfillWithValue }) => {
@@ -125,15 +158,34 @@ export const authReducer = createSlice({
     customerLogout: (state, _) => {
       state.userInfo = "";
       state.token = "";
-    },  
+    },
     ownerLogout: (state, _) => {
       state.userInfo = "";
       state.token = "";
-    }
+    },
+    adminLogout: (state, _) => {
+      state.userInfo = "";
+      state.token = "";
+      state.userRole = "";
+      state.successMessage = "";
+      state.errorMessage = "";
+      state.loader = false;
+    },
   },
   extraReducers: (builder) => {
     builder
-
+      .addCase(admin_login.pending, (state, { payload }) => {
+        state.loader = true;
+      })
+      .addCase(admin_login.rejected, (state, { payload }) => {
+        state.loader = false;
+        state.errorMessage = payload.message;
+      })
+      .addCase(admin_login.fulfilled, (state, { payload }) => {
+        state.loader = false;
+        state.successMessage = payload.message;
+        state.token = payload.accessToken;
+      })
       .addCase(owner_login.pending, (state, { payload }) => {
         state.loader = true;
       })
@@ -210,9 +262,35 @@ export const authReducer = createSlice({
         state.loader = false;
         state.userInfo = payload.userInfo;
         state.successMessage = payload.message;
+      })
+
+      .addCase(admin_logout.pending, (state) => {
+        state.loader = true;
+      })
+      .addCase(admin_logout.fulfilled, (state) => {
+        state.loader = false;
+        state.userInfo = "";
+        state.token = "";
+        state.userRole = "";
+        state.successMessage = "";
+        state.errorMessage = "";
+      })
+      .addCase(admin_logout.rejected, (state) => {
+        state.loader = false;
+        state.userInfo = "";
+        state.token = "";
+        state.userRole = "";
+        state.successMessage = "";
+        state.errorMessage = "";
       });
   },
 });
 
-export const { messageClear, setUserRole,customerLogout, ownerLogout } = authReducer.actions;
+export const {
+  messageClear,
+  setUserRole,
+  customerLogout,
+  ownerLogout,
+  adminLogout,
+} = authReducer.actions;
 export default authReducer.reducer;
