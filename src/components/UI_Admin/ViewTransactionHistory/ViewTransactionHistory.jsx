@@ -66,7 +66,7 @@ const ViewTransactionHistory = () => {
 
   return (
     <div className="d-flex">
-      <NavbarDashboard />
+      {/* <NavbarDashboard /> */}
       <div className="transaction-history-page" style={{ marginLeft: '10%', width: '90%' }}>
         <div className="container-fluid">
           <div className="row">
@@ -80,29 +80,6 @@ const ViewTransactionHistory = () => {
                 </div>
                 
                 <div className="card-body">
-                  {/* Cải thiện phần tìm kiếm */}
-                  {/* <div className="search-filter-container">
-                    <div className="search-box">
-                      <Search size={18} className="search-icon" />
-                      <input 
-                        type="text" 
-                        placeholder="Tìm kiếm theo tên chủ xe..."
-                        value={filter.searchName}
-                        onChange={(e) => setFilter({...filter, searchName: e.target.value})}
-                      />
-                    </div>
-                    <select 
-                      className="status-select"
-                      value={filter.status}
-                      onChange={(e) => setFilter({...filter, status: e.target.value})}
-                    >
-                      <option value="">Tất cả trạng thái</option>
-                      <option value="Đã thanh toán">Đã thanh toán</option>
-                      <option value="Đang chờ">Đang chờ</option>
-                    </select>
-                  </div> */}
-
-                  {/* Bảng với đường viền đầy đủ */}
                   <div className="table-responsive">
                     <table className="table table-bordered">
                       <thead>

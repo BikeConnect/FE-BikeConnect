@@ -57,6 +57,11 @@ import OwnerChatAdmin from "./components/OwnerDashboard/OwnerChatAdmin";
 import OwnerListVehicles from "./components/OwnerDashboard/OwnerListVehicles";
 import { CustomerProvider } from "./components/UI_Admin/CustomerContext";
 import CarRentalList from "./components/CarRentalList/CarRentalList";
+import AdminLogin from "./components/UI_Admin/AdminLogin";
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminChatOwner from "./components/UI_Admin/AdminChatOwner";
+import ActiveOwner from "./components/UI_Admin/AuthUser/AuthOwner/ActiveOwner";
+import DeactiveOwner from "./components/UI_Admin/AuthUser/AuthOwner/DeactiveOwner";
 
 function AppContent() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -98,11 +103,7 @@ function AppContent() {
   };
 
   const Header = () => {
-    if (
-      ["/dashboard", "/manageCus", "/manageOwner", "valrequest", ""].includes(
-        location.pathname
-      )
-    ) {
+    if (location.pathname.startsWith("/admin")) {
       return null;
     }
 
@@ -118,7 +119,7 @@ function AppContent() {
       <Header />
       {/* <ShowNavBar userRole={userRole} /> */}
       <Routes>
-        <Route path="/dashboard" element={<Dashboard />} />
+        {/* <Route path="/dashboard" element={<Dashboard />} /> */}
         <Route path="/" element={<HomePage />} />
         <Route path="/homepage" element={<HomePage />} />
         <Route path="/register" element={<Register />} />{" "}
@@ -143,16 +144,16 @@ function AppContent() {
         <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="/managecontract" element={<ContractManagement />} />
         <Route path="/contract" element={<CreateContract />} />
-        <Route path="/valrequest" element={<AuthUser />} />
-        <Route path="/manageuser" element={<ManageUser />} />
+        {/* <Route path="/valrequest" element={<AuthUser />} /> */}
+        {/* <Route path="/manageuser" element={<ManageUser />} /> */}
         <Route path="/post" element={<PostListOwner />} />
-        <Route
+        {/* <Route
           path="/viewtransactionhis"
           element={<ViewTransactionHistory />}
-        />
+        /> */}
         <Route path="/motorbikereview" element={<MotorbikeReview />} />
         <Route path="/rental-signup" element={<RentalSignup />} />
-        {/* <Route path="/ownerchat" element={<OwnerChat />} /> */}
+        {/* <Route path="/admin-login" element={<AdminLogin />} /> */}
         <Route
           path="/user-dashboard"
           element={
@@ -166,7 +167,7 @@ function AppContent() {
           <Route path="chat/:ownerId" element={<CustomerChat />} />
           <Route path="change-password" element={<CustomerChangePassword />} />
           <Route path="rentalstatustabs" element={<RentalStatusTabs />} />
-          <Route path="rentalhistory" element={<RentalHistory />} />  
+          <Route path="rentalhistory" element={<RentalHistory />} />
         </Route>
         <Route
           path="/owner-dashboard"
@@ -187,9 +188,27 @@ function AppContent() {
           <Route path="list-vehicles" element={<OwnerListVehicles />} />
           <Route path="paymentowner" element={<PaymentOwner />} />
           <Route path="postlistowner" element={<PostListOwner />} />
-          <Route path="rentalhistory" element={<RentalHistory />} />  
+          <Route path="rentalhistory" element={<RentalHistory />} />
         </Route>
         <Route path="/update-vehicle/:id" element={<UpdatePage />} />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <AdminDashboard onLogout={handleLogout} />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="manage-users" element={<ManageUser />} />
+          <Route path="pending-owner" element={<AuthUser />} />
+          <Route path="active-owner" element={<ActiveOwner />} />
+          <Route path="deactive-owner" element={<DeactiveOwner />} />
+          <Route path="transactions" element={<ViewTransactionHistory />} />
+          <Route path="chat-owner" element={<AdminChatOwner />} />
+          <Route path="chat-owner/:ownerId" element={<AdminChatOwner />} />
+        </Route>
+        <Route path="/admin-login" element={<AdminLogin />} />
       </Routes>
     </div>
   );

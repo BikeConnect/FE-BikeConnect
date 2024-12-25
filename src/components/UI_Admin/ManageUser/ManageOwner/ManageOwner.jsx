@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { FaEdit, FaTrash, FaFileAlt } from "react-icons/fa";
 import { useCustomer } from "../../CustomerContext";
+import { useDispatch } from "react-redux";
 
 const ManageOwner = () => {
+  const dispatch = useDispatch();
   const { setOwnerCount } = useCustomer();
   const [searchTerm, setSearchTerm] = useState("");
   const [ownersPerPage, setOwnersPerPage] = useState(10);
@@ -149,7 +151,7 @@ const ManageOwner = () => {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm font-medium text-gray-900">
-                    {owner.displayName}
+                    {owner.name}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">

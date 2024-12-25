@@ -83,17 +83,6 @@ const OwnerDashboard = ({ onLogout }) => {
                     <Link className="block" to="/owner-dashboard/postlistowner">
                       Xe của tôi
                     </Link>
-                    {/* {hasExpiredVehicles && (
-                      <span
-                        className="text-red-500 flex items-center gap-1 ml-2"
-                        title={`Có ${expiredCount} xe đã hết hạn cho thuê`}
-                      >
-                        <MdWarning className="text-lg" />
-                        <span className="text-xs">
-                          Hết hạn ({expiredCount})
-                        </span>
-                      </span>
-                    )} */}
                   </li>
                   <li className="flex items-center justify-start gap-2 py-3">
                     <span className="text-xl">

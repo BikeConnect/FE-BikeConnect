@@ -80,7 +80,6 @@ export const get_customer_message = createAsyncThunk(
   }
 );
 
-
 export const owner_send_messages = createAsyncThunk(
   "chat/owner_send_messages",
   async (info, { rejectWithValue, fulfillWithValue }) => {
@@ -92,6 +91,66 @@ export const owner_send_messages = createAsyncThunk(
           withCredentials: true,
         }
       );
+      // console.log(data);
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const get_owners = createAsyncThunk(
+  "chat/get_owners",
+  async (_, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.get("/chat/admin/get-owners", {
+        withCredentials: true,
+      });
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+//send message to owner from admin
+export const send_message_owner_admin = createAsyncThunk(
+  "chat/send_message_owner_admin",
+  async (info, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.post("/chat/message-send-owner-admin", info, {
+        withCredentials: true,
+      });
+      // console.log(data);
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const get_admin_message = createAsyncThunk(
+  "chat/get_admin_message",
+  async (receiverId, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.get(`/chat/get-admin-messages/${receiverId}`, {
+        withCredentials: true,
+      });
+      // console.log(data);
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const get_owner_message = createAsyncThunk(
+  "chat/get_owner_message",
+  async (_, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.get("/chat/get-owner-messages", {
+        withCredentials: true,
+      });
       // console.log(data);
       return fulfillWithValue(data);
     } catch (error) {
@@ -112,9 +171,10 @@ export const chatReducer = createSlice({
     activeCustomer: [],
     activeOwner: [],
     activeAdmin: [],
-    owner_admin_messages: [], // owner admin messages
+    owner_admin_message: [], // owner admin messages
     errorMessage: "",
     successMessage: "",
+    owners: [],
   },
   reducers: {
     messageClear: (state, _) => {
@@ -126,13 +186,20 @@ export const chatReducer = createSlice({
     },
     updateOwnerMessage: (state, { payload }) => {
       state.customer_messages = [...state.customer_messages, payload];
-    }, 
+    },
     updateOwners: (state, { payload }) => {
       state.activeOwner = payload;
     },
     updateCustomer: (state, { payload }) => {
       state.activeCustomer = payload;
     },
+    updateAdminMessage: (state, { payload }) => {
+      state.owner_admin_message = [...state.owner_admin_message, payload];
+    },
+    updateOwnerAdminMessage: (state, { payload }) => {
+      state.owner_admin_message = [...state.owner_admin_message, payload];
+    },
+    
   },
   extraReducers: (builder) => {
     builder
@@ -173,7 +240,6 @@ export const chatReducer = createSlice({
         state.currentCustomer = payload.currentCustomer;
       })
 
-      
       .addCase(owner_send_messages.fulfilled, (state, { payload }) => {
         let tempFriends = state.customers;
         let index = tempFriends.findIndex(
@@ -190,9 +256,37 @@ export const chatReducer = createSlice({
         state.successMessage = "Message sent successfully";
       })
 
+      .addCase(get_owners.fulfilled, (state, { payload }) => {
+        state.owners = payload.owners;
+      })
 
+      .addCase(send_message_owner_admin.fulfilled, (state, { payload }) => {
+        state.owner_admin_message = [
+          ...state.owner_admin_message,
+          payload.message,
+        ];
+        state.successMessage = "Gửi tin nhắn thành công";
+      })
+
+      .addCase(get_admin_message.fulfilled, (state, { payload }) => {
+        state.owner_admin_message = payload.messages;
+        state.currentOwner = payload.currentOwner;
+      })
+
+      .addCase(get_owner_message.fulfilled, (state, { payload }) => {
+        state.owner_admin_message = payload.messages;
+      });
   },
 });
 
-export const { messageClear, updateCustomerMessage, updateOwnerMessage, updateOwners, updateCustomer } = chatReducer.actions;
+export const {
+  messageClear,
+  updateCustomerMessage,
+  updateOwnerMessage,
+  updateOwners,
+  updateCustomer,
+  updateAdminMessage,
+  updateOwnerAdminMessage,
+} = chatReducer.actions;
 export default chatReducer.reducer;
+
