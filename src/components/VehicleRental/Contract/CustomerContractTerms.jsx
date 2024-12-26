@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoCheckmarkCircle } from "react-icons/io5";
 import { CustomerContractTemplate } from "./CustomerContractTemplate";
 import api from "../../../api/api";
@@ -8,7 +8,6 @@ import { toast } from "react-hot-toast";
 
 const CustomerContractTerms = ({ onClose, onAccept, booking, bikeData }) => {
   const [isAgreed, setIsAgreed] = useState(false);
-  const [useExistingPhone, setUseExistingPhone] = useState(true);
   const [contractData, setContractData] = useState({
     customerName: booking.customerName || "",
     vehicleModel: booking.vehicleModel || "",
@@ -17,69 +16,52 @@ const CustomerContractTerms = ({ onClose, onAccept, booking, bikeData }) => {
     endDate: moment(booking.endDate).format("DD/MM/YYYY"),
     totalAmount: booking.totalAmount,
     customerPhone: booking.customerPhone || "",
-    ownerPhone: booking.ownerPhone || "",
+    customerIdentityCard: booking.customerIdentityCard || "",
     location: booking.location || "",
-    contractPhone: null,
   });
   const [showRejectModal, setShowRejectModal] = useState(false);
 
   console.log("bookingId:::", booking._id);
+
+  useEffect(() => {
+    const fetchIdentityCard = async () => {
+      try {
+        const response = await api.get("/customer/analyze-identity-card");
+        console.log("response identity card:::", response);
+        if (response.status === 200 && response.data.results) {
+          const idNumber = response.data.results[0]?.details?.idNumber;
+          if (idNumber) {
+            setContractData((prev) => ({
+              ...prev,
+              customerIdentityCard: idNumber,
+            }));
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching identity card:", error);
+      }
+    };
+
+    if (!contractData.customerIdentityCard) {
+      fetchIdentityCard();
+    }
+  }, []);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-
-    if (name === "customerPhone") {
-      const validatedPhone = value.replace(/[^\d]/g, "").slice(0, 10);
-      setContractData((prev) => ({
-        ...prev,
-        customerPhone: validatedPhone,
-        contractPhone: validatedPhone,
-      }));
-    } else {
-      setContractData((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    }
+    setContractData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  const handlePhoneOptionChange = (e) => {
-    const useExisting = e.target.value === "existing";
-    setUseExistingPhone(useExisting);
-    if (useExisting) {
-      setContractData((prev) => ({
-        ...prev,
-        customerPhone: booking.customerPhone || "",
-        contractPhone: null,
-      }));
-    } else {
-      setContractData((prev) => ({
-        ...prev,
-        customerPhone: "",
-        contractPhone: "",
-      }));
-    }
-  };
-
-  const isPhoneValid = (phone) => {
-    return phone && phone.length === 10 && phone.startsWith("0");
-  };
-
-  const isFormValid = () => {
-    if (useExistingPhone) {
-      return isAgreed;
-    } else {
-      return isAgreed && isPhoneValid(contractData.customerPhone);
-    }
-  };
+  const isIdentityCardValid = contractData.customerIdentityCard.trim() !== "";
 
   const handleAccept = async () => {
     try {
       const finalData = {
         ...contractData,
-        customerPhone: useExistingPhone
-          ? booking.customerPhone
-          : contractData.customerPhone,
-        contractPhone: useExistingPhone ? null : contractData.customerPhone,
+        customerPhone: contractData.customerPhone,
       };
 
       const response = await api.put(`/confirm-contract/${booking._id}`, {
@@ -145,76 +127,30 @@ const CustomerContractTerms = ({ onClose, onAccept, booking, bikeData }) => {
 
         <div className="px-6 py-4">
           <div className="mb-6">
-            {booking.customerPhone && (
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Chọn số điện thoại
-                </label>
-                <div className="space-y-2">
-                  <div className="flex items-center">
-                    <input
-                      type="radio"
-                      id="existing-phone"
-                      name="phone-option"
-                      value="existing"
-                      checked={useExistingPhone}
-                      onChange={handlePhoneOptionChange}
-                      className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-                    />
-                    <label
-                      htmlFor="existing-phone"
-                      className="ml-2 text-sm text-gray-700"
-                    >
-                      Sử dụng số điện thoại hiện tại ({booking.customerPhone})
-                    </label>
-                  </div>
-                  <div className="flex items-center">
-                    <input
-                      type="radio"
-                      id="new-phone"
-                      name="phone-option"
-                      value="new"
-                      checked={!useExistingPhone}
-                      onChange={handlePhoneOptionChange}
-                      className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-                    />
-                    <label
-                      htmlFor="new-phone"
-                      className="ml-2 text-sm text-gray-700"
-                    >
-                      Sử dụng số điện thoại khác
-                    </label>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {(!booking.customerPhone || !useExistingPhone) && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Số Điện Thoại
-                </label>
-                <input
-                  type="text"
-                  name="customerPhone"
-                  value={contractData.customerPhone}
-                  onChange={handleInputChange}
-                  placeholder="Nhập số điện thoại của bạn"
-                  className={`w-full px-3 py-2 border rounded-md ${
-                    contractData.customerPhone &&
-                    !isPhoneValid(contractData.customerPhone)
-                      ? "border-red-500"
-                      : "border-gray-300"
-                  }`}
-                />
-                {contractData.customerPhone &&
-                  !isPhoneValid(contractData.customerPhone) && (
-                    <p className="text-red-500 text-xs mt-1">
-                      Số điện thoại phải bắt đầu bằng số 0 và đủ 10 chữ số
-                    </p>
-                  )}
-              </div>
-            )}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                CMND/CCCD <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                name="customerIdentityCard"
+                value={contractData.customerIdentityCard}
+                onChange={handleInputChange}
+                placeholder="Nhập số CMND/CCCD của bạn"
+                className={`w-full px-3 py-2 border rounded-md ${
+                  !isIdentityCardValid &&
+                  contractData.customerIdentityCard.trim() === ""
+                    ? "border-red-500"
+                    : "border-gray-300"
+                }`}
+              />
+              {!isIdentityCardValid &&
+                contractData.customerIdentityCard.trim() === "" && (
+                  <p className="text-red-500 text-xs mt-1">
+                    Vui lòng nhập CMND/CCCD
+                  </p>
+                )}
+            </div>
           </div>
 
           <div className="whitespace-pre-wrap font-mono text-sm">
@@ -263,9 +199,13 @@ const CustomerContractTerms = ({ onClose, onAccept, booking, bikeData }) => {
             </button>
             <button
               onClick={handleAccept}
-              disabled={!isFormValid()}
+              disabled={!isAgreed || !isIdentityCardValid}
               className={`px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors duration-200 flex items-center
-                ${!isFormValid() ? "opacity-50 cursor-not-allowed" : ""}`}
+                ${
+                  !isAgreed || !isIdentityCardValid
+                    ? "opacity-50 cursor-not-allowed"
+                    : ""
+                }`}
             >
               <IoCheckmarkCircle size={16} className="mr-1.5" />
               Xác nhận thuê xe

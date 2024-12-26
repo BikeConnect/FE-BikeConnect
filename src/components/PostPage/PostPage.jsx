@@ -61,7 +61,7 @@ const PostPage = () => {
         imageSize: validImages[0].size,
       });
 
-      const response = await fetch("http://localhost:33333/classify", {
+      const response = await fetch("http://localhost:3333/classify", {
         method: "POST",
         body: formData,
       });

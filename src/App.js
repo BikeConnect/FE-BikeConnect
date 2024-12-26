@@ -146,7 +146,7 @@ function AppContent() {
         <Route path="/contract" element={<CreateContract />} />
         {/* <Route path="/valrequest" element={<AuthUser />} /> */}
         {/* <Route path="/manageuser" element={<ManageUser />} /> */}
-        <Route path="/post" element={<PostListOwner />} />
+        {/* <Route path="/post" element={<PostListOwner />} /> */}
         {/* <Route
           path="/viewtransactionhis"
           element={<ViewTransactionHistory />}

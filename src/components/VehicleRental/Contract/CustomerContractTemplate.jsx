@@ -2,7 +2,6 @@ import { useSelector } from "react-redux";
 
 export const CustomerContractTemplate = ({ contractData, bikeData }) => {
   const { userInfo } = useSelector((state) => state.auth);
-  console.log("contractData:::", contractData);
   return `
   CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
   Độc lập – Tự do – Hạnh phúc
@@ -16,26 +15,24 @@ export const CustomerContractTemplate = ({ contractData, bikeData }) => {
     contractData.location || "BikeConnect"
   }, chúng tôi gồm:
   
-  BÊN THUÊ(BÊN A):
+  BÊN THUÊ (BÊN A):
   Ông/Bà: ${userInfo.name}
-  Số điện thoại: ${contractData.customerPhone || "_______________"}
+  CMND/CCCD: ${contractData.customerIdentityCard || "_______________"}
   
   BÊN CHO THUÊ (BÊN B):
   Ông/Bà: ${bikeData.ownerName}
-  Số điện thoại: ${
-    bikeData.ownerPhone ||
-    "𝗖𝗵𝘂̉ 𝘅𝗲 𝗵𝗶𝗲̣̂𝗻 𝗰𝗵𝘂̛𝗮 𝗰𝗮̣̂𝗽 𝗻𝗵𝗮̣̂𝘁 𝘀𝗼̂́ đ𝗶𝗲̣̂𝗻 𝘁𝗵𝗼𝗮̣𝗶, 𝗩𝘂𝗶 𝗹𝗼̀𝗻𝗴 𝗰𝗵𝗮𝘁 𝘃𝗼̛́𝗶 𝗰𝗵𝘂̉ 𝘅𝗲 đ𝗲̂̉ 𝗯𝗶𝗲̂́𝘁 𝘁𝗵𝗲̂𝗺 𝘁𝗵𝗼̂𝗻𝗴 𝘁𝗶𝗻"
-  }
   
   Sau khi trao đổi, thỏa thuận, hai bên nhất trí ký kết hợp đồng thuê xe với các điều khoản dưới đây:
   
   ĐIỀU 1: ĐỐI TƯỢNG CỦA HỢP ĐỒNG
-  Bên A đồng ý thuê xe của Bên B với các thông tin cơ bản:
+  Bên B đồng ý cho Bên A thuê xe với các thông tin cơ bản:
   - Loại xe: ${bikeData.model}
-  - Giấy phép: ${contractData.vehicleLicense}
+  - Biển số: ${contractData.vehicleLicense}
   
   ĐIỀU 2: THỜI HẠN CỦA HỢP ĐỒNG
-  Thời hạn thuê xe: từ ngày ${contractData.startDate} đến ngày ${contractData.endDate}
+  Thời hạn thuê xe: từ ngày ${contractData.startDate} đến ngày ${
+    contractData.endDate
+  }
   
   ĐIỀU 3: GIÁ THUÊ XE
   Giá thuê xe là: ${contractData.totalAmount?.toLocaleString("vi-VN")} đồng

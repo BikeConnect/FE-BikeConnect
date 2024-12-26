@@ -17,7 +17,7 @@ export const ContractTemplate = ({ contractData }) => {
   
   BÊN CHO THUÊ (BÊN A):
   Ông/Bà: ${userInfo.name}
-  Số điện thoại: ${contractData.ownerPhone || "_______________"}
+  CMND/CCCD: ${contractData.ownerIdentityCard || "_______________"}
   
   BÊN THUÊ (BÊN B):
   Ông/Bà: ${contractData.customerName}

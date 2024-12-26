@@ -1,47 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { IoCheckmarkCircle } from "react-icons/io5";
-import { ContractTemplate } from './ContractTemplate';
+import { ContractTemplate } from "./ContractTemplate";
 
 const ContractTerms = ({ onClose, onAccept, booking }) => {
   const [isAgreed, setIsAgreed] = useState(false);
   const [contractData, setContractData] = useState({
-    customerName: booking.customerName || '',
-    vehicleModel: booking.vehicleModel || '',
-    vehicleLicense: booking.vehicleLicense || '',
-    startDate: new Date(booking.startDate).toLocaleDateString('vi-VN'),
-    endDate: new Date(booking.endDate).toLocaleDateString('vi-VN'),
+    customerName: booking.customerName || "",
+    vehicleModel: booking.vehicleModel || "",
+    vehicleLicense: booking.vehicleLicense || "",
+    startDate: new Date(booking.startDate).toLocaleDateString("vi-VN"),
+    endDate: new Date(booking.endDate).toLocaleDateString("vi-VN"),
     totalAmount: booking.totalAmount,
-    ownerPhone: booking.ownerPhone || '',
-    customerPhone: booking.customerPhone || '',
+    ownerIdentityCard: "",
+    customerPhone: booking.customerPhone || "",
   });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    
-    if (name === 'ownerPhone') {
-      const sanitizedValue = value.replace(/[^\d]/g, '').slice(0, 10);
-      setContractData(prev => ({
-        ...prev,
-        [name]: sanitizedValue
-      }));
-    } else {
-      setContractData(prev => ({
-        ...prev,
-        [name]: value
-      }));
-    }
+    setContractData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  const isPhoneValid = contractData.ownerPhone.length === 10 && contractData.ownerPhone.startsWith('0');
+  const isIdentityCardValid = contractData.ownerIdentityCard.trim() !== "";
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999]"
+    <div
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999]"
       onClick={onClose}
-      style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
+      style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0 }}
     >
-      <div className="bg-white rounded-xl shadow-2xl max-w-3xl w-full mx-4 transform transition-all my-8"
+      <div
+        className="bg-white rounded-xl shadow-2xl max-w-3xl w-full mx-4 transform transition-all my-8"
         onClick={(e) => e.stopPropagation()}
-        style={{ maxHeight: 'calc(100vh - 4rem)', overflowY: 'auto' }}
+        style={{ maxHeight: "calc(100vh - 4rem)", overflowY: "auto" }}
       >
         <div className="sticky top-0 bg-white px-6 py-4 border-b border-gray-200 z-10">
           <div className="flex items-center justify-between">
@@ -55,25 +48,27 @@ const ContractTerms = ({ onClose, onAccept, booking }) => {
           <div className="mb-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Số Điện Thoại Chủ Xe
+                CMND/CCCD Chủ Xe <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
-                name="ownerPhone"
-                value={contractData.ownerPhone}
+                name="ownerIdentityCard"
+                value={contractData.ownerIdentityCard}
                 onChange={handleInputChange}
-                placeholder="Nhập số điện thoại của bạn"
+                placeholder="Nhập số CMND/CCCD của chủ xe"
                 className={`w-full px-3 py-2 border rounded-md ${
-                  contractData.ownerPhone && !isPhoneValid 
-                    ? 'border-red-500' 
-                    : 'border-gray-300'
+                  !isIdentityCardValid &&
+                  contractData.ownerIdentityCard.trim() === ""
+                    ? "border-red-500"
+                    : "border-gray-300"
                 }`}
               />
-              {contractData.ownerPhone && !isPhoneValid && (
-                <p className="text-red-500 text-xs mt-1">
-                  Số điện thoại phải bắt đầu bằng số 0 và đủ 10 chữ số
-                </p>
-              )}
+              {!isIdentityCardValid &&
+                contractData.ownerIdentityCard.trim() === "" && (
+                  <p className="text-red-500 text-xs mt-1">
+                    Vui lòng nhập CMND/CCCD của chủ xe
+                  </p>
+                )}
             </div>
           </div>
 
@@ -105,9 +100,13 @@ const ContractTerms = ({ onClose, onAccept, booking }) => {
             </button>
             <button
               onClick={onAccept}
-              disabled={!isAgreed || !isPhoneValid}
+              disabled={!isAgreed || !isIdentityCardValid}
               className={`px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors duration-200 flex items-center
-                ${(!isAgreed || !isPhoneValid) ? 'opacity-50 cursor-not-allowed' : ''}`}
+                ${
+                  !isAgreed || !isIdentityCardValid
+                    ? "opacity-50 cursor-not-allowed"
+                    : ""
+                }`}
             >
               <IoCheckmarkCircle size={16} className="mr-1.5" />
               Xác nhận chấp nhận
